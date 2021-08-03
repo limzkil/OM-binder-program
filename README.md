@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# OUT Maine Binder Program App 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Refer to available scripts for proxying the client to the server.
 
 ## Available Scripts
 
