@@ -19,11 +19,6 @@ You will also see any lint errors in the console.
 Runs the express server. \
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
