@@ -16,7 +16,7 @@ You will also see any lint errors in the console.
 
 ### `npm run server`
 
-Runs the express server
+Runs the express server. \
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
 ### `npm test`
