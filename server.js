@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const databaseAuthorization = process.env.SECRET;
 console.log(databaseAuthorization)
 //set up path for connection, using .env for the password
-const uri = `mongodb+srv://binderApp2:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://binderApp1:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 //connect to the db
 mongoose.connect(uri, {
   useNewURLParser: true,
@@ -36,6 +36,46 @@ res.redirect('/')
 }) 
 
 
+const cors = require("cors")
+
+const nodemailer = require("nodemailer")
+require("dotenv").config()
+
+
+app.use(express.json())
+app.use(cors())
+
+app.post("/send_mail", async (req, res) => {
+	let { email, number, address } = req.body
+	const transport = nodemailer.createTransport({
+		service: "Gmail",
+		auth: {
+			user: process.env.GMAIL_USER,
+			pass: process.env.GMAIL_PASS
+		}
+	})
+
+	await transport.sendMail({
+		from: process.env.GMAIL_USER,
+		to: email,
+		subject: "test email",
+		html: `<div className="email" style="
+        border: 1px solid black;
+        padding: 20px;
+        font-family: sans-serif;
+        line-height: 2;
+        font-size: 20px; 
+        ">
+        <h2>Please verify that the information below is correct!</h2>
+        <p><strong>Email:</strong> ${email}</p>
+		<p><strong>Phone number:</strong> ${number}</p>
+		<p><strong>Address:</strong> ${address}</p>
+    
+        <p>All the best, Shadman</p>
+         </div>
+    `
+	})
+})
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
