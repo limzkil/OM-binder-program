@@ -6,6 +6,7 @@ function App() {
   const [email, setEmail] = useState("")
   const [number, setNumber] = useState("")
   const [address, setAddress] = useState("")
+  
   const handleSend = async (e) => {
     setSent(true)
     try {
@@ -27,13 +28,13 @@ function App() {
     <div className="App">
       {!sent ? (
         // <form onSubmit={handleSend}>
-        <div>
+        <form onSubmit={handleSend}>
           <input type="text" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input type="text" placeholder="Enter your number" value={number} onChange={(e) => setNumber(e.target.value)} />
           <input type="text" placeholder="Enter your address" value={address} onChange={(e) => setAddress(e.target.value)} />
 
-          <button onClick={handleSend}>Submit Form</button>
-        </div>
+          <input type="submit" value="Submit Form"/>
+        </form>
 
         // </form>
       ) : (
