@@ -1,21 +1,7 @@
-import { useFormik } from "formik";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import axios from "axios";
+import { useState } from "react";
 
 export default function ReqForm() {
-  //code for form
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-    },
-
-    onSubmit: (values) => {
-      console.log(values);
-      axios.post("http://localhost:3000/");
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
   // code for email
   const [sent, setSent] = useState(false);
   const [email, setEmail] = useState("");
@@ -41,20 +27,6 @@ export default function ReqForm() {
 
   return (
     <>
-      {/* form for email */}
-      <form action="/" method="POST">
-        <TextField
-          id="email"
-          name="email"
-          label="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-        />
-
-        <Button color="primary" variant="contained" type="submit">
-          Submit
-        </Button>
-      </form>
       {/* code for email form */}
       <div className="email-container">
         {!sent ? (
