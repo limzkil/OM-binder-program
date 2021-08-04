@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios"
 
 export default function ReqForm() {
   const formik = useFormik({
@@ -9,13 +10,15 @@ export default function ReqForm() {
     },
 
     onSubmit: (values) => {
+      console.log(values)
+      axios.post('http://localhost:3000/')
       alert(JSON.stringify(values, null, 2));
     },
   });
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit}>
+      <form action='/' method='POST'>
         <TextField
           
           id="email"
