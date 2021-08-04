@@ -1,5 +1,5 @@
 const express = require("express");
-require("dotenv").config;
+require("dotenv").config();
 const app = express();
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const databaseAuthorization = process.env.SECRET;
 console.log(databaseAuthorization)
 //set up path for connection, using .env for the password
-const uri = `mongodb+srv://binderApp:binderapp123@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://binderApp2:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 //connect to the db
 mongoose.connect(uri, {
   useNewURLParser: true,
