@@ -1,12 +1,16 @@
-import ReqForm from './ReqForm'
+import React, { useState } from "react"
+import ReqForm from "./ReqForm"
+// import "./App.css"
 
-export default function App() {
+function App() {
+  
 
   return (
-    <>
-    <ReqForm />
-    <div>HellooOO</div>
-    </>
+    <div>
+      <ReqForm />
+    </div>
+   
   )
-
 }
+
+export default App
