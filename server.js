@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const databaseAuthorization = process.env.SECRET;
 console.log(databaseAuthorization)
 //set up path for connection, using .env for the password
-const uri = `mongodb+srv://binderApp1:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://binderapp1:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 //connect to the db
 mongoose.connect(uri, {
   useNewURLParser: true,
@@ -26,7 +26,7 @@ const testSchema = new mongoose.Schema({
 const emailTest = mongoose.model("Email-Test", testSchema);
 
 app.post("/", async (req, res) => {
-    console.log(`Hel2l5552oz`)
+    console.log(req.body.resMaine)
     console.log(req.body.email)
    let newEntry = emailTest({
         email: req.body.email
