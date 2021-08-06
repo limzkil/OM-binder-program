@@ -15,7 +15,11 @@ async function main() {
 
     //Pipeline acts like a filter to display only what you want. Without it, a console.log for example
     //will display everything
-    const pipeline = ['operationType': 'insert',]; //set now to filter for creations only
+    const pipeline = [{
+      '$match': {
+          'operationType': 'insert',
+      }
+  }];
   } finally {
     // Close the connection to the MongoDB cluster
     await client.close();
