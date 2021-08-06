@@ -18,6 +18,7 @@ export default function ReqForm() {
   const [emailSelf, setEmailSelf] = useState("");
   const [numberSelf, setNumberSelf] = useState("");
   const [addressSelf, setAddressSelf] = useState("");
+  const [birth, setBirth] = useState("")
   const [resMaine, setResMaine] = useState("");
   const [ageCheck, setAgeCheck] = useState(false);
   const [selfOrElse, setSelfOrElse] = useState(true);
@@ -167,6 +168,16 @@ export default function ReqForm() {
                   placeholder="Enter your name (self)"
                   value={nameSelf}
                   onChange={(e) => setNameSelf(e.target.value)}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <InputLabel>Enter your birthday in mm/dd/yyyy format</InputLabel>
+                <TextField
+                  type="text"
+                  placeholder=""
+                  value={birth}
+                  onChange={(e) => setBirth(e.target.value)}
                 />
               </Grid>
 
