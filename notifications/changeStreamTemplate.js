@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 
 async function main() {
   //mongodb srv thing
-  const uri = 'mongodb+srv://ahall:QUk3xUHsclVv5C33@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority';;
+  const uri = '';;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
 
