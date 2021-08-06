@@ -25,6 +25,7 @@ const formSchema = new mongoose.Schema({
   elseEmail:String,
   elsePhone: Number,
   name: String,
+  dob: String,
   email: String,
   phone: Number, 
   address: String,
@@ -33,13 +34,13 @@ const formSchema = new mongoose.Schema({
   color: String
 
 });
-const FormInput  = mongoose.model("requests", formSchema);
+const FormInput  = mongoose.model("request", formSchema);
 const binderSchema = new mongoose.Schema({
   size: String,
   length: String,
   color: String
 });
-const BinderInventory = mongoose.model(`Binder`, binderSchema);
+const BinderInventory = mongoose.model(`binder`, binderSchema);
 app.post("/binders", async (req, res) => {
   console.log(req.body);
   let newEntry = Binders({
@@ -50,25 +51,37 @@ app.post("/binders", async (req, res) => {
 });
 
 app.post("/", async (req, res) => {
-  let binderInventory = await Binders.find({
-    size: { $in: [req.body.binders] },
+  console.log(`I am the post`)
+  let binderInventory = await BinderInventory.find({
+    size: { $in: [req.body.size] },
   });
   if (binderInventory.length === 0) {
     console.log(`No binders in that size`);
     res.redirect("/");
   } else {
-    let newEntry = EmailTest({
+    let newEntry = FormInput({
+      county: req.body.resMaine,
+      elseName: req.body.elseName,
+      elseEmail:req.body.elseEmail,
+      elsePhone: req.body.elsePhone,
+      name: req.body.name,
+      dob: req.body.dob,
       email: req.body.email,
+      phone: req.body.phone, 
+      address: req.body.address,
+      size:req.body.size,
+      length: req.body.length,
+      color: req.body.color
     });
     await newEntry.save();
     res.redirect("/");
   }
 });
-
+/* 
 const cors = require("cors");
 
 const nodemailer = require("nodemailer");
-require("dotenv").config();
+
 
 app.use(express.json());
 app.use(cors());
@@ -103,11 +116,11 @@ app.post("/send_mail", async (req, res) => {
          </div>
     `,
   });
-});
+}); */
 //app.get for the fetch request
 app.get("/inventory", async (req, res) => {
   //send the inventory, right now just called email test
-  let allInventory = await EmailTest.find({});
+  let allInventory = await FormInput.find({});
 
   res.send(allInventory);
 });

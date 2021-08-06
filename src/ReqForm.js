@@ -67,13 +67,14 @@ export default function ReqForm() {
             justify="center"
             style={{ minHeight: "100vh" }}
           >
-            <form onSubmit={handleSend} action="/" method="POST">
+            <form /* onSubmit={handleSend} */ action="/" method="POST">
               <Grid item xs={12}>
                 <InputLabel>
                   What is your county of residence in Maine?
                 </InputLabel>
                 <NativeSelect
                   id="resMaine"
+                  name="resMaine"
                   value={resMaine}
                   onChange={(e) => setResMaine(e.target.value)}
                 >
@@ -140,6 +141,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="elseName"
                   placeholder="Enter your name (else)"
                   value={nameElse}
                   onChange={(e) => setNameElse(e.target.value)}
@@ -148,6 +150,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="elseEmail"
                   placeholder="Enter your email (else)"
                   value={emailElse}
                   onChange={(e) => setEmailElse(e.target.value)}
@@ -156,6 +159,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="elsePhone"
                   placeholder="Enter your number (else)"
                   value={numberElse}
                   onChange={(e) => setNumberElse(e.target.value)}
@@ -165,6 +169,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="name"
                   placeholder="Enter your name (self)"
                   value={nameSelf}
                   onChange={(e) => setNameSelf(e.target.value)}
@@ -175,6 +180,7 @@ export default function ReqForm() {
                 <InputLabel>Enter your birthday in mm/dd/yyyy format</InputLabel>
                 <TextField
                   type="text"
+                  name="dob"
                   placeholder=""
                   value={birth}
                   onChange={(e) => setBirth(e.target.value)}
@@ -184,6 +190,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="email"
                   placeholder="Enter your email (self)"
                   value={emailSelf}
                   onChange={(e) => setEmailSelf(e.target.value)}
@@ -192,6 +199,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="phone"
                   placeholder="Enter your number (self)"
                   value={numberSelf}
                   onChange={(e) => setNumberSelf(e.target.value)}
@@ -200,6 +208,7 @@ export default function ReqForm() {
               <Grid item xs={12}>
                 <TextField
                   type="text"
+                  name="address"
                   placeholder="Enter your address (self)"
                   value={addressSelf}
                   onChange={(e) => setAddressSelf(e.target.value)}
@@ -222,6 +231,7 @@ export default function ReqForm() {
                 <InputLabel>What is your size?</InputLabel>
                 <NativeSelect
                   id="bindSize"
+                  name="size"
                   value={bindSize}
                   onChange={(e) => setBindSize(e.target.value)}
                 >
@@ -294,12 +304,13 @@ export default function ReqForm() {
                 <InputLabel>What is your preferred length?</InputLabel>
                 <NativeSelect
                   id="bindLength"
+                  name="length"
                   value={bindLength}
                   onChange={(e) => setBindLength(e.target.value)}
                 >
                   <option value="">Select length</option>
-                  <option value={bindLength}>Short</option>
-                  <option value={bindLength}>Long</option>
+                  <option value={"Short"}>Short</option>
+                  <option value={"Long"}>Long</option>
                 </NativeSelect>
               </Grid>
 
@@ -307,6 +318,7 @@ export default function ReqForm() {
                 <InputLabel>What is your preferred color?</InputLabel>
                 <NativeSelect
                   id="bindColor"
+                  name="color"
                   value={bindColor}
                   onChange={(e) => setBindColor(e.target.value)}
                 >
