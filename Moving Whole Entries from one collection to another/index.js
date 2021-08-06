@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const { WaitListed, ReadyToShip } = require('./model');
   
 // Connecting to database
-mongoose.connect('mongodb+srv://ahall:QUk3xUHsclVv5C33@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority',
+mongoose.connect('',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
