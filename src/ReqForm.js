@@ -2,12 +2,14 @@ import { useFormik } from "formik";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
+import React, { useState } from "react";
 
 export default function ReqForm() {
   //code for form
   const formik = useFormik({
     initialValues: {
       email: "",
+      binders: "",
     },
 
     onSubmit: (values) => {
@@ -41,6 +43,20 @@ export default function ReqForm() {
 
   return (
     <>
+      {/* form for binder adding */}
+      <form action="/binders" method="POST">
+        <TextField
+          id="binders"
+          name="binders"
+          label="binders"
+          value={formik.values.binders}
+          onChange={formik.handleChange}
+        />
+
+        <Button color="primary" variant="contained" type="submit">
+          Submit
+        </Button>
+      </form>
       {/* form for email */}
       <form action="/" method="POST">
         <TextField
@@ -50,7 +66,13 @@ export default function ReqForm() {
           value={formik.values.email}
           onChange={formik.handleChange}
         />
-
+        <TextField
+          id="binders"
+          name="binders"
+          label="binders"
+          value={formik.values.binders}
+          onChange={formik.handleChange}
+        />
         <Button color="primary" variant="contained" type="submit">
           Submit
         </Button>

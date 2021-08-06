@@ -9,9 +9,8 @@ app.use(express.urlencoded({ extended: true }));
 //setting up mongo conncetion
 const mongoose = require("mongoose");
 const databaseAuthorization = process.env.SECRET;
-console.log(databaseAuthorization)
 //set up path for connection, using .env for the password
-const uri = `mongodb+srv://binderApp1:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://binderapp1:${databaseAuthorization}@test.ws3nz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 //connect to the db
 mongoose.connect(uri, {
   useNewURLParser: true,
@@ -23,43 +22,59 @@ const db = mongoose.connection;
 const testSchema = new mongoose.Schema({
   email: String,
 });
-const emailTest = mongoose.model("Email-Test", testSchema);
+const EmailTest = mongoose.model("Email-Test", testSchema);
+const binderSchema = new mongoose.Schema({
+  size: String,
+});
+const Binders = mongoose.model(`Binder`, binderSchema);
+app.post("/binders", async (req, res) => {
+  console.log(req.body);
+  let newEntry = Binders({
+    size: req.body.binders,
+  });
+  await newEntry.save();
+  res.redirect("/");
+});
 
 app.post("/", async (req, res) => {
-    console.log(`Hel2l5552oz`)
-    console.log(req.body.email)
-   let newEntry = emailTest({
-        email: req.body.email
-    })
-await newEntry.save()
-res.redirect('/')
-}) 
+  let binderInventory = await Binders.find({
+    size: { $in: [req.body.binders] },
+  });
+  if (binderInventory.length === 0) {
+    console.log(`No binders in that size`);
+    res.redirect("/");
+  } else {
+    let newEntry = EmailTest({
+      email: req.body.email,
+    });
+    await newEntry.save();
+    res.redirect("/");
+  }
+});
 
+const cors = require("cors");
 
-const cors = require("cors")
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
-const nodemailer = require("nodemailer")
-require("dotenv").config()
-
-
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 app.post("/send_mail", async (req, res) => {
-	let { email, number, address } = req.body
-	const transport = nodemailer.createTransport({
-		service: "Gmail",
-		auth: {
-			user: process.env.GMAIL_USER,
-			pass: process.env.GMAIL_PASS
-		}
-	})
+  let { email, number, address } = req.body;
+  const transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    },
+  });
 
-	await transport.sendMail({
-		from: process.env.GMAIL_USER,
-		to: email,
-		subject: "test email",
-		html: `<div className="email" style="
+  await transport.sendMail({
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: "test email",
+    html: `<div className="email" style="
         border: 1px solid black;
         padding: 20px;
         font-family: sans-serif;
@@ -73,9 +88,16 @@ app.post("/send_mail", async (req, res) => {
     
         <p>All the best, Shadman</p>
          </div>
-    `
-	})
-})
+    `,
+  });
+});
+//app.get for the fetch request
+app.get("/inventory", async (req, res) => {
+  //send the inventory, right now just called email test
+  let allInventory = await EmailTest.find({});
+
+  res.send(allInventory);
+});
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
