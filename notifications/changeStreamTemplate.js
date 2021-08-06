@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 
 async function main() {
   //mongodb srv thing
-  const uri = '';;
+  const uri = 'mongodb+srv://ahall:QUk3xUHsclVv5C33@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority';;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
 
@@ -35,7 +35,7 @@ async function functionDescription(
   pipeline = []
 ) {
   //choose whatever db is needed plus the right collection
-  const collection = client.db("test").collection("test");
+  const collection = client.db("Shipping").collection("waitListeds");
 
   const changeStream = collection.watch(pipeline);
 
