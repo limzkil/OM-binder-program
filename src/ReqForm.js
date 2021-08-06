@@ -215,15 +215,15 @@ export default function ReqForm() {
                   onChange={(e) => setBindSize(e.target.value)}
                 >
                   <option value="">Select size</option>
-                  <option value={resMaine}>X-small</option>
-                  <option value={resMaine}>Small</option>
-                  <option value={resMaine}>Medium</option>
-                  <option value={resMaine}>Large</option>
-                  <option value={resMaine}>X-large</option>
-                  <option value={resMaine}>2X-large</option>
-                  <option value={resMaine}>3X-large</option>
-                  <option value={resMaine}>4X-large</option>
-                  <option value={resMaine}>5X-large</option>
+                  <option value={bindSize}>X-small</option>
+                  <option value={bindSize}>Small</option>
+                  <option value={bindSize}>Medium</option>
+                  <option value={bindSize}>Large</option>
+                  <option value={bindSize}>X-large</option>
+                  <option value={bindSize}>2X-large</option>
+                  <option value={bindSize}>3X-large</option>
+                  <option value={bindSize}>4X-large</option>
+                  <option value={bindSize}>5X-large</option>
                 </NativeSelect>
               </Grid>
 
