@@ -19,14 +19,27 @@ mongoose.connect(uri, {
 //var to refer to the database
 const db = mongoose.connection;
 //set up a schema to test
-const testSchema = new mongoose.Schema({
+const formSchema = new mongoose.Schema({
+  county: String,
+  elseName: String,
+  elseEmail:String,
+  elsePhone: Number,
+  name: String,
   email: String,
+  phone: Number, 
+  address: String,
+  size:String,
+  length: String,
+  color: String
+
 });
-const EmailTest = mongoose.model("Email-Test", testSchema);
+const FormInput  = mongoose.model("requests", formSchema);
 const binderSchema = new mongoose.Schema({
   size: String,
+  length: String,
+  color: String
 });
-const Binders = mongoose.model(`Binder`, binderSchema);
+const BinderInventory = mongoose.model(`Binder`, binderSchema);
 app.post("/binders", async (req, res) => {
   console.log(req.body);
   let newEntry = Binders({

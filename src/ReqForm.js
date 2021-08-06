@@ -33,7 +33,7 @@ export default function ReqForm() {
   const [waitLenCol, setWaitLenCol] = useState(false);
   const [bindLength, setBindLength] = useState("");
   const [bindColor, setBindColor] = useState("");
-  const [yesConfirm, setYesConfirm] = useState(false)
+  const [yesConfirm, setYesConfirm] = useState(false);
 
   const handleSend = async (e) => {
     setSent(true);
@@ -77,22 +77,22 @@ export default function ReqForm() {
                   onChange={(e) => setResMaine(e.target.value)}
                 >
                   <option value="">Select county</option>
-                  <option value={resMaine}>Androscoggin</option>
-                  <option value={resMaine}>Aroostook</option>
-                  <option value={resMaine}>Cumberland</option>
-                  <option value={resMaine}>Franklin</option>
-                  <option value={resMaine}>Hancock</option>
-                  <option value={resMaine}>Kennebec</option>
-                  <option value={resMaine}>Knox</option>
-                  <option value={resMaine}>Lincoln</option>
-                  <option value={resMaine}>Oxford</option>
-                  <option value={resMaine}>Penobscot</option>
-                  <option value={resMaine}>Piscataquis</option>
-                  <option value={resMaine}>Sagadahoc</option>
-                  <option value={resMaine}>Somerset</option>
-                  <option value={resMaine}>Waldo</option>
-                  <option value={resMaine}>Washington</option>
-                  <option value={resMaine}>York</option>
+                  <option value={"Androscoggin"}>Androscoggin</option>
+                  <option value={"Aroostook"}>Aroostook</option>
+                  <option value={"Cumberland"}>Cumberland</option>
+                  <option value={"Franklin"}>Franklin</option>
+                  <option value={"Hancock"}>Hancock</option>
+                  <option value={"Kennebec"}>Kennebec</option>
+                  <option value={"Knox"}>Knox</option>
+                  <option value={"Lincoln"}>Lincoln</option>
+                  <option value={"Oxford"}>Oxford</option>
+                  <option value={"Penobscot"}>Penobscot</option>
+                  <option value={"Piscataquis"}>Piscataquis</option>
+                  <option value={"Sagadahoc"}>Sagadahoc</option>
+                  <option value={"Somerset"}>Somerset</option>
+                  <option value={"Waldo"}>Waldo</option>
+                  <option value={"Washington"}>Washington</option>
+                  <option value={"York"}>York</option>
                 </NativeSelect>
               </Grid>
 
@@ -215,19 +215,21 @@ export default function ReqForm() {
                   onChange={(e) => setBindSize(e.target.value)}
                 >
                   <option value="">Select size</option>
-                  <option value={bindSize}>X-small</option>
-                  <option value={bindSize}>Small</option>
-                  <option value={bindSize}>Medium</option>
-                  <option value={bindSize}>Large</option>
-                  <option value={bindSize}>X-large</option>
-                  <option value={bindSize}>2X-large</option>
-                  <option value={bindSize}>3X-large</option>
-                  <option value={bindSize}>4X-large</option>
-                  <option value={bindSize}>5X-large</option>
+                  <option value={"X-small"}>X-small</option>
+                  <option value={"Small"}>Small</option>
+                  <option value={"Medium"}>Medium</option>
+                  <option value={"Large"}>Large</option>
+                  <option value={"X-large"}>X-large</option>
+                  <option value={"2X-large"}>2X-large</option>
+                  <option value={"3X-large"}>3X-large</option>
+                  <option value={"4X-large"}>4X-large</option>
+                  <option value={"5X-large"}>5X-large</option>
                 </NativeSelect>
               </Grid>
 
-              <InputLabel>Please check ONE box regarding your preferences.</InputLabel>
+              <InputLabel>
+                Please check ONE box regarding your preferences.
+              </InputLabel>
 
               <Grid item xs={12}>
                 <FormControlLabel
@@ -240,7 +242,6 @@ export default function ReqForm() {
                   label="I have no preference on color or length."
                 />
               </Grid>
-
 
               <Grid item xs={12}>
                 <FormControlLabel
@@ -266,7 +267,6 @@ export default function ReqForm() {
                 />
               </Grid>
 
-              
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
@@ -289,7 +289,6 @@ export default function ReqForm() {
                   <option value="">Select length</option>
                   <option value={bindLength}>Short</option>
                   <option value={bindLength}>Long</option>
-
                 </NativeSelect>
               </Grid>
 
@@ -301,16 +300,15 @@ export default function ReqForm() {
                   onChange={(e) => setBindColor(e.target.value)}
                 >
                   <option value="">Select color</option>
-                  <option value={bindColor}>Red</option>
-                  <option value={bindColor}>Purple</option>
-                  <option value={bindColor}>Green</option>
-                  <option value={bindColor}>Beige</option>
-                  <option value={bindColor}>Tan</option>
-                  <option value={bindColor}>Brown</option>
-                  <option value={bindColor}>Black</option>
-                  <option value={bindColor}>Grey</option>
-                  <option value={bindColor}>White</option>
-
+                  <option value={"Red"}>Red</option>
+                  <option value={"Purple"}>Purple</option>
+                  <option value={"Green"}>Green</option>
+                  <option value={"Beige"}>Beige</option>
+                  <option value={"Tan"}>Tan</option>
+                  <option value={"Brown"}>Brown</option>
+                  <option value={"Black"}>Black</option>
+                  <option value={"Grey"}>Grey</option>
+                  <option value={"White"}>White</option>
                 </NativeSelect>
               </Grid>
 
