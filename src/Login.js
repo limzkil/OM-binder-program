@@ -1,4 +1,11 @@
+import { useState } from "react"
+
 function Login() {
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  
+
   return (
     <div>
       <form method="post" action="/admin/login">
