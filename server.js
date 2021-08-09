@@ -39,12 +39,8 @@ const formSchema = new mongoose.Schema({
   length: String,
   color: String,
 });
-<<<<<<< HEAD
 const FormInput = mongoose.model("readytoships", formSchema);
 
-=======
-const FormInput = mongoose.model("request", formSchema);
->>>>>>> 68c4f793e0497a477ea88b1dbe8d0682b4518a40
 const binderSchema = new mongoose.Schema({
   size: String,
   length: String,
