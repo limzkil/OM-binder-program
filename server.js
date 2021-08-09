@@ -37,15 +37,18 @@ const formSchema = new mongoose.Schema({
   address: String,
   size: String,
   length: String,
-  color: String
-
+  color: String,
 });
+<<<<<<< HEAD
 const FormInput = mongoose.model("readytoships", formSchema);
 
+=======
+const FormInput = mongoose.model("request", formSchema);
+>>>>>>> 68c4f793e0497a477ea88b1dbe8d0682b4518a40
 const binderSchema = new mongoose.Schema({
   size: String,
   length: String,
-  color: String
+  color: String,
 });
 const BinderInventory = mongoose.model(`inventorys`, binderSchema);
 
@@ -74,6 +77,34 @@ app.post("/binders", async (req, res) => {
   });
   await newEntry.save();
   res.redirect("/send_mail");
+});
+
+app.post("/", async (req, res) => {
+  console.log(`I am the post`);
+  let binderInventory = await BinderInventory.find({
+    size: { $in: [req.body.size] },
+  });
+  if (binderInventory.length === 0) {
+    console.log(`No binders in that size`);
+    res.redirect("/");
+  } else {
+    let newEntry = FormInput({
+      county: req.body.resMaine,
+      elseName: req.body.elseName,
+      elseEmail: req.body.elseEmail,
+      elsePhone: req.body.elsePhone,
+      name: req.body.name,
+      dob: req.body.dob,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: req.body.address,
+      size: req.body.size,
+      length: req.body.length,
+      color: req.body.color,
+    });
+    await newEntry.save();
+    res.redirect("/");
+  }
 });
 
 app.post("/send_mail", async (req, res) => {
@@ -301,11 +332,16 @@ app.post("/send_mail", async (req, res) => {
 //app.get for the fetch request
 app.get("/inventory", async (req, res) => {
   //send the inventory, right now just called email test
-  let allInventory = await FormInput.find({});
+  let allInventory = await BinderInventory.find({});
 
   res.send(allInventory);
 });
-
+app.get("/requests", async (req, res) => {
+  console.log(`request get`)
+  let allRequests = await FormInput.find({});
+  console.log(allRequests)
+  res.send(allRequests);
+});
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });
