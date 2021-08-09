@@ -11,6 +11,15 @@ import Box from '@material-ui/core/Box'
 //display imports
 import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import Grid from '@material-ui/core/Grid'
+
+//table imports
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 
 const Display = (props) => {
@@ -22,6 +31,7 @@ const Display = (props) => {
         .then((response) => response.json())
 
         .then((result) => {
+        
           setInventoryData(result);
         });
     }
@@ -32,12 +42,14 @@ const Display = (props) => {
       fetch("/requests")
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
+        
           setRequestData(result);
         });
     }
   });
-  console.log(requestData);
+
+
+
   return (
     <Router>
       <Switch>
@@ -46,17 +58,33 @@ const Display = (props) => {
             path="/display/inventory"
             component={() => {
               return (
-                <div className="inventoryContainer">
+                <TableContainer className="inventoryContainer">
+                  {console.log("meeee!!!!")}
                   {inventoryData.map((inventory, index) => (
-                    <div key={index} className="inventoryEntry">
-                      <div>
-                        <h3>{inventory._id}</h3>
-                        <h3>{inventory.size}</h3> <h3>{inventory.length}</h3>
-                        <h3>{inventory.color}</h3>
-                      </div>
-                    </div>
+                    <>
+
+                    <Table key={index} className="inventoryEntry">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Size</TableCell>
+                        <TableCell>Length</TableCell>
+                        <TableCell>Color</TableCell>
+
+                        </TableRow>
+                        </TableHead>
+
+                      <TableBody>
+                        <TableCell><Typography variant = "subtitle1">{inventory._id}</Typography></TableCell>
+                        <TableCell><Typography variant = "subtitle1">{inventory.size}</Typography></TableCell> 
+                        <TableCell><Typography variant = "subtitle1">{inventory.length}</Typography></TableCell>
+                        <TableCell><Typography variant = "subtitle1">{inventory.color}</Typography></TableCell>
+                      </TableBody>
+
+                    </Table>
+                    </>
                   ))}
-                </div>
+                </TableContainer>
               );
             }}
           />
