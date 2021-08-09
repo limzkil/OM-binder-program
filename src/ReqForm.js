@@ -41,9 +41,13 @@ export default function ReqForm() {
     try {
       await fetch("http://localhost:5000/send_mail", {
         body: JSON.stringify({
-          // email: email,
-          // number: number,
-          // address: address,
+          emailSelf: emailSelf,
+          elseEmail: emailElse,
+          numberSelf: numberSelf,
+          numberElse: numberElse,
+          addressSelf: addressSelf,
+          size: bindSize
+               
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -67,7 +71,7 @@ export default function ReqForm() {
             justify="center"
             style={{ minHeight: "100vh" }}
           >
-            <form /* onSubmit={handleSend} */ action="/" method="POST">
+            <form onSubmit={handleSend}  action="/" method="POST">
               <Grid item xs={12}>
                 <InputLabel>
                   What is your county of residence in Maine?
