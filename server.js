@@ -172,7 +172,7 @@ app.post("/send_mail", async (req, res) => {
           console.log(doc);
 
           // Inserting the doc in the destination collection
-          ProcessedInventory.insertMany([doc])
+          ProcessedInventory.insertOne([doc])
             .then(d => {
               console.log("New Entry Saved");
             })
@@ -275,7 +275,7 @@ app.post("/send_mail", async (req, res) => {
           console.log(doc);
 
           // Inserting the doc in the destination collection
-          ProcessedInventory.insertMany([doc])
+          ProcessedInventory.insertOne([doc])
             .then(d => {
               console.log("New Entry Saved");
             })
