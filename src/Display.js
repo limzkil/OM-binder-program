@@ -1,6 +1,18 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
+//tab imports
+import AppBar from "@material-ui/core/AppBar"
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+
+//display imports
+import Container from '@material-ui/core/Container'
+import CssBaseline from '@material-ui/core/CssBaseline'
+
+
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
   const [requestData, setRequestData] = useState([]);
@@ -31,7 +43,7 @@ const Display = (props) => {
       <Switch>
         <div>
           <Route
-            path="/inventory"
+            path="/display/inventory"
             component={() => {
               return (
                 <div className="inventoryContainer">
@@ -49,7 +61,7 @@ const Display = (props) => {
             }}
           />
           <Route
-            path="/requests"
+            path="/display/requests"
             component={() => {
               return (
                 <div className="requestContainer">
