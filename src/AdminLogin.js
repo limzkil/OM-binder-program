@@ -36,16 +36,16 @@ export default function AdminLogin() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate method="POST" action="/login">
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="username"
             label="username"
-            name="email"
-            autoComplete="email"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField

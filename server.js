@@ -64,7 +64,7 @@ const adminSchema = new mongoose.Schema({
   password: String,
 });
 
-const Admin = new mongoose.model("Admin", adminSchema);
+const Admin = new mongoose.model("admins", adminSchema);
 
 // function to extract jwt token for authorization
 function extractJwt(req) {
@@ -120,8 +120,10 @@ function issueJwt(user) {
 app.post("/login", async (req, res, next) => {
   // store req.body for user object
   let userObj = req.body;
+  console.log(userObj)
   // find user using the stored value
   await Admin.findOne(userObj).then((user) => {
+    console.log(user)
     // if no user
     if (!user) {
       // set authorization cookie to null
