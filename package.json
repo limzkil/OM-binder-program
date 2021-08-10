@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "formik": "^2.2.9",
+    "js-cookie": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "material-ui-image": "^3.3.2",
     "mongoose": "^5.13.5",
