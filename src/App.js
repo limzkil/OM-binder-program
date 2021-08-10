@@ -1,18 +1,24 @@
-import React, { useState } from "react";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import React from "react";
+import Display from "./Display";
 import ReqForm from "./ReqForm";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
+import AdminLogin from "./AdminLogin";
+import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
+// import "./App.css"
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/apply" component={ReqForm} />
-        <Route path="/admin/login" component={Login} />
-        <Route path="/admin/dashboard" component={Dashboard}/>
-      </Switch>
-    </BrowserRouter>
+    <div>
+      <Router>
+        <NavLink to="/login"><h3>Login</h3></NavLink>
+        <NavLink to="/form"><h3>Form</h3></NavLink>
+        <NavLink to="/display"><h3>Display</h3></NavLink>
+        <Switch>
+          <Route path="/login" component={AdminLogin} />
+          <Route path="/form" component={ReqForm} />
+          <Route path="/display" component={Display} />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
