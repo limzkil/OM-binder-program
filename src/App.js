@@ -5,7 +5,11 @@ import AdminLogin from "./AdminLogin";
 import { BrowserRouter as Router, Switch, Route, NavLink, Redirect } from "react-router-dom";
 
 
-function App() {
+import AdminInterface from "./AdminInterface"
+
+
+export default function App() {
+ 
   return (
     <div>
       <Router>
@@ -23,4 +27,4 @@ function App() {
   );
 }
 
-export default App;
+
