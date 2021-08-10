@@ -7,22 +7,46 @@ import {
 import React, { useState, useEffect } from "react";
 
 //tab imports
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
-import Typography from "@material-ui/core/Typography";
+import CssBaseline from '@material-ui/core/CssBaseline'
 
-//table imports
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Inventory from "./displayComponents/Inventory";
 import Requests from "./displayComponents/Requests";
 
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
   const [requestData, setRequestData] = useState([]);
+
+
+  const { match, history } = props
+  const { params } = match
+  const { page } = params
+
+  const tabNameToIndex = {
+    0: "inventory",
+    1: "requests"
+  };
+
+  const indexToTabName = {
+    inventory: 0,
+    requests: 1
+  };
+
+  const [tabSelect, setTabSelect] = useState(indexToTabName[page])
+
+
+  const handleTab = (e, newValue) => {
+    history.push(`/display/${tabNameToIndex[newValue]}`)
+    setTabSelect(newValue)
+  }
+
+
+
   useEffect(() => {
     if (inventoryData.length === 0) {
       fetch("/inventory")
@@ -43,26 +67,18 @@ const Display = (props) => {
   });
 
   return (
-    <Router>
-      <NavLink to="/display/requests">Requests</NavLink>
-      <NavLink to="/display/inventory">Inventory</NavLink>
-      <Switch>
-        <div>
-          <Route
-            path="/display/inventory"
-            component={() => {
-              return <Inventory inventoryData={inventoryData} />;
-            }}
-          />
-          <Route
-            path="/display/requests"
-            component={() => {
-              return <Requests requestData={requestData} />;
-            }}
-          />
-        </div>
-      </Switch>
-    </Router>
+    <>
+    <CssBaseline />
+    <AppBar position = "static">
+    <Tabs value={tabSelect} onChange={handleTab}>
+      <Tab label="Inventory"/>
+      <Tab label="Binder Requests"/>
+    </Tabs>
+  </AppBar>
+
+  {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
+  {tabSelect === 1 && <Requests requestData={requestData} />}
+</>
   );
 };
 
