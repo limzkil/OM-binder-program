@@ -12,7 +12,7 @@ export default function LogoHead() {
     <Container>
     <Grid container spacing = {1} style = {{alignContent: "center"}}>
         <Grid item xs = {3}>
-      <Image src={OMlogo} aspectRatio = {(2/1)} />
+      <Image src={OMlogo} aspectRatio = {(2/1)} color = "null" />
       </Grid>
     <Grid item xs = {9}>
         <Typography variant = "h3" style = {{marginTop: "8vh"}}>Binder Program Management</Typography>

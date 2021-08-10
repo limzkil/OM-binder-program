@@ -5,8 +5,6 @@ import AdminLogin from "./AdminLogin";
 import { BrowserRouter as Router, Switch, Route, NavLink, Redirect } from "react-router-dom";
 
 
-import AdminInterface from "./AdminInterface"
-
 
 export default function App() {
  

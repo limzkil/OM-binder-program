@@ -18,6 +18,8 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Inventory from "./displayComponents/Inventory";
 import Requests from "./displayComponents/Requests";
 
+import LogoHead from './interfaceComponents/LogoHead'
+
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
   const [requestData, setRequestData] = useState([]);
@@ -68,7 +70,9 @@ const Display = (props) => {
 
   return (
     <>
+    
     <CssBaseline />
+    <LogoHead />
     <AppBar position = "static">
     <Tabs value={tabSelect} onChange={handleTab}>
       <Tab label="Inventory"/>
