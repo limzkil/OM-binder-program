@@ -68,7 +68,7 @@ const waitListSchema = new mongoose.Schema({
 const waitListed = mongoose.model('waitListeds', waitListSchema)
 
 app.post("/binders", async (req, res) => {
-  let newEntry = Binders({
+  let newEntry = BinderInventory({
     size: req.body.size,
   });
   await newEntry.save();
