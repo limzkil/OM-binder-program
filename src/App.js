@@ -11,7 +11,7 @@ function App() {
       <Router>
         <NavLink to="/login"><h3>Login</h3></NavLink>
         <NavLink to="/form"><h3>Form</h3></NavLink>
-        <NavLink to="/display"><h3>Display</h3></NavLink>
+        <NavLink to="/display/inventory"><h3>Display</h3></NavLink>
         <Switch>
           <Route path="/login" component={AdminLogin} />
           <Route path="/form" component={ReqForm} />
