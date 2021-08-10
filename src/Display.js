@@ -80,6 +80,7 @@ if(isAuthenticated)
     
     <>
       <CssBaseline />
+      <LogoHead />
       <AppBar position="static">
         <Tabs value={tabSelect} onChange={handleTab}>
           <Tab label="Inventory" />
