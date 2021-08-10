@@ -14,7 +14,6 @@ const port = process.env.PORT || 5000;
 // MIDDLEWARE
 //Binding our server to a static directory
 
-
 app.use(express.json());
 app.use(cors());
 app.use(express.static("./public"));
@@ -147,13 +146,6 @@ app.post("/login", async (req, res, next) => {
     }
   });
 });
-// get route for authenticating the dashboard via passport jwt strategy
-app.get(
-  "/display",
-  passport.authenticate("jwt", { session: false }, (req, res) => {
-    res.redirect("/display");
-  })
-);
 
 const FormInput = mongoose.model("readytoships", formSchema);
 
