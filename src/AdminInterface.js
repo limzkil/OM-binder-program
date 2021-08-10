@@ -1,7 +1,7 @@
-import LogoHead from './interface components/LogoHead'
-import DisplayArea from './interface components/DisplayArea'
-import MongoSidebar from './interface components/MongoSidebar'
-import CUDButtons from './interface components/CUDButtons'
+import LogoHead from './interfaceComponents/LogoHead'
+import DisplayArea from './interfaceComponents/DisplayArea'
+import MongoSidebar from './interfaceComponents/MongoSidebar'
+import CUDButtons from './interfaceComponents/CUDButtons'
 
 export default function AdminInterface() {
 
