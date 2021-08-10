@@ -67,13 +67,13 @@ const waitListSchema = new mongoose.Schema({
 
 const waitListed = mongoose.model('waitListeds', waitListSchema)
 
-app.post("/binders", async (req, res) => {
-  let newEntry = Binders({
-    size: req.body.size,
-  });
-  await newEntry.save();
-  res.redirect("/send_mail");
-});
+// app.post("/binders", async (req, res) => {
+//   let newEntry = Binders({
+//     size: req.body.size,
+//   });
+//   await newEntry.save();
+//   res.redirect("/send_mail");
+// });
 
 app.post("/", async (req, res) => {
   console.log(`I am the post`);
@@ -172,7 +172,7 @@ app.post("/send_mail", async (req, res) => {
           console.log(doc);
 
           // Inserting the doc in the destination collection
-          ProcessedInventory.insertOne([doc])
+          ProcessedInventory.insertMany([doc])
             .then(d => {
               console.log("New Entry Saved");
             })
@@ -275,7 +275,7 @@ app.post("/send_mail", async (req, res) => {
           console.log(doc);
 
           // Inserting the doc in the destination collection
-          ProcessedInventory.insertOne([doc])
+          ProcessedInventory.insertMany([doc])
             .then(d => {
               console.log("New Entry Saved");
             })
