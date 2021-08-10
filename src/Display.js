@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 //tab imports
@@ -12,6 +17,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Inventory from "./displayComponents/Inventory";
+import Requests from "./displayComponents/Requests";
 
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
@@ -37,150 +44,20 @@ const Display = (props) => {
 
   return (
     <Router>
+      <NavLink to="/display/requests">Requests</NavLink>
+      <NavLink to="/display/inventory">Inventory</NavLink>
       <Switch>
         <div>
           <Route
             path="/display/inventory"
             component={() => {
-              return (
-                <TableContainer className="inventoryContainer">
-                  <Table className="inventoryEntry">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Size</TableCell>
-                        <TableCell>Length</TableCell>
-                        <TableCell>Color</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {inventoryData.map((inventory, index) => (
-                      <>
-                        <TableBody key={index}>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {inventory._id}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {inventory.size}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {inventory.length}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {inventory.color}
-                            </Typography>
-                          </TableCell>
-                        </TableBody>
-                      </>
-                    ))}
-                  </Table>
-                </TableContainer>
-              );
+              return <Inventory inventoryData={inventoryData} />;
             }}
           />
           <Route
             path="/display/requests"
             component={() => {
-              return (
-                <TableContainer className="requestContainer">
-                  <Table className="requestEntry">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>County</TableCell>
-                        <TableCell>ElseName</TableCell>
-                        <TableCell>ElseEmail</TableCell>
-                        <TableCell>ElsePhone</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>DOB</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell>Phone</TableCell>
-                        <TableCell>Address</TableCell>
-                        <TableCell>Size</TableCell>
-                        <TableCell>Length</TableCell>
-                        <TableCell>Color</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {requestData.map((request, index) => (
-                      <>
-                        <TableBody key={index}>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request._id}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.county}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.elseName}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.elseEmail}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.elsePhone}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.name}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.dob}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.email}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.phone}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.address}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.size}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.length}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="subtitle1">
-                              {request.color}
-                            </Typography>
-                          </TableCell>
-                        </TableBody>
-                      </>
-                    ))}
-                  </Table>
-                </TableContainer>
-              );
+              return <Requests requestData={requestData} />;
             }}
           />
         </div>

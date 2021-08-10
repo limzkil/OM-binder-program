@@ -179,7 +179,7 @@ const waitListSchema = new mongoose.Schema({
   size: String,
   length: String,
   color: String
-})
+  })
 
 const waitListed = mongoose.model('waitListeds', waitListSchema)
 
