@@ -6,10 +6,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 
+import Grid from '@material-ui/core/Grid';
+
 function Requests(props){
     console.log(props)
     return(
-       
+       <Grid container spacing = {1}>
+         <Grid item xs = {2} /> 
+    <Grid item xs = {8}>
+
         <TableContainer className="requestContainer">
         <Table className="requestEntry">
           <TableHead>
@@ -102,6 +107,9 @@ function Requests(props){
           ))}
         </Table>
       </TableContainer>
+      </Grid>
+      <Grid item xs = {2} /> 
+      </Grid>
     );
     
 }

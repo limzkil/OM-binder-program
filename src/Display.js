@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
+
+//auth import
 import Cookies from "js-cookie";
+
+//MUI general import
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 //tab imports
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
+//grid import
+import Grid from '@material-ui/core/Grid';
 
+
+
+//components to pass in fetched data
 import Inventory from "./fetchComponents/Inventory";
 import Requests from "./fetchComponents/Requests";
 
+//header component
 import LogoHead from './displayComponents/LogoHead'
 
 const Display = (props) => {
@@ -72,13 +82,21 @@ if(isAuthenticated)
     
     <>
       <CssBaseline />
+      <Grid container spacing = {1}>
+      <Grid item xs = {12}>
       <LogoHead />
+      </Grid>
+      <Grid item xs = {2} />
+      <Grid item xs = {8}>
       <AppBar position="static">
         <Tabs value={tabSelect} onChange={handleTab}>
           <Tab label="Inventory" />
           <Tab label="Binder Requests" />
         </Tabs>
       </AppBar>
+      <Grid item xs = {2} />
+      </Grid>
+      </Grid>
 
       {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
       {tabSelect === 1 && <Requests requestData={requestData} />}

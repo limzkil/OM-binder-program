@@ -9,8 +9,25 @@ import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const useStyles = makeStyles({
+  formContain: {
+    minHeight: "100vh",
+  },
+  formItemContain: {
+    margin: "30px",
+  },
+  formItemField: {
+    width: "15vw",
+  },
+  formHeadings: {
+    margin: "30px",
+    textDecoration: "underline",
+  },
+});
 
 export default function ReqForm() {
   const [sent, setSent] = useState(false);
@@ -18,14 +35,15 @@ export default function ReqForm() {
   const [emailSelf, setEmailSelf] = useState("");
   const [numberSelf, setNumberSelf] = useState("");
   const [addressSelf, setAddressSelf] = useState("");
-  const [birth, setBirth] = useState("")
+  const [birth, setBirth] = useState("");
   const [resMaine, setResMaine] = useState("");
   const [ageCheck, setAgeCheck] = useState(false);
-  const [selfOrElse, setSelfOrElse] = useState(true);
+  const [selfOrElse, setSelfOrElse] = useState(false);
   const [minorConsent, setMinorConsent] = useState(false);
   const [nameElse, setNameElse] = useState("");
   const [emailElse, setEmailElse] = useState("");
   const [numberElse, setNumberElse] = useState("");
+  const [relMinor, setRelMinor] = useState("");
   const [yesMeasure, setYesMeasure] = useState(false);
   const [bindSize, setBindSize] = useState("");
   const [noPref, setNoPref] = useState(false);
@@ -35,6 +53,11 @@ export default function ReqForm() {
   const [bindLength, setBindLength] = useState("");
   const [bindColor, setBindColor] = useState("");
   const [yesConfirm, setYesConfirm] = useState(false);
+
+  const isTrue = true;
+  const isFalse = false;
+
+  const style = useStyles();
 
   const handleSend = async (e) => {
     setSent(true);
@@ -46,8 +69,7 @@ export default function ReqForm() {
           numberSelf: numberSelf,
           numberElse: numberElse,
           addressSelf: addressSelf,
-          size: bindSize
-               
+          size: bindSize,
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -57,6 +79,14 @@ export default function ReqForm() {
     }
   };
 
+  useEffect(() => {
+    if (selfOrElse === "true") {
+      setSelfOrElse(true);
+    } else if (selfOrElse === "false") {
+      setSelfOrElse(false);
+    }
+  }, [selfOrElse]);
+
   return (
     <>
       {/* div container setting the styling of the entire form to root */}
@@ -65,14 +95,14 @@ export default function ReqForm() {
         {!sent ? (
           <Grid
             container
-            spacing={0}
+            spacing={1}
             direction="column"
             alignItems="center"
             justify="center"
-            style={{ minHeight: "100vh" }}
+            className={style.formContain}
           >
-            <form onSubmit={handleSend}  action="/" method="POST">
-              <Grid item xs={12}>
+            <form onSubmit={handleSend} action="/" method="POST">
+              <Grid item xs={12} className={style.formItemContain}>
                 <InputLabel>
                   What is your county of residence in Maine?
                 </InputLabel>
@@ -102,7 +132,7 @@ export default function ReqForm() {
                 </NativeSelect>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <InputLabel>
                   Are you requesting for yourself or someone else?
                 </InputLabel>
@@ -111,27 +141,93 @@ export default function ReqForm() {
                   value={selfOrElse}
                   onChange={(e) => setSelfOrElse(e.target.value)}
                 >
-                  <option value={true}>I am requesting for myself.</option>
-                  <option value={false}>
+                  <option value={false}>I am requesting for myself.</option>
+                  <option value={true}>
                     I am requesting for someone else.
                   </option>
                 </NativeSelect>
               </Grid>
+              {console.log(selfOrElse)}
 
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={minorConsent}
-                      onChange={(e) => setMinorConsent(e.target.checked)}
+              {selfOrElse ? (
+                <>
+                  <Typography className={style.formHeadings} variant="h4">
+                    Requester Information
+                  </Typography>
+                  <Grid item xs={12} className={style.formItemContain}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={minorConsent}
+                          onChange={(e) => setMinorConsent(e.target.checked)}
+                        />
+                      }
+                      label="I have consent to make this request and ship it to the given address."
                     />
-                  }
-                  label="I have consent to make this request and ship it to the given address."
-                />
-              </Grid>
+                  </Grid>
 
-              <Grid item xs={12}>
-                <InputLabel>Are you between the ages of 14 and 22?</InputLabel>
+                  <Grid item xs={12} className={style.formItemContain}>
+                    <TextField
+                      type="text"
+                      name="elseName"
+                      placeholder="Enter your name (requester)"
+                      value={nameElse}
+                      className={style.formItemField}
+                      onChange={(e) => setNameElse(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} className={style.formItemContain}>
+                    <TextField
+                      type="text"
+                      name="elseEmail"
+                      placeholder="Enter your email (requester)"
+                      value={emailElse}
+                      className={style.formItemField}
+                      onChange={(e) => setEmailElse(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} className={style.formItemContain}>
+                    <TextField
+                      type="text"
+                      name="elsePhone"
+                      placeholder="Enter your number (requester)"
+                      value={numberElse}
+                      className={style.formItemField}
+                      onChange={(e) => setNumberElse(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} className={style.formItemContain}>
+                    <InputLabel>
+                      What is your relationship with the requestee?
+                    </InputLabel>
+                    <NativeSelect
+                      id="relMinor"
+                      name="relMinor"
+                      value={relMinor}
+                      onChange={(e) => setRelMinor(e.target.value)}
+                    >
+                      <option value="">Select relationship</option>
+                      <option value={"Parent"}>Parent</option>
+                      <option value={"Relative"}>Relative</option>
+                      <option value={"Friend"}>Friend</option>
+                      <option value={"Mentor"}>Mentor</option>
+                      <option value={"School employee"}>School employee</option>
+                      <option value={"Other trusted person"}>
+                        Other trusted person
+                      </option>
+                    </NativeSelect>
+                  </Grid>
+                </>
+              ) : null}
+
+              <Typography className={style.formHeadings} variant="h4">
+                Requestee Information
+              </Typography>
+              <Grid item xs={12} className={style.formItemContain}>
+                <InputLabel>
+                  Are you or the person you are requesting for between 14 and
+                  22?
+                </InputLabel>
                 <NativeSelect
                   id="ageCheck"
                   value={ageCheck}
@@ -142,84 +238,63 @@ export default function ReqForm() {
                 </NativeSelect>
               </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  name="elseName"
-                  placeholder="Enter your name (else)"
-                  value={nameElse}
-                  onChange={(e) => setNameElse(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  name="elseEmail"
-                  placeholder="Enter your email (else)"
-                  value={emailElse}
-                  onChange={(e) => setEmailElse(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  name="elsePhone"
-                  placeholder="Enter your number (else)"
-                  value={numberElse}
-                  onChange={(e) => setNumberElse(e.target.value)}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <TextField
                   type="text"
                   name="name"
-                  placeholder="Enter your name (self)"
+                  placeholder="Enter your name (requestee)"
+                  className={style.formItemField}
                   value={nameSelf}
                   onChange={(e) => setNameSelf(e.target.value)}
                 />
               </Grid>
 
-              <Grid item xs={12}>
-                <InputLabel>Enter your birthday in mm/dd/yyyy format</InputLabel>
+              <Grid item xs={12} className={style.formItemContain}>
+                <InputLabel>
+                  Enter your birthday in mm/dd/yyyy format
+                </InputLabel>
                 <TextField
                   type="text"
                   name="dob"
                   placeholder=""
                   value={birth}
+                  className={style.formItemField}
                   onChange={(e) => setBirth(e.target.value)}
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <TextField
                   type="text"
                   name="email"
-                  placeholder="Enter your email (self)"
+                  placeholder="Enter your email (requestee)"
                   value={emailSelf}
+                  className={style.formItemField}
                   onChange={(e) => setEmailSelf(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <TextField
                   type="text"
                   name="phone"
-                  placeholder="Enter your number (self)"
+                  placeholder="Enter your number (requestee)"
                   value={numberSelf}
+                  className={style.formItemField}
                   onChange={(e) => setNumberSelf(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <TextField
                   type="text"
                   name="address"
-                  placeholder="Enter your address (self)"
+                  placeholder="Enter your address (requestee)"
                   value={addressSelf}
+                  className={style.formItemField}
                   onChange={(e) => setAddressSelf(e.target.value)}
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -231,7 +306,7 @@ export default function ReqForm() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <InputLabel>What is your size?</InputLabel>
                 <NativeSelect
                   id="bindSize"
@@ -252,11 +327,11 @@ export default function ReqForm() {
                 </NativeSelect>
               </Grid>
 
-              <InputLabel>
+              <InputLabel className={style.formItemContain}>
                 Please check ONE box regarding your preferences.
               </InputLabel>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -268,7 +343,7 @@ export default function ReqForm() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -280,7 +355,7 @@ export default function ReqForm() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -292,7 +367,7 @@ export default function ReqForm() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -304,7 +379,7 @@ export default function ReqForm() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <InputLabel>What is your preferred length?</InputLabel>
                 <NativeSelect
                   id="bindLength"
@@ -318,7 +393,7 @@ export default function ReqForm() {
                 </NativeSelect>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <InputLabel>What is your preferred color?</InputLabel>
                 <NativeSelect
                   id="bindColor"
@@ -339,7 +414,7 @@ export default function ReqForm() {
                 </NativeSelect>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} className={style.formItemContain}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -355,6 +430,7 @@ export default function ReqForm() {
                 variant="contained"
                 type="submit"
                 value="Submit Form"
+                className={style.formItemContain}
               >
                 Submit
               </Button>
