@@ -3,8 +3,8 @@ import Image from "material-ui-image";
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 
-import OMlogo from "../OMlogo.png";
-import BannerHead from "../Banner_Head_OUT_Maine.jpg"
+import OMlogo from "../img/OMlogo.png";
+
 
 export default function LogoHead() {
   return (

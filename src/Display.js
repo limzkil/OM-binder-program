@@ -1,9 +1,3 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink,
-} from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
@@ -11,15 +5,13 @@ import Cookies from "js-cookie";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import Inventory from "./displayComponents/Inventory";
-import Requests from "./displayComponents/Requests";
+import Inventory from "./fetchComponents/Inventory";
+import Requests from "./fetchComponents/Requests";
 
-import LogoHead from './interfaceComponents/LogoHead'
+import LogoHead from './displayComponents/LogoHead'
 
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
