@@ -158,22 +158,8 @@ const BinderInventory = mongoose.model(`inventorys`, binderSchema);
 
 const ProcessedInventory = mongoose.model('processedinventorys', binderSchema)
 
-const waitListSchema = new mongoose.Schema({
-  county: String,
-  elseName: String,
-  elseEmail: String,
-  elsePhone: Number,
-  name: String,
-  dob: String,
-  email: String,
-  phone: Number,
-  address: String,
-  size: String,
-  length: String,
-  color: String
-  })
 
-const waitListed = mongoose.model('waitListeds', waitListSchema)
+const waitListed = mongoose.model('waitListeds', formSchema)
 
 // app.post("/binders", async (req, res) => {
 //   let newEntry = Binders({
@@ -211,6 +197,45 @@ app.post("/", async (req, res) => {
   }
 });
 
+BinderInventory.watch().on("change", change => {
+  if (change.operationType === "delete") {
+    return;
+  }
+
+  else {
+    let size = change.fullDocument.size
+    waitListed.findOne({ size: size })
+      .then(async function (doc) {
+        console.log(doc)
+
+        if (doc === null) {
+          return;
+        }
+
+        else {
+          //readytoship
+          FormInput.insertMany([doc])
+            .then(doc => {
+              console.log("New Entry Saved");
+            })
+            .catch(error => {
+              console.log(error);
+            })
+
+          await waitListed.deleteOne({ size: doc.size })
+
+          await ProcessedInventory.insertMany([change.fullDocument])
+
+          await BinderInventory.deleteOne({ size: change.fullDocument.size })
+        }
+      })
+
+
+
+
+  }
+})
+
 app.post("/send_mail", async (req, res) => {
   console.log(req.body);
   let { emailSelf, elseEmail, numberSelf, numberElse, addressSelf, size } = req.body;
@@ -220,7 +245,7 @@ app.post("/send_mail", async (req, res) => {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_PASS,
     },
-  }); 
+  });
 
   console.log(req.body)
   if (req.body.emailSelf) {
@@ -317,7 +342,7 @@ app.post("/send_mail", async (req, res) => {
             <p><strong>Email:</strong> ${emailSelf}</p>
             <p><strong>Phone number:</strong> ${numberSelf}</p>
             <p><strong>Address:</strong> ${addressSelf}</p>
-  
+   
             <p>All the best, Shadman</p>
              </div >
           
