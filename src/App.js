@@ -1,28 +1,79 @@
-import React from "react";
-import Display from "./Display";
-import ReqForm from "./ReqForm";
-import AdminLogin from "./AdminLogin";
-import { BrowserRouter as Router, Switch, Route, NavLink, Redirect } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
 
+import { DataGrid } from '@material-ui/data-grid';
 
+import ReactDOM from 'react-dom';
+
+import logo from './logo.svg';
+import './App.css';
+const axios = require('axios').default;
 
 export default function App() {
- 
-  return (
-    <div>
-      <Router>
-        <NavLink to="/login"><h3>Login</h3></NavLink>
-        <NavLink to="/form"><h3>Form</h3></NavLink>
-        <NavLink to ="/display"><h3>Display</h3></NavLink>
-        <Switch>
-          <Route path="/login" component={AdminLogin} />
-          <Route path="/form" component={ReqForm} />
-          <Redirect exact from = "/display" to = "/display/inventory" />
-          <Route exact path = "/display/:page?" render = {props => <Display{...props} />} />
-        </Switch>
-      </Router>
-    </div>
-  );
+
+const [isLoaded,setIsLoaded] = useState(false);
+
+const [rowData,setRowData] = useState([]);
+
+useEffect(() => {
+
+
+axios
+
+.get('http://localhost:9000/binders') // 
+
+.then((response) => response.data)
+      .then((data) => {
+        setIsLoaded(true);
+        setRowData(data);
+      });
+  }, []);
+
+// MATERIAL DATAGRID
+
+const columns = [
+
+{ field: '_id', headerName: '_id', width: 250, editable: true  },
+
+{ field: 'id', headerName: 'ID', width: 100, editable: true  },
+
+{ field: 'size', headerName: 'Size', width: 250, editable: true },
+
+{ field: 'color', headerName: 'Color', width: 250, editable: true  },
+
+{ field: 'length', headerName: 'Length', width: 250, editable: true  },
+
+{ field: 'dateSaved', headerName: 'Date Added', width: 250, editable: true  },
+
+];
+
+return(
+
+<div style={{ height: 700, width: '100%' }}>
+
+<div style={{ display: 'flex', height: '100%' }}>
+
+<div style={{ flexGrow: 1 }}>
+
+<DataGrid
+
+columns={columns}
+
+rows={rowData}
+
+getRowId ={(row) => row._id}
+
+id='_id'
+
+/>
+
+</div>
+
+</div>
+
+</div>
+
+);
+
 }
 
 
