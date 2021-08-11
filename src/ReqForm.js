@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
   formContain: {
+    fontFamily: "Open Sans",
     minHeight: "100vh",
   },
   formItemContain: {
@@ -22,10 +23,22 @@ const useStyles = makeStyles({
   },
   formItemField: {
     width: "15vw",
+    
   },
   formHeadings: {
     margin: "30px",
     textDecoration: "underline",
+    fontFamily: "Oswald",
+    color: "#993399",
+  },
+  submitBtn: {
+    margin: "30px",
+    backgroundColor: "#339999",
+    "&:hover": {
+      backgroundColor: "#2c8080",
+    },
+    width: "500px",
+    fontFamily: "Open Sans",
   },
 });
 
@@ -54,8 +67,6 @@ export default function ReqForm() {
   const [bindColor, setBindColor] = useState("");
   const [yesConfirm, setYesConfirm] = useState(false);
 
-  const isTrue = true;
-  const isFalse = false;
 
   const style = useStyles();
 
@@ -93,6 +104,10 @@ export default function ReqForm() {
       <Container maxWidth="sm">
         <CssBaseline />
         {!sent ? (
+          <>
+          <Typography className={style.formHeadings} variant="h3" style = {{color: "white", backgroundColor:"#ffcc33", padding: "1rem 3rem 1.5rem 3rem"}}>
+                    Binder Request Form
+                  </Typography>
           <Grid
             container
             spacing={1}
@@ -101,6 +116,7 @@ export default function ReqForm() {
             justify="center"
             className={style.formContain}
           >
+          
             <form onSubmit={handleSend} action="/" method="POST">
               <Grid item xs={12} className={style.formItemContain}>
                 <InputLabel>
@@ -430,12 +446,13 @@ export default function ReqForm() {
                 variant="contained"
                 type="submit"
                 value="Submit Form"
-                className={style.formItemContain}
+                className={style.submitBtn}
               >
                 Submit
               </Button>
             </form>
           </Grid>
+          </>
         ) : (
           <h1>A confirmation email has been sent to the address provided.</h1>
         )}
