@@ -230,9 +230,6 @@ BinderInventory.watch().on("change", change => {
         }
       })
 
-
-
-
   }
 })
 
