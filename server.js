@@ -119,30 +119,23 @@ function issueJwt(user) {
 app.post("/login", async (req, res, next) => {
   // store req.body for user object
   let userObj = req.body;
-  console.log(userObj)
   // find user using the stored value
   await Admin.findOne(userObj).then((user) => {
-    console.log(user)
     // if no user
     if (!user) {
       // set authorization cookie to null
       res.cookie("auth", null);
       // send message for failure to authenticate
-      res.json({ success: false, msg: "no user exists" });
-      // if the user password matches database
-    } else if (userObj.password === user.password) {
+      //res.json({ success: false, msg: "no user exists" });
+      res.redirect("/login")
+      // if the user exists
+    } else {
       // make new token based in function created earlier
       let userToken = issueJwt(user);
       // set cookie for authorization for 8hrs so dont have to sign in every time for a single work day
       res.cookie("auth", userToken.token);
       // then redirect to dashboard
       res.redirect("/display");
-      // if user exists and passwords don't match or they try to visit route with no token
-    } else {
-      // set authorization cookie to null
-      res.cookie("auth", null);
-      // send status authorization denied
-      res.status(401).send("authorization denied");
     }
   });
 });
@@ -299,7 +292,7 @@ app.post("/send_mail", async (req, res) => {
     },
   });
 
-  console.log(req.body)
+  console.log("240" + req.body)
   if (req.body.emailSelf) {
     console.log(req.body.size)
     console.log(req.body.emailSelf)
@@ -519,7 +512,6 @@ app.get("/inventory", async (req, res) => {
 app.get("/requests", async (req, res) => {
   console.log(`request get`)
   let allRequests = await FormInput.find({});
-  console.log(allRequests)
   res.send(allRequests);
 });
 app.listen(port, () => {

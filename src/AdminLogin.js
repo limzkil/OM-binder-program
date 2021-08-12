@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useState, useEffect } from 'react';
+import Cookies from "js-cookie"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,6 +37,23 @@ const useStyles = makeStyles((theme) => ({
 export default function AdminLogin() {
   const classes = useStyles();
 
+  const [authToken, setAuthToken] = useState("")
+  const [isError, setIsError] = useState(null)
+
+  useEffect(() => {
+    setAuthToken(Cookies.get("auth"))
+    if(authToken === undefined){
+      setIsError(false)
+    } else if(authToken.includes("null")){
+      setIsError(true)
+    } else {
+      setIsError(false)
+    }
+  }, [authToken, isError])
+  
+  console.log(authToken)
+  console.log(isError)
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -46,6 +65,8 @@ export default function AdminLogin() {
           <TextField
             variant="outlined"
             margin="normal"
+            helperText={isError ? "Invalid username or password." : null}
+            error = {authToken === null ? false : isError}
             required
             fullWidth
             id="username"
@@ -57,6 +78,7 @@ export default function AdminLogin() {
           <TextField
             variant="outlined"
             margin="normal"
+            error = {authToken === null ? false : isError}
             required
             fullWidth
             name="password"
