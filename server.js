@@ -220,6 +220,61 @@ BinderInventory.watch().on("change", change => {
           await ProcessedInventory.insertMany([change.fullDocument])
 
           await BinderInventory.deleteOne({ size: change.fullDocument.size })
+
+          const transport = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+              user: process.env.GMAIL_USER,
+              pass: process.env.GMAIL_PASS,
+            },
+          });
+          if (doc.email) {
+            await transport.sendMail({
+              from: process.env.GMAIL_USER,
+              to: doc.email,
+              subject: "test email",
+              html: `<div className="email" style="
+                border: 1px solid black;
+                padding: 20px;
+                font-family: sans-serif;
+                line-height: 2;
+                font-size: 20px; 
+                ">
+                <p>Great news! Your binder in size <strong>${doc.size}</strong> is now in stock! It will be shipped out within a few business days. But before we do that please verify if the information below is correct. If anything is missing or incorrect, please email example@outmaine.com</p>
+                <p><strong>Email:</strong> ${doc.email}</p>
+                <p><strong>Phone number:</strong> ${doc.phone}</p>
+                <p><strong>Address:</strong> ${doc.address}</p>
+       
+                <p>All the best, Shadman</p>
+                 </div >
+              
+            `,
+            })
+          }
+
+          else {
+            await transport.sendMail({
+              from: process.env.GMAIL_USER,
+              to: doc.elseEmail,
+              subject: "test email",
+              html: `<div className="email" style="
+                border: 1px solid black;
+                padding: 20px;
+                font-family: sans-serif;
+                line-height: 2;
+                font-size: 20px; 
+                ">
+                <p>Great news! Your binder in size <strong>${doc.size}</strong> is now in stock! It will be shipped out within a few business days. But before we do that please verify if the information below is correct. If anything is missing or incorrect, please email example@outmaine.com</p>
+                <p><strong>Email:</strong> ${doc.elseEmail}</p>
+                <p><strong>Phone number:</strong> ${doc.elsePhone}</p>
+                <p><strong>Address:</strong> ${doc.address}</p>
+       
+                <p>All the best, Shadman</p>
+                 </div >
+              
+            `,
+            })
+          }
         }
       })
 
@@ -269,7 +324,7 @@ app.post("/send_mail", async (req, res) => {
             line-height: 2;
             font-size: 20px; 
             ">
-            <h2>We apologize for the inconvenience, but your item is not currently in stock. You have been added to the waitlist.</h2>
+            <p>We apologize for the inconvenience, but your binder in size <strong>${size}</strong> is currently not in stock. You have been added to the waitlist.</p>
             <p>All the best, Shadman</p>
              </div>
         `,
@@ -328,7 +383,7 @@ app.post("/send_mail", async (req, res) => {
             line-height: 2;
             font-size: 20px; 
             ">
-            <h2>Please verify that the information below is correct!</h2>
+            <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
             <p><strong>Email:</strong> ${emailSelf}</p>
             <p><strong>Phone number:</strong> ${numberSelf}</p>
             <p><strong>Address:</strong> ${addressSelf}</p>
@@ -373,7 +428,7 @@ app.post("/send_mail", async (req, res) => {
             line-height: 2;
             font-size: 20px; 
             ">
-            <h2>We apologize for the inconvenience, but your item is not currently in stock. You have been added to the waitlist.</h2>
+            <p>We apologize for the inconvenience, but your binder in size <strong>${size}</strong> is currently not in stock. You have been added to the waitlist.</p>
             <p>All the best, Shadman</p>
              </div>
         `,
@@ -431,7 +486,7 @@ app.post("/send_mail", async (req, res) => {
             line-height: 2;
             font-size: 20px; 
             ">
-            <h2>Please verify that the information below is correct!</h2>
+            <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com. </p>
             <p><strong>Email:</strong> ${elseEmail}</p>
             <p><strong>Phone number:</strong> ${numberElse}</p>
             <p><strong>Address:</strong> ${addressSelf}</p>
