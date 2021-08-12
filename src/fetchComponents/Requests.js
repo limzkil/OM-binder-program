@@ -12,8 +12,8 @@ function Requests(props){
     console.log(props)
     return(
        <Grid container spacing = {1}>
-         <Grid item xs = {2} /> 
-    <Grid item xs = {8}>
+         
+    <Grid item xs = {12}>
 
         <TableContainer className="requestContainer">
         <Table className="requestEntry">
@@ -108,7 +108,7 @@ function Requests(props){
         </Table>
       </TableContainer>
       </Grid>
-      <Grid item xs = {2} /> 
+      
       </Grid>
     );
     
