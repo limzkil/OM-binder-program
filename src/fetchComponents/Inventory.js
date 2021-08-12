@@ -9,9 +9,21 @@ import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import Grid from '@material-ui/core/Grid';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles ({
+  
+})
+
+
 function Inventory(props) {
   
   return (
+    <Grid container spacing = {1}>
+    <Grid item xs = {2} /> 
+    <Grid item xs = {8}>
     <TableContainer className="inventoryContainer">
       <Table className="inventoryEntry">
         <TableHead>
@@ -50,6 +62,9 @@ function Inventory(props) {
         ))}
       </Table>
     </TableContainer>
+    </Grid>
+    <Grid item xs = {2} />
+    </Grid>
   );
 }
 export default Inventory;

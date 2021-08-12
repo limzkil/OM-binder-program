@@ -10,13 +10,15 @@ export default function LogoHead() {
   return (
     <>
     <Container>
+    <Grid item xs = {1} />
     <Grid container spacing = {3} >
         <Grid item xs = {3}>
-      <Image src={OMlogo} aspectRatio = {(2/1)} color = "null"  />
+      <Image src={OMlogo} aspectRatio = {(1.5/1)} color = "null"  />
       </Grid>
-    <Grid item xs = {9}>
-        <Typography variant = "h3" style = {{marginTop: "8vh", fontFamily: 'Oswald'}}>Binder Program Management</Typography>
+    <Grid item xs = {7}>
+        <Typography variant = "h3" style = {{marginTop: "10vh", fontFamily: 'Oswald'}}>Binder Program Management</Typography>
     </Grid>
+    <Grid item xs = {1} />
       </Grid>
       </Container>
     </>
