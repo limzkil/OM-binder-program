@@ -169,33 +169,33 @@ const waitListed = mongoose.model('waitListeds', formSchema)
 //   res.redirect("/send_mail");
 // });
 
-app.post("/", async (req, res) => {
-  console.log(`I am the post`);
-  let binderInventory = await BinderInventory.find({
-    size: { $in: [req.body.size] },
-  });
-  if (binderInventory.length === 0) {
-    console.log(`No binders in that size`);
-    res.redirect("/");
-  } else {
-    let newEntry = FormInput({
-      county: req.body.resMaine,
-      elseName: req.body.elseName,
-      elseEmail: req.body.elseEmail,
-      elsePhone: req.body.elsePhone,
-      name: req.body.name,
-      dob: req.body.dob,
-      email: req.body.email,
-      phone: req.body.phone,
-      address: req.body.address,
-      size: req.body.size,
-      length: req.body.length,
-      color: req.body.color,
-    });
-    await newEntry.save();
-    res.redirect("/");
-  }
-});
+// app.post("/", async (req, res) => {
+//   console.log(`I am the post`);
+//   let binderInventory = await BinderInventory.find({
+//     size: { $in: [req.body.size] },
+//   });
+//   if (binderInventory.length === 0) {
+//     console.log(`No binders in that size`);
+//     res.redirect("/");
+//   } else {
+//     let newEntry = FormInput({
+//       county: req.body.resMaine,
+//       elseName: req.body.elseName,
+//       elseEmail: req.body.elseEmail,
+//       elsePhone: req.body.elsePhone,
+//       name: req.body.name,
+//       dob: req.body.dob,
+//       email: req.body.email,
+//       phone: req.body.phone,
+//       address: req.body.address,
+//       size: req.body.size,
+//       length: req.body.length,
+//       color: req.body.color,
+//     });
+//     await newEntry.save();
+//     res.redirect("/");
+//   }
+// });
 
 BinderInventory.watch().on("change", change => {
   if (change.operationType === "delete") {
