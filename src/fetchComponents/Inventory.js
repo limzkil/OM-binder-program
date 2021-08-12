@@ -22,8 +22,8 @@ function Inventory(props) {
   
   return (
     <Grid container spacing = {1}>
-    <Grid item xs = {2} /> 
-    <Grid item xs = {8}>
+  
+    <Grid item xs = {12}>
     <TableContainer className="inventoryContainer">
       <Table className="inventoryEntry">
         <TableHead>
@@ -63,7 +63,7 @@ function Inventory(props) {
       </Table>
     </TableContainer>
     </Grid>
-    <Grid item xs = {2} />
+    
     </Grid>
   );
 }
