@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 
-import { DataGrid, GridExportCsvOptions } from "@material-ui/data-grid";
+import { DataGrid, GridToolbarContainer,
+  GridToolbarExport, } from "@material-ui/data-grid";
 
 import ReactDOM from "react-dom";
 
 import logo from "./logo.svg";
 import "./App.css";
 const axios = require("axios").default;
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -53,6 +62,9 @@ export default function App() {
             rows={rowData}
             getRowId={(row) => row._id}
             id="_id"
+            components={{
+              Toolbar: CustomToolbar,
+            }}
           />
         </div>
       </div>

@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 //Connect to Mongo DB
 
-mongoose.connect('', {useNewUrlParser: true, useUnifiedTopology: true}, () => {
+mongoose.connect('mongodb+srv://atrain:JjCsBsCoxVQubx34@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}, () => {
 
 console.log('Connected to MongoDB…');
 
@@ -24,7 +24,7 @@ console.log('Connected to MongoDB…');
 
 app.listen(9000);
 
-// POST : save Item user
+// POST : save Item 
 
 app.post('/savebinder', async(req, res) => {
 
