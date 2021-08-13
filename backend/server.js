@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Connect to Mongo DB
 
 mongoose.connect(
-  "mongodb+srv://binderapp1:binderapp12345@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority",
+  "mongodb+srv://@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("Connected to MongoDB…");
