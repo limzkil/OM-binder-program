@@ -13,13 +13,14 @@ const { json } = require("body-parser");
 
 app.use(cors());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://localhost3000/");
-  res.header("Access-Control-Allow-Headers", "*");
-  res.header("Access-Control-Expose-Headers", "*");
-  res.header("Access-Control-Allow-Methods", "*");
-  res.header('Content-type', 'application/json'),
-  next();
+app.use(bodyParser.json());
+
+//Connect to Mongo DB
+
+mongoose.connect('', {useNewUrlParser: true, useUnifiedTopology: true}, () => {
+
+console.log('Connected to MongoDB…');
+
 });
 
 app.use(express.json());
@@ -107,8 +108,12 @@ app.delete("/binders/:binderId", async (req, res) => {
   try {
     const deleteById = await Binder.deleteOne({ _id: req.params.binderId });
 
-    res.json(deleteById);
-  } catch (err) {
-    console.log("ERROR : " + res.json({ message: err }));
-  }
+res.json(deleteById);
+
+} catch(err) {
+
+console.log('ERROR : ' + res.json({message : err}));
+
+}
+
 });
