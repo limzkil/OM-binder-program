@@ -154,14 +154,6 @@ const ProcessedInventory = mongoose.model('processedinventorys', binderSchema)
 
 const waitListed = mongoose.model('waitListeds', formSchema)
 
-// app.post("/binders", async (req, res) => {
-//   let newEntry = Binders({
-//     size: req.body.size,
-//   });
-//   await newEntry.save();
-//   res.redirect("/send_mail");
-// });
-
 app.post("/", async (req, res) => {
   console.log(`I am the post`);
   let binderInventory = await BinderInventory.find({
@@ -510,7 +502,6 @@ app.get("/inventory", async (req, res) => {
   res.send(allInventory);
 });
 app.get("/requests", async (req, res) => {
-  console.log(`request get`)
   let allRequests = await FormInput.find({});
   res.send(allRequests);
 });

@@ -6,6 +6,9 @@ import Cookies from "js-cookie";
 //MUI general import
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+// component to show when user is not authorized to see data
+import NotAuthorized from "./NotAuthorized";
+
 //tab imports
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -13,8 +16,6 @@ import Tab from "@material-ui/core/Tab";
 
 //grid import
 import Grid from '@material-ui/core/Grid';
-
-
 
 //components to pass in fetched data
 import Inventory from "./fetchComponents/Inventory";
@@ -103,7 +104,7 @@ if(isAuthenticated)
     </>
   )}else{
     return(
-      <h1>You are not Allowed</h1>
+      <NotAuthorized />
     )
   }
   
