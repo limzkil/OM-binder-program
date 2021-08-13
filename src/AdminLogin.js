@@ -50,9 +50,6 @@ export default function AdminLogin() {
       setIsError(false)
     }
   }, [authToken, isError])
-  
-  console.log(authToken)
-  console.log(isError)
 
   return (
     <Container component="main" maxWidth="xs">
