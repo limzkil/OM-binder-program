@@ -506,14 +506,18 @@ app.post("/send_mail", async (req, res) => {
 app.get("/inventory", async (req, res) => {
   //send the inventory, right now just called email test
   let allInventory = await BinderInventory.find({});
-
   res.send(allInventory);
 });
 app.get("/requests", async (req, res) => {
-  console.log(`request get`)
   let allRequests = await FormInput.find({});
   res.send(allRequests);
 });
+
+app.get("/waitlist", async (req, res) => {
+  let waitlist = await waitListed.find({})
+  res.send(waitlist)
+})
+
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });

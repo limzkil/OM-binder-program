@@ -19,53 +19,68 @@ const useStyles = makeStyles({
     minHeight: "100vh",
   },
   formItemContain: {
-    margin: "30px",
+    margin: "1.5em",
   },
   formItemField: {
-    width: "15vw",
-
+    width: "25em",
   },
   formHeadings: {
-    margin: "30px",
+    margin: "1em 1em 1em .5em",
     textDecoration: "underline",
     fontFamily: "Oswald",
     color: "#993399",
   },
   submitBtn: {
-    margin: "30px",
+    margin: "1.5em",
     backgroundColor: "#339999",
     "&:hover": {
       backgroundColor: "#2c8080",
     },
-    width: "500px",
+    width: "35em",
     fontFamily: "Open Sans",
   },
 });
 
+//to add to schema: progSource, isFirstBind, moreInf, yesSurvey
+
 export default function ReqForm() {
   const [sent, setSent] = useState(false);
-  const [nameSelf, setNameSelf] = useState("");
-  const [emailSelf, setEmailSelf] = useState("");
-  const [numberSelf, setNumberSelf] = useState("");
-  const [addressSelf, setAddressSelf] = useState("");
-  const [birth, setBirth] = useState("");
+
   const [resMaine, setResMaine] = useState("");
-  const [ageCheck, setAgeCheck] = useState(false);
+  const [progSource, setProgSource] = useState("");
   const [selfOrElse, setSelfOrElse] = useState(false);
+
   const [minorConsent, setMinorConsent] = useState(false);
   const [nameElse, setNameElse] = useState("");
   const [emailElse, setEmailElse] = useState("");
   const [numberElse, setNumberElse] = useState("");
   const [relMinor, setRelMinor] = useState("");
+
+  const [ageCheck, setAgeCheck] = useState(false);
+  const [isFirstBind, setIsFirstBind] = useState(false);
+
+
+  const [nameSelf, setNameSelf] = useState("");
+  const [birth, setBirth] = useState("");
+  const [emailSelf, setEmailSelf] = useState("");
+  const [numberSelf, setNumberSelf] = useState("");
+  const [addressSelf, setAddressSelf] = useState("");
+   
   const [yesMeasure, setYesMeasure] = useState(false);
+
   const [bindSize, setBindSize] = useState("");
+
   const [noPref, setNoPref] = useState(false);
   const [waitLength, setWaitLength] = useState(false);
   const [waitColor, setWaitColor] = useState(false);
   const [waitLenCol, setWaitLenCol] = useState(false);
+
   const [bindLength, setBindLength] = useState("");
   const [bindColor, setBindColor] = useState("");
+  const [moreInf, setMoreInf] = useState("")
+
   const [yesConfirm, setYesConfirm] = useState(false);
+  const [yesSurvey, setYesSurvey] = useState(false)
 
 
   const style = useStyles();
@@ -104,6 +119,7 @@ export default function ReqForm() {
     }
   }, [selfOrElse]);
 
+
   return (
     <>
       {/* div container setting the styling of the entire form to root */}
@@ -111,7 +127,16 @@ export default function ReqForm() {
         <CssBaseline />
         {!sent ? (
           <>
-            <Typography className={style.formHeadings} variant="h3" style={{ color: "white", backgroundColor: "#ffcc33", padding: "1rem 3rem 1.5rem 3rem" }}>
+            <Typography
+              className={style.formHeadings}
+              variant="h3"
+              style={{
+                color: "white",
+                backgroundColor: "#ffcc33",
+                padding: ".5em .7em .7em .7em ",
+                textAlign: "center"
+              }}
+            >
               Binder Request Form
             </Typography>
             <Grid
@@ -122,7 +147,6 @@ export default function ReqForm() {
               justify="center"
               className={style.formContain}
             >
-
               <form onSubmit={handleSend} action="/" method="POST">
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
@@ -233,7 +257,9 @@ export default function ReqForm() {
                         <option value={"Relative"}>Relative</option>
                         <option value={"Friend"}>Friend</option>
                         <option value={"Mentor"}>Mentor</option>
-                        <option value={"School employee"}>School employee</option>
+                        <option value={"School employee"}>
+                          School employee
+                        </option>
                         <option value={"Other trusted person"}>
                           Other trusted person
                         </option>
@@ -254,6 +280,21 @@ export default function ReqForm() {
                     id="ageCheck"
                     value={ageCheck}
                     onChange={(e) => setAgeCheck(e.target.value)}
+                  >
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
+                  </NativeSelect>
+                </Grid>
+
+                <Grid item xs={12} className={style.formItemContain}>
+                  <InputLabel>
+                    Is the first binder owned by you or the person you are
+                    requesting for?
+                  </InputLabel>
+                  <NativeSelect
+                    id="isFirstBind"
+                    value={isFirstBind}
+                    onChange={(e) => setIsFirstBind(e.target.value)}
                   >
                     <option value={true}>Yes</option>
                     <option value={false}>No</option>
@@ -437,6 +478,22 @@ export default function ReqForm() {
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
+                <InputLabel>Any additional information regarding this request?</InputLabel>
+                  <TextField
+                        id="outlined-textarea"
+                      
+                        className={style.formItemField}
+                        style = {{margin: "1em 0em 1em 0em", width: "35em"}}
+                        placeholder=""
+                        multiline
+                        rows = {4}
+                        variant="outlined"
+                        value = {moreInf}
+                        onChange={(e) => setMoreInf(e.target.value)}
+                      />
+                </Grid>
+
+                <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -447,6 +504,19 @@ export default function ReqForm() {
                     label="I am confirming I have double checked the given information."
                   />
                 </Grid>
+
+                <Grid item xs={12} className={style.formItemContain}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={yesSurvey}
+                        onChange={(e) => setYesSurvey(e.target.checked)}
+                      />
+                    }
+                    label="I am willing to complete a short survey after receiving my binder."
+                  />
+                </Grid>
+
                 <Button
                   color="primary"
                   variant="contained"
