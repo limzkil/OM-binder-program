@@ -34,8 +34,8 @@ function NotAuthorized() {
       <Avatar className={classes.avatar}>
         <NotInterestedIcon className={classes.icon}/>
       </Avatar>
-      <p className={classes.text}>Ummmm, it doesn't look like you're supposed to be here.</p>
-      <p className={classes.text}>Please go back and log in, or just bugger off, thanks!</p>
+      <p className={classes.text}>It doesn't appear you are supposed to be here, at least yet.</p>
+      <p className={classes.text}>Please go back and log in, thanks!</p>
     </Container>
   )
 }
