@@ -1,143 +1,114 @@
-const express = require('express');
+const express = require("express");
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
 
-const Item = require('./model');
+const Binder = require("./Binder");
+const { json } = require("body-parser");
 
 app.use(cors());
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://localhost3000/");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Expose-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header('Content-type', 'application/json'),
+  next();
+});
+
+app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Connect to Mongo DB
 
-mongoose.connect('mongodb+srv://atrain:JjCsBsCoxVQubx34@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}, () => {
+mongoose.connect(
+  "mongodb+srv://binderapp1:binderapp12345@test.ws3nz.mongodb.net/Shipping?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log("Connected to MongoDB…");
+  }
+);
 
-console.log('Connected to MongoDB…');
+app.listen(3000);
 
-});
+// POST : save Binder
 
-app.listen(9000);
 
-// POST : save Item 
+app.post("/savebinder", async (req, res) => {
+  const binder = Binder({
+    binderSize: req.params.binderSize,
 
-app.post('/savebinder', async(req, res) => {
+    binderColor: req.params.binderColor,
 
-const binder = new Item ({
+    binderLength: req.params.binderLength,
+  });
 
-size : req.body.size,
+  try {
+    await binder.save();
 
-color : req.body.color,
-
-length : req.body.length,
-
-});
-
-try {
-
-const savedUser = await user.save()
-
-res.json(savedUser);
-
-} catch(err) {
-
-console.log('ERROR : ' + res.json({message : err}));
-
-}
-
+    res.json(binder);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
 });
 
 // GET : show all binders
 
-app.get('/binders', async(req, res) => {
+app.get("/binders", async (req, res) => {
+  try {
+    const findAll = await Binder.find();
 
-try {
-
-const findAll = await Item.find();
-
-res.json(findAll);
-
-} catch(err) {
-
-console.log('ERROR : ' + res.json({message : err}));
-
-}
-
+    res.json(findAll);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
 });
 
 // GET : find by ID
 
-app.get('/binders/:binderId', async(req, res) => {
+app.get("/binders/:binderId", async (req, res) => {
+  try {
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      // Yes, it's a valid ObjectId, proceed with `findById` call.
+    
+    const findById = await Binder.find(req.params.binderId);
 
-try {
-
-const findById = await Item.findById(req.params.binderId);
-
-res.json(findById);
-
-} catch(err) {
-
-console.log('ERROR : ' + res.json({message : err}));
-
-}
-
-});
-
-// GET : find by ID
-
-app.get('/binders/:binderId', async(req, res) => {
-
-try {
-
-const findById = await Item.findById(req.params.binderId);
-
-res.json(findById);
-
-} catch(err) {
-
-console.log('ERROR : ' + res.json({message : err}));
-
-}
-
+    res.json(findById)};
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
 });
 
 // UPDATE : update by ID
 
-app.patch('/binders/:binderId', async(req, res) => {
-
+app.patch("/binders/:binderId", async (req, res) => {
 try {
+  const updateById = await Binder.updateOne(
+{ size: req.params.binderId },
+{ $set: { size: req.body.binderSize } }
+);
+res.json(updateById)
 
-const updateById = await Item.updateOne({ _id: req.params.binderId } , { $set : { Size : req.body.size} } );
-
-res.json(updateById);
-
-} catch(err) {
-
-console.log('ERROR : ' + res.json({message : err}));
-
+} catch (err) {
+console.log("ERROR : " + res.json({ message: err }));
 }
-
 });
 
 // DELETE : delete by ID
 
-app.delete('/binders/:binderId', async(req, res) => {
+app.delete("/binders/:binderId", async (req, res) => {
+  try {
+    const deleteById = await Binder.deleteOne({ _id: req.params.binderId });
 
-try {
-
-const deleteById = await Item.remove( { _id: req.params.binderId } );
-
-res.json(deleteById);
-
-} catch(err) {
-
-console.log('ERROR : ' + res.json({message : err}));
-
-}
-
+    res.json(deleteById);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
 });
