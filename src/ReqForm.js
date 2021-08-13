@@ -244,7 +244,7 @@ export default function ReqForm() {
                         value={nameElse}
                         className={style.formItemField}
                         onChange={(e) => setNameElse(e.target.value)}
-                        error={nameElse.includes(letterCheck)}
+                        
                       />
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
