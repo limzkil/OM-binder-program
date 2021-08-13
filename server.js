@@ -45,17 +45,17 @@ const db = mongoose.connection;
 //set up a schema to test
 const formSchema = new mongoose.Schema({
   county: String,
-  elseName: String,
   elseEmail: String,
   elsePhone: Number,
-  name: String,
+  nameSelf: String,
+  nameElse: String,
   dob: String,
   email: String,
   phone: Number,
   address: String,
   size: String,
-  length: String,
-  color: String,
+  bindLength: String,
+  bindColor: String,
 });
 // admin schema
 const adminSchema = new mongoose.Schema({
@@ -146,6 +146,7 @@ const binderSchema = new mongoose.Schema({
   size: String,
   length: String,
   color: String,
+  quantity: Number
 });
 const BinderInventory = mongoose.model(`inventorys`, binderSchema);
 
@@ -302,15 +303,15 @@ app.post("/send_mail", async (req, res) => {
     console.log(binderInventory)
     if (binderInventory.length === 0) {
       let newEntry = waitListed({
-        county: req.body.resMaine,
-        name: req.body.name,
-        dob: req.body.dob,
+        county: req.body.county,
+        nameSelf: req.body.nameSelf,
+        dob: req.body.birth,
         email: req.body.emailSelf,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
       await newEntry.save();
       await transport.sendMail({
@@ -333,15 +334,15 @@ app.post("/send_mail", async (req, res) => {
 
     else if (binderInventory.length > 0) {
       let newEntry = FormInput({
-        county: req.body.resMaine,
-        name: req.body.name,
-        dob: req.body.dob,
+        county: req.body.county,
+        nameSelf: req.body.nameSelf,
+        dob: req.body.birth,
         email: req.body.emailSelf,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
 
       await newEntry.save();
@@ -406,15 +407,15 @@ app.post("/send_mail", async (req, res) => {
 
     if (binderInventory.length === 0) {
       let newEntry = waitListed({
-        county: req.body.resMaine,
-        elseName: req.body.elseName,
-        elseEmail: req.body.elseEmail,
-        elsePhone: req.body.numberElse,
-        dob: req.body.dob,
+        county: req.body.county,
+        nameElse: req.body.nameElse,
+        dob: req.body.birth,
+        elseEmail: req.body.emailElse,
+        phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
       await newEntry.save();
       await transport.sendMail({
@@ -437,14 +438,15 @@ app.post("/send_mail", async (req, res) => {
 
     else if (binderInventory.length > 0) {
       let newEntry = FormInput({
-        county: req.body.resMaine,
-        elseName: req.body.elseName,
-        elseEmail: req.body.elseEmail,
-        elsePhone: req.body.numberElse,
+        county: req.body.county,
+        nameElse: req.body.nameElse,
+        dob: req.body.birth,
+        elseEmail: req.body.emailElse,
+        phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
 
       await newEntry.save();
@@ -496,8 +498,6 @@ app.post("/send_mail", async (req, res) => {
           
         `,
       });
-
-
     }
 
   }
