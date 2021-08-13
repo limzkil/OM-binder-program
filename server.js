@@ -45,17 +45,17 @@ const db = mongoose.connection;
 //set up a schema to test
 const formSchema = new mongoose.Schema({
   county: String,
-  elseName: String,
   elseEmail: String,
   elsePhone: Number,
-  name: String,
+  nameSelf: String,
+  nameElse: String,
   dob: String,
   email: String,
   phone: Number,
   address: String,
   size: String,
-  length: String,
-  color: String,
+  bindLength: String,
+  bindColor: String,
 });
 // admin schema
 const adminSchema = new mongoose.Schema({
@@ -178,33 +178,41 @@ app.post("/savebinder", async (req, res) => {
   }
 });
 
-app.post("/", async (req, res) => {
-  console.log(`I am the post`);
-  let binderInventory = await BinderInventory.find({
-    size: { $in: [req.body.size] },
-  });
-  if (binderInventory.length === 0) {
-    console.log(`No binders in that size`);
-    res.redirect("/");
-  } else {
-    let newEntry = FormInput({
-      county: req.body.resMaine,
-      elseName: req.body.elseName,
-      elseEmail: req.body.elseEmail,
-      elsePhone: req.body.elsePhone,
-      name: req.body.name,
-      dob: req.body.dob,
-      email: req.body.email,
-      phone: req.body.phone,
-      address: req.body.address,
-      size: req.body.size,
-      length: req.body.length,
-      color: req.body.color,
-    });
-    await newEntry.save();
-    res.redirect("/");
-  }
-});
+// app.post("/binders", async (req, res) => {
+//   let newEntry = Binders({
+//     size: req.body.size,
+//   });
+//   await newEntry.save();
+//   res.redirect("/send_mail");
+// });
+
+// app.post("/", async (req, res) => {
+//   console.log(`I am the post`);
+//   let binderInventory = await BinderInventory.find({
+//     size: { $in: [req.body.size] },
+//   });
+//   if (binderInventory.length === 0) {
+//     console.log(`No binders in that size`);
+//     res.redirect("/");
+//   } else {
+//     let newEntry = FormInput({
+//       county: req.body.resMaine,
+//       elseName: req.body.elseName,
+//       elseEmail: req.body.elseEmail,
+//       elsePhone: req.body.elsePhone,
+//       name: req.body.name,
+//       dob: req.body.dob,
+//       email: req.body.email,
+//       phone: req.body.phone,
+//       address: req.body.address,
+//       size: req.body.size,
+//       length: req.body.length,
+//       color: req.body.color,
+//     });
+//     await newEntry.save();
+//     res.redirect("/");
+//   }
+// });
 
 BinderInventory.watch().on("change", (change) => {
   console.log(`I am change`);
@@ -315,15 +323,15 @@ app.post("/send_mail", async (req, res) => {
     console.log(binderInventory);
     if (binderInventory.length === 0) {
       let newEntry = waitListed({
-        county: req.body.resMaine,
-        name: req.body.name,
-        dob: req.body.dob,
+        county: req.body.county,
+        nameSelf: req.body.nameSelf,
+        dob: req.body.birth,
         email: req.body.emailSelf,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color,
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
       await newEntry.save();
       await transport.sendMail({
@@ -344,15 +352,15 @@ app.post("/send_mail", async (req, res) => {
       });
     } else if (binderInventory.length > 0) {
       let newEntry = FormInput({
-        county: req.body.resMaine,
-        name: req.body.name,
-        dob: req.body.dob,
+        county: req.body.county,
+        nameSelf: req.body.nameSelf,
+        dob: req.body.birth,
         email: req.body.emailSelf,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color,
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
 
       await newEntry.save();
@@ -413,15 +421,15 @@ app.post("/send_mail", async (req, res) => {
 
     if (binderInventory.length === 0) {
       let newEntry = waitListed({
-        county: req.body.resMaine,
-        elseName: req.body.elseName,
-        elseEmail: req.body.elseEmail,
-        elsePhone: req.body.numberElse,
-        dob: req.body.dob,
+        county: req.body.county,
+        nameElse: req.body.nameElse,
+        dob: req.body.birth,
+        elseEmail: req.body.emailElse,
+        phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color,
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
       await newEntry.save();
       await transport.sendMail({
@@ -442,14 +450,15 @@ app.post("/send_mail", async (req, res) => {
       });
     } else if (binderInventory.length > 0) {
       let newEntry = FormInput({
-        county: req.body.resMaine,
-        elseName: req.body.elseName,
-        elseEmail: req.body.elseEmail,
-        elsePhone: req.body.numberElse,
+        county: req.body.county,
+        nameElse: req.body.nameElse,
+        dob: req.body.birth,
+        elseEmail: req.body.emailElse,
+        phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        length: req.body.length,
-        color: req.body.color,
+        bindLength: req.body.bindLength,
+        bindColor: req.body.bindColor
       });
 
       await newEntry.save();

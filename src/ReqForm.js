@@ -96,6 +96,12 @@ export default function ReqForm() {
           numberElse: numberElse,
           addressSelf: addressSelf,
           size: bindSize,
+          county: resMaine,
+          nameSelf: nameSelf,
+          nameElse: nameElse,
+          dob: birth,
+          bindLength: bindLength,
+          bindColor: bindColor
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -174,36 +180,6 @@ export default function ReqForm() {
 
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                    Where did you hear about this program?
-                  </InputLabel>
-                  <NativeSelect
-                    id="progSource"
-                    name="progSource"
-                    value={progSource}
-                    onChange={(e) => setProgSource(e.target.value)}
-                  >
-                    <option value="">Select option</option>
-                    <option value={"Androscoggin"}>Androscoggin</option>
-                    <option value={"Aroostook"}>Aroostook</option>
-                    <option value={"Cumberland"}>Cumberland</option>
-                    <option value={"Franklin"}>Franklin</option>
-                    <option value={"Hancock"}>Hancock</option>
-                    <option value={"Kennebec"}>Kennebec</option>
-                    <option value={"Knox"}>Knox</option>
-                    <option value={"Lincoln"}>Lincoln</option>
-                    <option value={"Oxford"}>Oxford</option>
-                    <option value={"Penobscot"}>Penobscot</option>
-                    <option value={"Piscataquis"}>Piscataquis</option>
-                    <option value={"Sagadahoc"}>Sagadahoc</option>
-                    <option value={"Somerset"}>Somerset</option>
-                    <option value={"Waldo"}>Waldo</option>
-                    <option value={"Washington"}>Washington</option>
-                    <option value={"York"}>York</option>
-                  </NativeSelect>
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <InputLabel>
                     Are you requesting for yourself or someone else?
                   </InputLabel>
                   <NativeSelect
@@ -244,7 +220,6 @@ export default function ReqForm() {
                         value={nameElse}
                         className={style.formItemField}
                         onChange={(e) => setNameElse(e.target.value)}
-                        
                       />
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
@@ -255,11 +230,6 @@ export default function ReqForm() {
                         value={emailElse}
                         className={style.formItemField}
                         onChange={(e) => setEmailElse(e.target.value)}
-                        error={(e) =>
-                          /$|.+@..+/.test(e.target.value)
-                            ? ""
-                            : "Email is not valid."
-                        }
                       />
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
