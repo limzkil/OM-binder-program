@@ -20,6 +20,7 @@ import Grid from '@material-ui/core/Grid';
 //components to pass in fetched data
 import Inventory from "./fetchComponents/Inventory";
 import Requests from "./fetchComponents/Requests";
+import Waitlist from "./fetchComponents/Waitlist";
 
 //header component
 import LogoHead from './displayComponents/LogoHead'
@@ -27,6 +28,7 @@ import LogoHead from './displayComponents/LogoHead'
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
   const [requestData, setRequestData] = useState([]);
+  const [waitListData, setWaitListData] = useState([]);
 
   const { match, history } = props;
   const { params } = match;
@@ -35,11 +37,13 @@ const Display = (props) => {
   const tabNameToIndex = {
     0: "inventory",
     1: "requests",
+    2: "waitlist"
   };
 
   const indexToTabName = {
     inventory: 0,
     requests: 1,
+    waitlist: 2
   };
 
   const [tabSelect, setTabSelect] = useState(indexToTabName[page]);
@@ -77,7 +81,16 @@ const Display = (props) => {
           setRequestData(result);
         });
     }
+
+    if(waitListData.length === 0){
+      fetch("/waitlist")
+        .then(res => res.json())
+        .then(setWaitListData)
+    }
+
   });
+
+
 if(isAuthenticated)
 {return (
     
@@ -93,6 +106,7 @@ if(isAuthenticated)
         <Tabs value={tabSelect} onChange={handleTab}>
           <Tab label="Inventory" />
           <Tab label="Binder Requests" />
+          <Tab label="Wait List" />
         </Tabs>
       </AppBar>
       <Grid item xs = {2} />
@@ -101,6 +115,7 @@ if(isAuthenticated)
 
       {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
       {tabSelect === 1 && <Requests requestData={requestData} />}
+      {tabSelect === 2 && <Waitlist waitListData={waitListData} />}
     </>
   )}else{
     return(
