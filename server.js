@@ -127,7 +127,7 @@ app.post("/login", async (req, res, next) => {
       res.cookie("auth", null);
       // send message for failure to authenticate
       //res.json({ success: false, msg: "no user exists" });
-      res.redirect("/login")
+      res.redirect("/login");
       // if the user exists
     } else {
       // make new token based in function created earlier
@@ -146,13 +146,37 @@ const binderSchema = new mongoose.Schema({
   size: String,
   length: String,
   color: String,
+  quantity: Number,
 });
 const BinderInventory = mongoose.model(`inventorys`, binderSchema);
 
-const ProcessedInventory = mongoose.model('processedinventorys', binderSchema)
+const ProcessedInventory = mongoose.model("processedinventorys", binderSchema);
 
+const waitListed = mongoose.model("waitListeds", formSchema);
 
-const waitListed = mongoose.model('waitListeds', formSchema)
+app.post("/savebinder", async (req, res) => {
+  let binderInventory = await BinderInventory.findOne({
+    size: { $in: [req.body.binderSize] },
+    length: { $in: [req.body.binderStyle] },
+    color: { $in: [req.body.binderColor] },
+  });
+  if (!binderInventory) {
+    let newEntry = BinderInventory({
+      size: req.body.binderSize,
+      length: req.body.binderStyle,
+      color: req.body.binderColor,
+      quantity: parseInt(req.body.binderQuantity),
+    });
+    await newEntry.save();
+    res.redirect("/display/inventory");
+  } else if (binderInventory) {
+    binderInventory.size = req.body.binderSize;
+    binderInventory.quantity =
+      binderInventory.quantity + parseInt(req.body.binderQuantity);
+    await binderInventory.save();
+    res.redirect("/display/inventory");
+  }
+});
 
 app.post("/", async (req, res) => {
   console.log(`I am the post`);
@@ -182,50 +206,50 @@ app.post("/", async (req, res) => {
   }
 });
 
-BinderInventory.watch().on("change", change => {
+BinderInventory.watch().on("change", (change) => {
+  console.log(`I am change`);
+  console.log(change);
   if (change.operationType === "delete") {
     return;
-  }
+  } else {
+    let changedDocument = BinderInventory.findOne({
+      _id: { $in: [change.documentKey._id] },
+    });
+    let size = changedDocument.size;
+    waitListed.findOne({ size: size }).then(async function (doc) {
+      console.log(doc);
 
-  else {
-    let size = change.fullDocument.size
-    waitListed.findOne({ size: size })
-      .then(async function (doc) {
-        console.log(doc)
-
-        if (doc === null) {
-          return;
-        }
-
-        else {
-          //readytoship
-          FormInput.insertMany([doc])
-            .then(doc => {
-              console.log("New Entry Saved");
-            })
-            .catch(error => {
-              console.log(error);
-            })
-
-          await waitListed.deleteOne({ size: doc.size })
-
-          await ProcessedInventory.insertMany([change.fullDocument])
-
-          await BinderInventory.deleteOne({ size: change.fullDocument.size })
-
-          const transport = nodemailer.createTransport({
-            service: "Gmail",
-            auth: {
-              user: process.env.GMAIL_USER,
-              pass: process.env.GMAIL_PASS,
-            },
+      if (doc === null) {
+        return;
+      } else {
+        //readytoship
+        FormInput.insertMany([doc])
+          .then((doc) => {
+            console.log("New Entry Saved");
+          })
+          .catch((error) => {
+            console.log(error);
           });
-          if (doc.email) {
-            await transport.sendMail({
-              from: process.env.GMAIL_USER,
-              to: doc.email,
-              subject: "test email",
-              html: `<div className="email" style="
+
+        await waitListed.deleteOne({ size: doc.size });
+
+        await ProcessedInventory.insertMany([change.fullDocument]);
+
+        await BinderInventory.deleteOne({ size: change.fullDocument.size });
+
+        const transport = nodemailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
+          },
+        });
+        if (doc.email) {
+          await transport.sendMail({
+            from: process.env.GMAIL_USER,
+            to: doc.email,
+            subject: "test email",
+            html: `<div className="email" style="
                 border: 1px solid black;
                 padding: 20px;
                 font-family: sans-serif;
@@ -241,15 +265,13 @@ BinderInventory.watch().on("change", change => {
                  </div >
               
             `,
-            })
-          }
-
-          else {
-            await transport.sendMail({
-              from: process.env.GMAIL_USER,
-              to: doc.elseEmail,
-              subject: "test email",
-              html: `<div className="email" style="
+          });
+        } else {
+          await transport.sendMail({
+            from: process.env.GMAIL_USER,
+            to: doc.elseEmail,
+            subject: "test email",
+            html: `<div className="email" style="
                 border: 1px solid black;
                 padding: 20px;
                 font-family: sans-serif;
@@ -265,17 +287,17 @@ BinderInventory.watch().on("change", change => {
                  </div >
               
             `,
-            })
-          }
+          });
         }
-      })
-
+      }
+    });
   }
-})
+});
 
 app.post("/send_mail", async (req, res) => {
   console.log(req.body);
-  let { emailSelf, elseEmail, numberSelf, numberElse, addressSelf, size } = req.body;
+  let { emailSelf, elseEmail, numberSelf, numberElse, addressSelf, size } =
+    req.body;
   const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -284,14 +306,14 @@ app.post("/send_mail", async (req, res) => {
     },
   });
 
-  console.log("240" + req.body)
+  console.log("240" + req.body);
   if (req.body.emailSelf) {
-    console.log(req.body.size)
-    console.log(req.body.emailSelf)
+    console.log(req.body.size);
+    console.log(req.body.emailSelf);
     let binderInventory = await BinderInventory.find({
-      size: req.body.size.trim()
+      size: req.body.size.trim(),
     });
-    console.log(binderInventory)
+    console.log(binderInventory);
     if (binderInventory.length === 0) {
       let newEntry = waitListed({
         county: req.body.resMaine,
@@ -302,7 +324,7 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.length,
-        color: req.body.color
+        color: req.body.color,
       });
       await newEntry.save();
       await transport.sendMail({
@@ -321,9 +343,7 @@ app.post("/send_mail", async (req, res) => {
              </div>
         `,
       });
-    }
-
-    else if (binderInventory.length > 0) {
+    } else if (binderInventory.length > 0) {
       let newEntry = FormInput({
         county: req.body.resMaine,
         name: req.body.name,
@@ -333,36 +353,36 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.length,
-        color: req.body.color
+        color: req.body.color,
       });
 
       await newEntry.save();
 
       BinderInventory.findOne({ size: req.body.size })
-        .then(doc => {
+        .then((doc) => {
           console.log(doc);
 
           // Inserting the doc in the destination collection
           ProcessedInventory.insertMany([doc])
-            .then(d => {
+            .then((d) => {
               console.log("New Entry Saved");
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
 
           // Removing doc from the first collection
           BinderInventory.deleteOne({ size: doc.size })
-            .then(d => {
-              console.log("Removed Old Entry")
+            .then((d) => {
+              console.log("Removed Old Entry");
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-        })
+        });
 
       await transport.sendMail({
         from: process.env.GMAIL_USER,
@@ -384,16 +404,12 @@ app.post("/send_mail", async (req, res) => {
              </div >
           
         `,
-      })
+      });
       res.redirect("/");
-
     }
-
-  }
-
-  else if (req.body.elseEmail) {
+  } else if (req.body.elseEmail) {
     let binderInventory = await BinderInventory.find({
-      size: req.body.size.trim()
+      size: req.body.size.trim(),
     });
 
     if (binderInventory.length === 0) {
@@ -406,7 +422,7 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.length,
-        color: req.body.color
+        color: req.body.color,
       });
       await newEntry.save();
       await transport.sendMail({
@@ -425,9 +441,7 @@ app.post("/send_mail", async (req, res) => {
              </div>
         `,
       });
-    }
-
-    else if (binderInventory.length > 0) {
+    } else if (binderInventory.length > 0) {
       let newEntry = FormInput({
         county: req.body.resMaine,
         elseName: req.body.elseName,
@@ -436,36 +450,36 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.length,
-        color: req.body.color
+        color: req.body.color,
       });
 
       await newEntry.save();
 
       BinderInventory.findOne({ size: req.body.size })
-        .then(doc => {
+        .then((doc) => {
           console.log(doc);
 
           // Inserting the doc in the destination collection
           ProcessedInventory.insertMany([doc])
-            .then(d => {
+            .then((d) => {
               console.log("New Entry Saved");
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
-            })
+            });
 
           // Removing doc from the first collection
           BinderInventory.deleteOne({ size: doc.size })
-            .then(d => {
-              console.log("Removed Old Entry")
+            .then((d) => {
+              console.log("Removed Old Entry");
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-        })
+        });
       res.redirect("/");
       await transport.sendMail({
         from: process.env.GMAIL_USER,
@@ -488,10 +502,7 @@ app.post("/send_mail", async (req, res) => {
           
         `,
       });
-
-
     }
-
   }
 });
 //app.get for the fetch request
@@ -508,5 +519,3 @@ app.get("/requests", async (req, res) => {
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });
-
-
