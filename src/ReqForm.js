@@ -45,34 +45,43 @@ const useStyles = makeStyles({
 
 export default function ReqForm() {
   const [sent, setSent] = useState(false);
-  const [nameSelf, setNameSelf] = useState("");
-  const [emailSelf, setEmailSelf] = useState("");
-  const [numberSelf, setNumberSelf] = useState("");
-  const [addressSelf, setAddressSelf] = useState("");
-  const [birth, setBirth] = useState("");
+
   const [resMaine, setResMaine] = useState("");
   const [progSource, setProgSource] = useState("");
-  const [ageCheck, setAgeCheck] = useState(false);
   const [selfOrElse, setSelfOrElse] = useState(false);
+
   const [minorConsent, setMinorConsent] = useState(false);
   const [nameElse, setNameElse] = useState("");
   const [emailElse, setEmailElse] = useState("");
   const [numberElse, setNumberElse] = useState("");
   const [relMinor, setRelMinor] = useState("");
-  const [yesMeasure, setYesMeasure] = useState(false);
+
+  const [ageCheck, setAgeCheck] = useState(false);
   const [isFirstBind, setIsFirstBind] = useState(false);
+
+
+  const [nameSelf, setNameSelf] = useState("");
+  const [birth, setBirth] = useState("");
+  const [emailSelf, setEmailSelf] = useState("");
+  const [numberSelf, setNumberSelf] = useState("");
+  const [addressSelf, setAddressSelf] = useState("");
+   
+  const [yesMeasure, setYesMeasure] = useState(false);
+
   const [bindSize, setBindSize] = useState("");
+
   const [noPref, setNoPref] = useState(false);
   const [waitLength, setWaitLength] = useState(false);
   const [waitColor, setWaitColor] = useState(false);
   const [waitLenCol, setWaitLenCol] = useState(false);
+
   const [bindLength, setBindLength] = useState("");
   const [bindColor, setBindColor] = useState("");
   const [moreInf, setMoreInf] = useState("")
+
   const [yesConfirm, setYesConfirm] = useState(false);
   const [yesSurvey, setYesSurvey] = useState(false)
 
-  const letterCheck = ["A", "a"];
 
   const style = useStyles();
 
