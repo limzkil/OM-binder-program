@@ -274,7 +274,7 @@ BinderInventory.watch().on("change", change => {
 })
 
 app.post("/send_mail", async (req, res) => {
-  console.log(req.body);
+  console.log("277 " + req.body);
   let { emailSelf, elseEmail, numberSelf, numberElse, addressSelf, size } = req.body;
   const transport = nodemailer.createTransport({
     service: "Gmail",
