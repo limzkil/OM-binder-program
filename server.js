@@ -56,6 +56,7 @@ const formSchema = new mongoose.Schema({
   size: String,
   length: String,
   color: String,
+  date: Date
 });
 // admin schema
 const adminSchema = new mongoose.Schema({
@@ -190,8 +191,6 @@ app.post("/savebinder", async (req, res) => {
 
 //Have a watch on the binder inventory collection (inventorys) everytime the collection is updated in some way. This watch will also send an email when a waitlisted person's item is in stock.
 BinderInventory.watch().on("change", async (change) => {
-  console.log(`I am change`);
-  console.log(change);
   // If the operation is delete, just return
   if (change.operationType === "delete") {
     return;
@@ -212,8 +211,6 @@ BinderInventory.watch().on("change", async (change) => {
       length: { $in: [changedDocument.length] },
       color: { $in: [changedDocument.color] },
     }).then(async function (doc) {
-      console.log(doc);
-
       // If there is no waitListed entry matching the newly added binder, just return
       if (doc === null) {
         return
@@ -336,8 +333,6 @@ app.post("/send_mail", async (req, res) => {
   console.log("240" + req.body);
   // If the user types into "email" texbox
   if (req.body.emailSelf) {
-    console.log(req.body.size);
-    console.log(req.body.emailSelf);
     // Look in BinderInventory for a binder with size length and color equivalent to what the user input 
     let binderInventory = await BinderInventory.findOne({
       size: { $in: [req.body.size] },
@@ -357,7 +352,8 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.bindLength,
-        color: req.body.bindColor
+        color: req.body.bindColor,
+        date: Date.now()
       });
       // Save that entry
       await newEntry.save();
@@ -390,7 +386,8 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.bindLength,
-        color: req.body.bindColor
+        color: req.body.bindColor,
+        date: Date.now()
       });
 
       // Save that entry
@@ -464,7 +461,8 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.bindLength,
-        color: req.body.bindColor
+        color: req.body.bindColor,
+        date: Date.now()
       });
       await newEntry.save();
       await transport.sendMail({
@@ -494,7 +492,8 @@ app.post("/send_mail", async (req, res) => {
         address: req.body.addressSelf,
         size: req.body.size,
         length: req.body.bindLength,
-        color: req.body.bindColor
+        color: req.body.bindColor,
+        date: Date.now()
       });
 
       await newEntry.save();
