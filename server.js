@@ -213,11 +213,11 @@ BinderInventory.watch().on("change", async (change) => {
       color: { $in: [changedDocument.color] },
     }).then(async function (doc) {
       console.log(doc);
-      
+
       // If there is no waitListed entry matching the newly added binder, just return
       if (doc === null) {
         return
-      // Otherwise, add the waitlisted entry into readytoship
+        // Otherwise, add the waitlisted entry into readytoship
       } else {
         //   readytoship
         FormInput.insertMany([doc])
@@ -236,8 +236,23 @@ BinderInventory.watch().on("change", async (change) => {
           length: { $in: [changedDocument.length] },
           color: { $in: [changedDocument.color] },
         });
-        // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
-        await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+
+        //If that binder doesnt exist in processedinventory, create it
+        if (processedBind === null) {
+          let newEntry = ProcessedInventory({
+            size: changedDocument.size,
+            length: changedDocument.length,
+            color: changedDocument.color,
+            quantity: 1,
+          })
+          await newEntry.save()
+        }
+        else {
+          // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
+          await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+
+        }
+        
         // After finding that binder in BinderInventory, update the quantity by decrementing by 1. The stock has now been updated.
         await BinderInventory.updateOne({ _id: changedDocument._id }, { $set: { quantity: changedDocument.quantity - 1 } })
 
@@ -330,7 +345,7 @@ app.post("/send_mail", async (req, res) => {
       color: { $in: [req.body.bindColor] },
     });
 
-    
+
     // If it is not in stock, add that user as a whole new entry in the waitlist based on their form input.
     if (binderInventory.quantity === 0) {
       let newEntry = waitListed({
@@ -480,7 +495,7 @@ app.post("/send_mail", async (req, res) => {
       })
       await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
       await BinderInventory.updateOne({ _id: binderInventory._id }, { $set: { quantity: binderInventory.quantity - 1 } })
-      
+
       res.redirect("/");
       await transport.sendMail({
         from: process.env.GMAIL_USER,
