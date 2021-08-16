@@ -54,8 +54,8 @@ const formSchema = new mongoose.Schema({
   phone: Number,
   address: String,
   size: String,
-  bindLength: String,
-  bindColor: String,
+  length: String,
+  color: String,
 });
 // admin schema
 const adminSchema = new mongoose.Schema({
@@ -140,26 +140,33 @@ app.post("/login", async (req, res, next) => {
   });
 });
 
+// Create a model for the readytoships collection that uses the formSchema
 const FormInput = mongoose.model("readytoships", formSchema);
 
+//Schema for binder
 const binderSchema = new mongoose.Schema({
   size: String,
   length: String,
   color: String,
   quantity: Number,
 });
+// Model for inventorys collection that uses the binderschema
 const BinderInventory = mongoose.model(`inventorys`, binderSchema);
 
+// Model for processedinventorys that uses the binderschema
 const ProcessedInventory = mongoose.model("processedinventorys", binderSchema);
 
+// Model for waitListeds that uses the formScehma
 const waitListed = mongoose.model("waitListeds", formSchema);
 
 app.post("/savebinder", async (req, res) => {
+  // Find a binder in the inventory based on size length and color input by user
   let binderInventory = await BinderInventory.findOne({
     size: { $in: [req.body.binderSize] },
     length: { $in: [req.body.binderStyle] },
     color: { $in: [req.body.binderColor] },
   });
+  // If the found binder doesn't exist, create a new entry in that binder inventory using user input from the modal
   if (!binderInventory) {
     let newEntry = BinderInventory({
       size: req.body.binderSize,
@@ -167,10 +174,13 @@ app.post("/savebinder", async (req, res) => {
       color: req.body.binderColor,
       quantity: parseInt(req.body.binderQuantity),
     });
+    //Save the new entry
     await newEntry.save();
+    // Redirect to inventory page
     res.redirect("/display/inventory");
+    // If the found binder exists, increase the quantity of that binder by 1 and save that entry. Redirect to inventory afterwards
   } else if (binderInventory) {
-    binderInventory.size = req.body.binderSize;
+    // binderInventory.size = req.body.binderSize;
     binderInventory.quantity =
       binderInventory.quantity + parseInt(req.body.binderQuantity);
     await binderInventory.save();
@@ -178,85 +188,78 @@ app.post("/savebinder", async (req, res) => {
   }
 });
 
-// app.post("/binders", async (req, res) => {
-//   let newEntry = Binders({
-//     size: req.body.size,
-//   });
-//   await newEntry.save();
-//   res.redirect("/send_mail");
-// });
-
-// app.post("/", async (req, res) => {
-//   console.log(`I am the post`);
-//   let binderInventory = await BinderInventory.find({
-//     size: { $in: [req.body.size] },
-//   });
-//   if (binderInventory.length === 0) {
-//     console.log(`No binders in that size`);
-//     res.redirect("/");
-//   } else {
-//     let newEntry = FormInput({
-//       county: req.body.resMaine,
-//       elseName: req.body.elseName,
-//       elseEmail: req.body.elseEmail,
-//       elsePhone: req.body.elsePhone,
-//       name: req.body.name,
-//       dob: req.body.dob,
-//       email: req.body.email,
-//       phone: req.body.phone,
-//       address: req.body.address,
-//       size: req.body.size,
-//       length: req.body.length,
-//       color: req.body.color,
-//     });
-//     await newEntry.save();
-//     res.redirect("/");
-//   }
-// });
-
-BinderInventory.watch().on("change", (change) => {
+//Have a watch on the binder inventory collection (inventorys) everytime the collection is updated in some way. This watch will also send an email when a waitlisted person's item is in stock.
+BinderInventory.watch().on("change", async (change) => {
   console.log(`I am change`);
   console.log(change);
+  // If the operation is delete, just return
   if (change.operationType === "delete") {
     return;
   } else {
-    let changedDocument = BinderInventory.findOne({
+    //Otherwise, look for the newly added binder in binder inventory and find it using id
+    let changedDocument = await BinderInventory.findOne({
       _id: { $in: [change.documentKey._id] },
     });
-    let size = changedDocument.size;
-    waitListed.findOne({ size: size }).then(async function (doc) {
-      console.log(doc);
 
+    //If the quantity of the binder is 0, return so that we no longer look for that specified binder.
+    if (changedDocument.quantity === 0) {
+      return;
+    }
+
+    // Look in waitListed for newly added binder(changedDocument)
+    await waitListed.findOne({
+      size: { $in: [changedDocument.size] },
+      length: { $in: [changedDocument.length] },
+      color: { $in: [changedDocument.color] },
+    }).then(async function (doc) {
+      console.log(doc);
+      
+      // If there is no waitListed entry matching the newly added binder, just return
       if (doc === null) {
-        return;
+        return
+      // Otherwise, add the waitlisted entry into readytoship
       } else {
-        //readytoship
+        //   readytoship
         FormInput.insertMany([doc])
           .then((doc) => {
-            console.log("New Entry Saved");
+            console.log("New Entry Saved in readytoships");
           })
           .catch((error) => {
             console.log(error);
           });
+        // Delete that entire document from waitListed
+        await waitListed.deleteOne(doc);
 
-        await waitListed.deleteOne({ size: doc.size });
+        // Look in ProcessedInventory for that same newly added binder (changedDocument)
+        let processedBind = await ProcessedInventory.findOne({
+          size: { $in: [changedDocument.size] },
+          length: { $in: [changedDocument.length] },
+          color: { $in: [changedDocument.color] },
+        });
+        // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
+        await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+        // After finding that binder in BinderInventory, update the quantity by decrementing by 1. The stock has now been updated.
+        await BinderInventory.updateOne({ _id: changedDocument._id }, { $set: { quantity: changedDocument.quantity - 1 } })
 
-        await ProcessedInventory.insertMany([change.fullDocument]);
-
-        await BinderInventory.deleteOne({ size: change.fullDocument.size });
-
+        // Create a transport variable using nodemailer
         const transport = nodemailer.createTransport({
+          // Sending from Gmail. User and pass are the variables in the .env
           service: "Gmail",
           auth: {
             user: process.env.GMAIL_USER,
             pass: process.env.GMAIL_PASS,
           },
         });
+        // If the user enters info in "email"
         if (doc.email) {
+          // Send an email
           await transport.sendMail({
+            // Sent from an email address in .env file
             from: process.env.GMAIL_USER,
+            // Sent to the email that the user typed in "email" texbox
             to: doc.email,
             subject: "test email",
+            // This represents the actual email message. Can be styled with HTML. Email below confirms when a binder is in stock after a person is added to the waitlist.
             html: `<div className="email" style="
                 border: 1px solid black;
                 padding: 20px;
@@ -274,9 +277,11 @@ BinderInventory.watch().on("change", (change) => {
               
             `,
           });
+          // Code is essentially the same as above except for if the user enters info in "email (else)"". This means the person is ordering a binder for someone else"
         } else {
           await transport.sendMail({
             from: process.env.GMAIL_USER,
+            // Sent to the email that the user typed in "email (else)" texbox
             to: doc.elseEmail,
             subject: "test email",
             html: `<div className="email" style="
@@ -314,14 +319,20 @@ app.post("/send_mail", async (req, res) => {
   });
 
   console.log("240" + req.body);
+  // If the user types into "email" texbox
   if (req.body.emailSelf) {
     console.log(req.body.size);
     console.log(req.body.emailSelf);
-    let binderInventory = await BinderInventory.find({
-      size: req.body.size.trim(),
+    // Look in BinderInventory for a binder with size length and color equivalent to what the user input 
+    let binderInventory = await BinderInventory.findOne({
+      size: { $in: [req.body.size] },
+      length: { $in: [req.body.bindLength] },
+      color: { $in: [req.body.bindColor] },
     });
-    console.log(binderInventory);
-    if (binderInventory.length === 0) {
+
+    
+    // If it is not in stock, add that user as a whole new entry in the waitlist based on their form input.
+    if (binderInventory.quantity === 0) {
       let newEntry = waitListed({
         county: req.body.county,
         nameSelf: req.body.nameSelf,
@@ -330,12 +341,15 @@ app.post("/send_mail", async (req, res) => {
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        bindLength: req.body.bindLength,
-        bindColor: req.body.bindColor
+        length: req.body.bindLength,
+        color: req.body.bindColor
       });
+      // Save that entry
       await newEntry.save();
+      // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail({
         from: process.env.GMAIL_USER,
+        // Send to the email that user typed in "email" textbox
         to: emailSelf,
         subject: "test email",
         html: `<div className="email" style="
@@ -350,7 +364,8 @@ app.post("/send_mail", async (req, res) => {
              </div>
         `,
       });
-    } else if (binderInventory.length > 0) {
+      // If the item is in stock (i.e quantity > 1), add a new entry to the "readytoships" collection using the information the user input into the form.
+    } else if (binderInventory.quantity > 0) {
       let newEntry = FormInput({
         county: req.body.county,
         nameSelf: req.body.nameSelf,
@@ -359,40 +374,30 @@ app.post("/send_mail", async (req, res) => {
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        bindLength: req.body.bindLength,
-        bindColor: req.body.bindColor
+        length: req.body.bindLength,
+        color: req.body.bindColor
       });
 
+      // Save that entry
       await newEntry.save();
 
-      BinderInventory.findOne({ size: req.body.size })
-        .then((doc) => {
-          console.log(doc);
+      // Look in ProcessedInventory for a binder with size length and color equivalent to what the user input 
+      let processedBind = await ProcessedInventory.findOne({
+        size: { $in: [req.body.size] },
+        length: { $in: [req.body.bindLength] },
+        color: { $in: [req.body.bindColor] },
+      })
+      // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
+      await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+      // After finding that binder in BinderInventory, update the quantity by decrementing by 1
+      await BinderInventory.updateOne({ _id: binderInventory._id }, { $set: { quantity: binderInventory.quantity - 1 } })
 
-          // Inserting the doc in the destination collection
-          ProcessedInventory.insertMany([doc])
-            .then((d) => {
-              console.log("New Entry Saved");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
 
-          // Removing doc from the first collection
-          BinderInventory.deleteOne({ size: doc.size })
-            .then((d) => {
-              console.log("Removed Old Entry");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
 
+      // Send an email confirming the requested binder is in stock and ask the customer to confirm information 
       await transport.sendMail({
         from: process.env.GMAIL_USER,
+        // Send to the email that user typed in "email" textbox
         to: emailSelf,
         subject: "test email",
         html: `<div className="email" style="
@@ -414,12 +419,15 @@ app.post("/send_mail", async (req, res) => {
       });
       res.redirect("/");
     }
+    // Essentially the same as the code above except for if the user typed in the "email (else) textbox"
   } else if (req.body.elseEmail) {
-    let binderInventory = await BinderInventory.find({
-      size: req.body.size.trim(),
+    let binderInventory = await BinderInventory.findOne({
+      size: { $in: [req.body.size] },
+      length: { $in: [req.body.bindLength] },
+      color: { $in: [req.body.bindColor] },
     });
 
-    if (binderInventory.length === 0) {
+    if (binderInventory.quantity === 0) {
       let newEntry = waitListed({
         county: req.body.county,
         nameElse: req.body.nameElse,
@@ -428,12 +436,13 @@ app.post("/send_mail", async (req, res) => {
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        bindLength: req.body.bindLength,
-        bindColor: req.body.bindColor
+        length: req.body.bindLength,
+        color: req.body.bindColor
       });
       await newEntry.save();
       await transport.sendMail({
         from: process.env.GMAIL_USER,
+        // Send email to the address typed in "email (else)" textbox
         to: elseEmail,
         subject: "test email",
         html: `<div className="email" style="
@@ -448,7 +457,7 @@ app.post("/send_mail", async (req, res) => {
              </div>
         `,
       });
-    } else if (binderInventory.length > 0) {
+    } else if (binderInventory.quantity > 0) {
       let newEntry = FormInput({
         county: req.body.county,
         nameElse: req.body.nameElse,
@@ -457,40 +466,25 @@ app.post("/send_mail", async (req, res) => {
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
         size: req.body.size,
-        bindLength: req.body.bindLength,
-        bindColor: req.body.bindColor
+        length: req.body.bindLength,
+        color: req.body.bindColor
       });
 
       await newEntry.save();
 
-      BinderInventory.findOne({ size: req.body.size })
-        .then((doc) => {
-          console.log(doc);
-
-          // Inserting the doc in the destination collection
-          ProcessedInventory.insertMany([doc])
-            .then((d) => {
-              console.log("New Entry Saved");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-
-          // Removing doc from the first collection
-          BinderInventory.deleteOne({ size: doc.size })
-            .then((d) => {
-              console.log("Removed Old Entry");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // Inserting the doc in the destination collection
+      let processedBind = await ProcessedInventory.findOne({
+        size: { $in: [req.body.size] },
+        length: { $in: [req.body.bindLength] },
+        color: { $in: [req.body.bindColor] },
+      })
+      await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+      await BinderInventory.updateOne({ _id: binderInventory._id }, { $set: { quantity: binderInventory.quantity - 1 } })
+      
       res.redirect("/");
       await transport.sendMail({
         from: process.env.GMAIL_USER,
+        // Send email to the address typed in "email (else)" textbox
         to: elseEmail,
         subject: "test email",
         html: `<div className="email" style="
