@@ -178,42 +178,6 @@ app.post("/savebinder", async (req, res) => {
   }
 });
 
-// app.post("/binders", async (req, res) => {
-//   let newEntry = Binders({
-//     size: req.body.size,
-//   });
-//   await newEntry.save();
-//   res.redirect("/send_mail");
-// });
-
-// app.post("/", async (req, res) => {
-//   console.log(`I am the post`);
-//   let binderInventory = await BinderInventory.find({
-//     size: { $in: [req.body.size] },
-//   });
-//   if (binderInventory.length === 0) {
-//     console.log(`No binders in that size`);
-//     res.redirect("/");
-//   } else {
-//     let newEntry = FormInput({
-//       county: req.body.resMaine,
-//       elseName: req.body.elseName,
-//       elseEmail: req.body.elseEmail,
-//       elsePhone: req.body.elsePhone,
-//       name: req.body.name,
-//       dob: req.body.dob,
-//       email: req.body.email,
-//       phone: req.body.phone,
-//       address: req.body.address,
-//       size: req.body.size,
-//       length: req.body.length,
-//       color: req.body.color,
-//     });
-//     await newEntry.save();
-//     res.redirect("/");
-//   }
-// });
-
 BinderInventory.watch().on("change", (change) => {
   console.log(`I am change`);
   console.log(change);
@@ -238,7 +202,6 @@ BinderInventory.watch().on("change", (change) => {
           .catch((error) => {
             console.log(error);
           });
-
         await waitListed.deleteOne({ size: doc.size });
 
         await ProcessedInventory.insertMany([change.fullDocument]);
