@@ -380,7 +380,7 @@ app.post("/send_mail", async (req, res) => {
       let newEntry = FormInput({
         county: req.body.county,
         nameSelf: req.body.nameSelf,
-        dob: req.body.birth,
+        dob: req.body.dob,
         email: req.body.emailSelf,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
@@ -546,6 +546,12 @@ app.post("/send_mail", async (req, res) => {
     }
   }
 });
+
+// post request for moving binder from "requested" to "shipped"
+app.post("/confirmSent", async (req, res) => {
+
+})
+
 //app.get for the fetch request
 app.get("/inventory", async (req, res) => {
   //send the inventory, right now just called email test
