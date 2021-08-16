@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 
 import Grid from "@material-ui/core/Grid";
 
-function Waitlist({ waitListData }) {
+function WaitList({ waitListData }) {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -115,4 +115,4 @@ function Waitlist({ waitListData }) {
   );
 }
 
-export default Waitlist;
+export default WaitList;
