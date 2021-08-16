@@ -402,8 +402,20 @@ app.post("/send_mail", async (req, res) => {
         length: { $in: [req.body.bindLength] },
         color: { $in: [req.body.bindColor] },
       })
-      // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
-      await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+      if (processedBind === null) {
+        let newEntry = ProcessedInventory({
+          size: req.body.size,
+          length: req.body.length,
+          color: req.body.color,
+          quantity: 1,
+        })
+        await newEntry.save()
+      }
+      else {
+        // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
+        await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+
+      }
       // After finding that binder in BinderInventory, update the quantity by decrementing by 1
       await BinderInventory.updateOne({ _id: binderInventory._id }, { $set: { quantity: binderInventory.quantity - 1 } })
 
@@ -493,7 +505,20 @@ app.post("/send_mail", async (req, res) => {
         length: { $in: [req.body.bindLength] },
         color: { $in: [req.body.bindColor] },
       })
-      await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+      if (processedBind === null) {
+        let newEntry = ProcessedInventory({
+          size: req.body.size,
+          length: req.body.length,
+          color: req.body.color,
+          quantity: 1,
+        })
+        await newEntry.save()
+      }
+      else {
+        // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
+        await ProcessedInventory.updateOne({ _id: processedBind._id }, { $set: { quantity: processedBind.quantity + 1 } })
+
+      }
       await BinderInventory.updateOne({ _id: binderInventory._id }, { $set: { quantity: binderInventory.quantity - 1 } })
 
       res.redirect("/");
