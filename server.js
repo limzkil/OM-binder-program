@@ -346,7 +346,7 @@ app.post("/send_mail", async (req, res) => {
       let newEntry = waitListed({
         county: req.body.county,
         nameSelf: req.body.nameSelf,
-        dob: req.body.birth,
+        dob: req.body.dob,
         email: req.body.emailSelf,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
@@ -455,7 +455,7 @@ app.post("/send_mail", async (req, res) => {
       let newEntry = waitListed({
         county: req.body.county,
         nameElse: req.body.nameElse,
-        dob: req.body.birth,
+        dob: req.body.dob,
         elseEmail: req.body.emailElse,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
@@ -486,7 +486,7 @@ app.post("/send_mail", async (req, res) => {
       let newEntry = FormInput({
         county: req.body.county,
         nameElse: req.body.nameElse,
-        dob: req.body.birth,
+        dob: req.body.dob,
         elseEmail: req.body.emailElse,
         phone: req.body.numberSelf,
         address: req.body.addressSelf,
