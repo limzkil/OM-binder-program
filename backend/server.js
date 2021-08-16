@@ -15,13 +15,6 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-//Connect to Mongo DB
-
-mongoose.connect('', {useNewUrlParser: true, useUnifiedTopology: true}, () => {
-
-console.log('Connected to MongoDB…');
-
-});
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -43,7 +36,7 @@ app.listen(3000);
 
 
 app.post("/savebinder", async (req, res) => {
-  const binder = Binder({
+  const binder = new Binder({
     binderSize: req.params.binderSize,
 
     binderColor: req.params.binderColor,
@@ -74,26 +67,21 @@ app.get("/binders", async (req, res) => {
 
 // GET : find by ID
 
-app.get("/binders/:binderId", async (req, res) => {
-  try {
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      // Yes, it's a valid ObjectId, proceed with `findById` call.
-    
-    const findById = await Binder.find(req.params.binderId);
-
-    res.json(findById)};
-  } catch (err) {
-    console.log("ERROR : " + res.json({ message: err }));
-  }
+app.get("/binders/:binderIds", async (req, res) => {
+ const ObjectId = mongoose.Types.ObjectId
+    var search={"_id": new ObjectId(req.query.where)};
+    const locate= Binder.find(search)
+    console.log(locate)
+;
 });
 
 // UPDATE : update by ID
 
-app.patch("/binders/:binderId", async (req, res) => {
+app.patch("/binders", async (req, res) => {
 try {
   const updateById = await Binder.updateOne(
-{ size: req.params.binderId },
-{ $set: { size: req.body.binderSize } }
+{ _id: req.params.binderId },
+{ $set: { size: req.body.size } }
 );
 res.json(updateById)
 

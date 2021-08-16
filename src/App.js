@@ -56,7 +56,7 @@ const EditableCell = ({
 
   const onChange = e => {
     setValue(e.target.value)
-    fetch("http://localhost:3000/binders/:binderId/", {
+    fetch("http://localhost:3000/binders/", {
             headers: { "content-type": "application/json" },
             method: "PATCH",
           })

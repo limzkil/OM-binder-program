@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const BinderSchema = mongoose.Schema({
  
-binderSize : String,
+size : String,
 
-binderColor : String,
+color : String,
 
-binderLength : String,
+length : String,
 
 dateSaved: {
 
