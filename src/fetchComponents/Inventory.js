@@ -4,6 +4,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Button from "@material-ui/core/Button";
 import TableRowColumn from "@material-ui/core/Table";
 import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
@@ -28,6 +29,7 @@ function Inventory(props) {
                 <TableCell>Size</TableCell>
                 <TableCell>Length</TableCell>
                 <TableCell>Color</TableCell>
+                <TableCell>Quantity</TableCell>
                 <BinderModal />
               </TableRow>
             </TableHead>

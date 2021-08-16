@@ -59,7 +59,7 @@ function Requests(props) {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="subtitle1">{request.name}</Typography>
+                    <Typography variant="subtitle1">{request.nameSelf}</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="subtitle1">{request.dob}</Typography>
