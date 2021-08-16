@@ -77,10 +77,11 @@ app.get("/binders/:binderIds", async (req, res) => {
 
 // UPDATE : update by ID
 
-app.patch("/binders", async (req, res) => {
+app.patch("/binders/update", async (req, res) => {
 try {
+  const ObjectId = mongoose.Types.ObjectId
   const updateById = await Binder.updateOne(
-{ _id: req.params.binderId },
+{ _id: req.params.ObjectId },
 { $set: { size: req.body.size } }
 );
 res.json(updateById)
