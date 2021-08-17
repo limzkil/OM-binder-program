@@ -113,7 +113,7 @@ if(isAuthenticated)
       </Grid>
       </Grid>
 
-      {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
+      {tabSelect === 0 && <Inventory />}
       {tabSelect === 1 && <Requests requestData={requestData} />}
       {tabSelect === 2 && <WaitList waitListData={waitListData} />}
     </>

@@ -9,6 +9,8 @@ const jwt = require("jsonwebtoken");
 const { Strategy } = require("passport-jwt");
 const app = express();
 
+const Binder = require("./Binder");
+
 //setting up default port
 const port = process.env.PORT || 5000;
 // MIDDLEWARE
@@ -144,50 +146,64 @@ app.post("/login", async (req, res, next) => {
 // Create a model for the readytoships collection that uses the formSchema
 const FormInput = mongoose.model("readytoships", formSchema);
 
-//Schema for binder
-const binderSchema = new mongoose.Schema({
-  size: String,
-  length: String,
-  color: String,
-  quantity: Number,
-});
+
 // Model for inventorys collection that uses the binderschema
-const BinderInventory = mongoose.model(`inventorys`, binderSchema);
+const BinderInventory = mongoose.model(`inventorys`, Binder);
 
 // Model for processedinventorys that uses the binderschema
-const ProcessedInventory = mongoose.model("processedinventorys", binderSchema);
+const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 
 // Model for waitListeds that uses the formScehma
 const waitListed = mongoose.model("waitListeds", formSchema);
 
-app.post("/savebinder", async (req, res) => {
-  // Find a binder in the inventory based on size length and color input by user
-  let binderInventory = await BinderInventory.findOne({
-    size: { $in: [req.body.binderSize] },
-    length: { $in: [req.body.binderStyle] },
-    color: { $in: [req.body.binderColor] },
+app.post("/binders/save", async (req, res) => {
+  const binder = new Binder({
+    size: req.body.size,
+
+    color: req.body.color,
+
+    length: req.body.length,
+
+    quantity: parseInt(req.body.quantity)
   });
-  // If the found binder doesn't exist, create a new entry in that binder inventory using user input from the modal
-  if (!binderInventory) {
-    let newEntry = BinderInventory({
-      size: req.body.binderSize,
-      length: req.body.binderStyle,
-      color: req.body.binderColor,
-      quantity: parseInt(req.body.binderQuantity),
-    });
-    //Save the new entry
-    await newEntry.save();
-    // Redirect to inventory page
-    res.redirect("/display/inventory");
-    // If the found binder exists, increase the quantity of that binder by 1 and save that entry. Redirect to inventory afterwards
-  } else if (binderInventory) {
-    // binderInventory.size = req.body.binderSize;
-    binderInventory.quantity =
-      binderInventory.quantity + parseInt(req.body.binderQuantity);
-    await binderInventory.save();
-    res.redirect("/display/inventory");
+
+  try {
+    await binder.save();
+
+    res.json(binder);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
   }
 });
+
+// app.post("/savebinder", async (req, res) => {
+//   // Find a binder in the inventory based on size length and color input by user
+//   let binderInventory = await BinderInventory.findOne({
+//     size: { $in: [req.body.binderSize] },
+//     length: { $in: [req.body.binderStyle] },
+//     color: { $in: [req.body.binderColor] },
+//   });
+//   // If the found binder doesn't exist, create a new entry in that binder inventory using user input from the modal
+//   if (!binderInventory) {
+//     let newEntry = BinderInventory({
+//       size: req.body.binderSize,
+//       length: req.body.binderStyle,
+//       color: req.body.binderColor,
+//       quantity: parseInt(req.body.binderQuantity),
+//     });
+//     //Save the new entry
+//     await newEntry.save();
+//     // Redirect to inventory page
+//     res.redirect("/display/inventory");
+//     // If the found binder exists, increase the quantity of that binder by 1 and save that entry. Redirect to inventory afterwards
+//   } else if (binderInventory) {
+//     // binderInventory.size = req.body.binderSize;
+//     binderInventory.quantity =
+//       binderInventory.quantity + parseInt(req.body.binderQuantity);
+//     await binderInventory.save();
+//     res.redirect("/display/inventory");
+//   }
+// });
 
 //Have a watch on the binder inventory collection (inventorys) everytime the collection is updated in some way. This watch will also send an email when a waitlisted person's item is in stock.
 BinderInventory.watch().on("change", async (change) => {
