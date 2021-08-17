@@ -10,7 +10,7 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
-
+import validator from "validator";
 import { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
@@ -59,13 +59,12 @@ export default function ReqForm() {
   const [ageCheck, setAgeCheck] = useState(false);
   const [isFirstBind, setIsFirstBind] = useState(false);
 
-
   const [nameSelf, setNameSelf] = useState("");
   const [birth, setBirth] = useState("");
   const [emailSelf, setEmailSelf] = useState("");
   const [numberSelf, setNumberSelf] = useState("");
   const [addressSelf, setAddressSelf] = useState("");
-   
+
   const [yesMeasure, setYesMeasure] = useState(false);
 
   const [bindSize, setBindSize] = useState("");
@@ -77,14 +76,101 @@ export default function ReqForm() {
 
   const [bindLength, setBindLength] = useState("");
   const [bindColor, setBindColor] = useState("");
-  const [moreInf, setMoreInf] = useState("")
+  const [moreInf, setMoreInf] = useState("");
 
   const [yesConfirm, setYesConfirm] = useState(false);
-  const [yesSurvey, setYesSurvey] = useState(false)
-
-
+  const [yesSurvey, setYesSurvey] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
+  const [validDate, setValidDate] = useState(false);
+  const [validRes, setValidRes] = useState(false);
+  const [validNameElse, setValidNameElse] = useState(false);
+  const [validElseEmail, setValidElseEmail] = useState(false);
+  const [validElsePhone, setValidElsePhone] = useState(false);
+  const [validName, setValidName] = useState(false);
+  const [validPhone, setValidPhone] = useState(false);
+  const [isError, setIsError] = useState(true);
+const [submitState, setSubmitState] = useState(true)
   const style = useStyles();
+  const handlePhone = (event) => {
+    let phone = event.target.value;
+    setNumberSelf(phone);
+    if (validator.isMobilePhone(phone, "en-US")) {
+      setValidPhone(true);
+    } else {
+      setValidPhone(false);
+    }
+  };
+  const handleElsePhone = (event) => {
+    let phone = event.target.value;
+    setNumberElse(phone);
 
+    if (validator.isMobilePhone(phone, "en-US")) {
+      setValidElsePhone(true);
+    } else {
+      setValidElsePhone(false);
+    }
+  };
+  const handleName = (event) => {
+    let name = event.target.value;
+    setNameSelf(name);
+    if (name.length > 0) {
+      setValidName(true);
+    } else {
+      setValidName(false);
+    }
+  };
+  const handleElseEmail = (event) => {
+    let email = event.target.value;
+    setEmailElse(email);
+    if (validator.isEmail(email)) {
+      setValidElseEmail(true);
+    } else {
+      setValidElseEmail(false);
+    }
+  };
+  const handleNameElse = (event) => {
+    let name = event.target.value;
+    setNameElse(name);
+    if (name.length > 0) {
+      setValidNameElse(true);
+    } else {
+      setValidNameElse(false);
+    }
+  };
+  const handleRes = (event) => {
+    let res = event.target.value;
+    setResMaine(res);
+    if (res.length > 0) {
+      setValidRes(true);
+    } else {
+      setValidRes(false);
+    }
+  };
+  const handleEmail = (event) => {
+    let email = event.target.value;
+    setEmailSelf(email);
+
+    if (validator.isEmail(email)) {
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
+    }
+  };
+  const handleDate = (event) => {
+    let dob = event.target.value;
+    setBirth(dob);
+
+    if (validator.isDate(dob, { format: "MM/DD/YYYY" })) {
+      setValidDate(true);
+    } else {
+      setValidDate(false);
+    }
+  };
+  const checkKeyDown = (event) => {
+    if (event.code === "Enter") {
+      event.preventDefault();
+    }
+  };
   const handleSend = async (e) => {
     setSent(true);
     try {
@@ -101,7 +187,7 @@ export default function ReqForm() {
           nameElse: nameElse,
           dob: birth,
           bindLength: bindLength,
-          bindColor: bindColor
+          bindColor: bindColor,
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -119,7 +205,6 @@ export default function ReqForm() {
     }
   }, [selfOrElse]);
 
-
   return (
     <>
       {/* div container setting the styling of the entire form to root */}
@@ -134,7 +219,7 @@ export default function ReqForm() {
                 color: "white",
                 backgroundColor: "#ffcc33",
                 padding: ".5em .7em .7em .7em ",
-                textAlign: "center"
+                textAlign: "center",
               }}
             >
               Binder Request Form
@@ -147,7 +232,13 @@ export default function ReqForm() {
               justify="center"
               className={style.formContain}
             >
-              <form onSubmit={handleSend} action="/" method="POST">
+              <form
+                onSubmit={handleSend}
+                noValidate
+                onKeyDown={(event) => checkKeyDown(event)}
+                action="/"
+                method="POST"
+              >
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
                     What is your county of residence in Maine?
@@ -156,7 +247,9 @@ export default function ReqForm() {
                     id="resMaine"
                     name="resMaine"
                     value={resMaine}
-                    onChange={(e) => setResMaine(e.target.value)}
+                    error={validRes ? false : isError}
+                    helperTExt={!validRes ? "Please Choose a County" : null}
+                    onChange={handleRes}
                   >
                     <option value="">Select county</option>
                     <option value={"Androscoggin"}>Androscoggin</option>
@@ -193,7 +286,6 @@ export default function ReqForm() {
                     </option>
                   </NativeSelect>
                 </Grid>
-                {console.log(selfOrElse)}
 
                 {selfOrElse ? (
                   <>
@@ -219,7 +311,11 @@ export default function ReqForm() {
                         placeholder="Enter your name (requester)"
                         value={nameElse}
                         className={style.formItemField}
-                        onChange={(e) => setNameElse(e.target.value)}
+                        error={validNameElse ? false : isError}
+                        helperText={
+                          !validNameElse ? "Please Enter Your Name" : null
+                        }
+                        onChange={handleNameElse}
                       />
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
@@ -229,7 +325,11 @@ export default function ReqForm() {
                         placeholder="Enter your email (requester)"
                         value={emailElse}
                         className={style.formItemField}
-                        onChange={(e) => setEmailElse(e.target.value)}
+                        helperText={
+                          !validElseEmail ? "Please Enter a Valid Email" : null
+                        }
+                        error={validElseEmail ? false : isError}
+                        onChange={handleElseEmail}
                       />
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
@@ -239,7 +339,13 @@ export default function ReqForm() {
                         placeholder="Enter your number (requester)"
                         value={numberElse}
                         className={style.formItemField}
-                        onChange={(e) => setNumberElse(e.target.value)}
+                        helperText={
+                          !validElsePhone
+                            ? "Please Enter a Valid Phone Number"
+                            : null
+                        }
+                        error={validElsePhone ? false : isError}
+                        onChange={handleElsePhone}
                       />
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
@@ -308,7 +414,9 @@ export default function ReqForm() {
                     placeholder="Enter your name (requestee)"
                     className={style.formItemField}
                     value={nameSelf}
-                    onChange={(e) => setNameSelf(e.target.value)}
+                    error={validName ? false : isError}
+                    helperText={!validName ? "Please Enter Your Name" : null}
+                    onChange={handleName}
                   />
                 </Grid>
 
@@ -321,9 +429,13 @@ export default function ReqForm() {
                     name="dob"
                     placeholder=""
                     value={birth}
+                    helperText={!validDate ? "Invalid Date" : null}
+                    error={validDate ? false : isError}
                     className={style.formItemField}
-                    onChange={(e) => setBirth(e.target.value)}
+                    onChange={handleDate}
                   />
+                  {console.log(isError)}
+                  {console.log(validDate)}
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
@@ -332,8 +444,12 @@ export default function ReqForm() {
                     name="email"
                     placeholder="Enter your email (requestee)"
                     value={emailSelf}
+                    helperText={
+                      !validEmail ? "Please Enter a Valid Email" : null
+                    }
+                    error={validEmail ? false : isError}
                     className={style.formItemField}
-                    onChange={(e) => setEmailSelf(e.target.value)}
+                    onChange={handleEmail}
                   />
                 </Grid>
                 <Grid item xs={12} className={style.formItemContain}>
@@ -343,7 +459,11 @@ export default function ReqForm() {
                     placeholder="Enter your number (requestee)"
                     value={numberSelf}
                     className={style.formItemField}
-                    onChange={(e) => setNumberSelf(e.target.value)}
+                    helperText={
+                      !validPhone ? "Please Enter a Valid Phone Number" : null
+                    }
+                    error={validPhone ? false : isError}
+                    onChange={handlePhone}
                   />
                 </Grid>
                 <Grid item xs={12} className={style.formItemContain}>
@@ -478,19 +598,20 @@ export default function ReqForm() {
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
-                <InputLabel>Any additional information regarding this request?</InputLabel>
+                  <InputLabel>
+                    Any additional information regarding this request?
+                  </InputLabel>
                   <TextField
-                        id="outlined-textarea"
-                      
-                        className={style.formItemField}
-                        style = {{margin: "1em 0em 1em 0em", width: "35em"}}
-                        placeholder=""
-                        multiline
-                        rows = {4}
-                        variant="outlined"
-                        value = {moreInf}
-                        onChange={(e) => setMoreInf(e.target.value)}
-                      />
+                    id="outlined-textarea"
+                    className={style.formItemField}
+                    style={{ margin: "1em 0em 1em 0em", width: "35em" }}
+                    placeholder=""
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    value={moreInf}
+                    onChange={(e) => setMoreInf(e.target.value)}
+                  />
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
@@ -523,6 +644,7 @@ export default function ReqForm() {
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
+                  disabled={validEmail && validDate && validRes && validNameElse && validElseEmail && validElsePhone && validName && validPhone ? false : true}
                 >
                   Submit
                 </Button>
