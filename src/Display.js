@@ -66,7 +66,7 @@ const Display = (props) => {
       }
     }
     if (inventoryData.length === 0) {
-      fetch("/inventory")
+      fetch("/binders")
         .then((response) => response.json())
 
         .then((result) => {

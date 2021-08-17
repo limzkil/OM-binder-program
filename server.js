@@ -157,7 +157,7 @@ const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 const waitListed = mongoose.model("waitListeds", formSchema);
 
 app.post("/binders/save", async (req, res) => {
-  const binder = new Binder({
+  const binder = new BinderInventory({
     size: req.body.size,
 
     color: req.body.color,
@@ -175,6 +175,37 @@ app.post("/binders/save", async (req, res) => {
     console.log("ERROR : " + res.json({ message: err }));
   }
 });
+
+
+// UPDATE : by ID
+
+app.patch("/binders/:binderIds", async (req, res) => {
+
+ 
+  id = req.params.binderIds
+
+ let update = await BinderInventory.updateOne({_id: id}, {size: req.body.size, color: req.body.color, length: req.body.length, quantity: req.body.quantity})
+
+ res.json(update)
+
+;
+});
+
+
+app.delete("/binders/:binderIds", async (req, res) => {
+try {
+  const deleteById = await BinderInventory.deleteOne({ _id: req.params.binderIds });
+
+res.json(deleteById);
+
+} catch(err) {
+
+console.log('ERROR : ' + res.json({message : err}));
+
+}
+
+});
+
 
 // app.post("/savebinder", async (req, res) => {
 //   // Find a binder in the inventory based on size length and color input by user
@@ -569,7 +600,7 @@ app.post("/confirmSent", async (req, res) => {
 })
 
 //app.get for the fetch request
-app.get("/inventory", async (req, res) => {
+app.get("/binders", async (req, res) => {
   //send the inventory, right now just called email test
   let allInventory = await BinderInventory.find({});
   res.send(allInventory);

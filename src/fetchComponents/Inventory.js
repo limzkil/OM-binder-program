@@ -19,6 +19,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import Alert from '@material-ui/lab/Alert';
 import axios from 'axios'
 
 
@@ -46,12 +47,6 @@ const api = axios.create({
   baseURL: `http://localhost:3000`
 })
 
-
-function validateEmail(email){
-  const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
-  return re.test(String(email).toLowerCase());
-}
-
 function App() {
 
   var columns = [
@@ -59,7 +54,8 @@ function App() {
     {title: "Size", field: "size"},
     {title: "Color", field: "color"},
     {title: "Length", field: "length"},
-    {title: "Quantity", field: "quantity"}
+    {title: "Quantity", field: "quantity"},
+    {title: "Date added", field: "dateSaved"}
   ]
   const [data, setData] = useState([]); //table data
 
@@ -202,7 +198,7 @@ function App() {
             }       
           </div>
             <MaterialTable
-              title="User data from remote source"
+              title="Current Inventory"
               columns={columns}
               data={data}
               icons={tableIcons}
