@@ -11,7 +11,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import validator from "validator";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
   formContain: {

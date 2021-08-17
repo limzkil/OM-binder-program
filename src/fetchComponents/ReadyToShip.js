@@ -47,7 +47,7 @@ const api = axios.create({
   baseURL: `http://localhost:3000`
 })
 
-export default function WaitList() {
+export default function ReadyToShip() {
 
 
  
@@ -74,7 +74,7 @@ export default function WaitList() {
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => { 
-    api.get("/wait")
+    api.get("/ready")
         .then(res => {               
             setData(res.data)
          })
@@ -104,7 +104,7 @@ export default function WaitList() {
    
 
     if(errorList.length < 1){
-      api.patch("/wait/"+ newData._id, newData)
+      api.patch("/ready/"+ newData._id, newData)
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -147,7 +147,7 @@ export default function WaitList() {
     }
 
     if(errorList.length < 1){ //no error
-      api.post("/wait/save", newData)
+      api.post("/ready/save", newData)
       .then(res => {
         let dataToAdd = [...data];
         dataToAdd.push(newData);
@@ -176,7 +176,7 @@ export default function WaitList() {
 
     console.log(oldData)
     
-    api.delete("/wait/"+ oldData._id)
+    api.delete("/ready/"+ oldData._id)
       .then(res => {
         const dataDelete = [...data];
         const index = oldData.tableData.id;
@@ -208,7 +208,7 @@ export default function WaitList() {
             }       
           </div>
             <MaterialTable
-              title="WaitListed Requests"
+              title="Ready To Ship Requests"
               columns={columns}
               data={data}
               icons={tableIcons}

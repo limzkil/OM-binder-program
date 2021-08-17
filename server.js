@@ -10,6 +10,7 @@ const { Strategy } = require("passport-jwt");
 const app = express();
 
 const Binder = require("./Binder");
+const Create = require("./Schema")
 
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -143,8 +144,7 @@ app.post("/login", async (req, res, next) => {
   });
 });
 
-// Create a model for the readytoships collection that uses the formSchema
-const FormInput = mongoose.model("readytoships", formSchema);
+
 
 
 // Model for inventorys collection that uses the binderschema
@@ -195,6 +195,133 @@ app.patch("/binders/:binderIds", async (req, res) => {
 app.delete("/binders/:binderIds", async (req, res) => {
 try {
   const deleteById = await BinderInventory.deleteOne({ _id: req.params.binderIds });
+
+res.json(deleteById);
+
+} catch(err) {
+
+console.log('ERROR : ' + res.json({message : err}));
+
+}
+
+});
+
+//readytoship apis
+
+app.get("/ready", async (req, res) => {
+  let allRequests = await Create.find({});
+  res.send(allRequests);
+});
+
+
+app.post("/ready/save", async (req, res) => {
+  const ready = new Create({
+          email: req.body.emailSelf,
+          elseEmail: req.body.emailElse,
+          numberSelf: req.body.phone,
+          numberElse: req.body.elsePhone,
+          address: req.body.address,
+          county: req.body.county,
+          nameSelf: req.body.nameSelf,
+          nameElse: req.body.nameElse,
+          dob: req.body.dob,
+          size: req.body.size,
+          length: req.body.length,
+          color: req.body.color,
+  });
+
+  try {
+    await ready.save();
+
+    res.json(ready);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+
+// UPDATE : by ID
+
+app.patch("/ready/:readyIds", async (req, res) => {
+
+ 
+  id = req.params.readyIds
+
+ let update = await FormInput.updateOne({_id: id}, {dob: req.body.dob, phone: req.body.phone, address: req.body.address, name: req.body.name, email: req.body.email, county: req.body.county, size: req.body.size, color: req.body.color, length: req.body.length, quantity: req.body.quantity})
+
+ res.json(update)
+
+;
+});
+
+
+app.delete("/ready/:readyIds", async (req, res) => {
+try {
+  const deleteById = await FormInput.deleteOne({ _id: req.params.readyIds });
+
+res.json(deleteById);
+
+} catch(err) {
+
+console.log('ERROR : ' + res.json({message : err}));
+
+}
+
+});
+
+
+//WaitListed APIS
+
+app.get("/wait", async (req, res) => {
+  let allRequests = await waitListed.find({});
+  res.send(allRequests);
+});
+
+
+app.post("/wait/save", async (req, res) => {
+  const ready = new Create({
+          email: req.body.emailSelf,
+          elseEmail: req.body.emailElse,
+          numberSelf: req.body.phone,
+          numberElse: req.body.elsePhone,
+          address: req.body.address,
+          county: req.body.county,
+          nameSelf: req.body.nameSelf,
+          nameElse: req.body.nameElse,
+          dob: req.body.dob,
+          size: req.body.size,
+          length: req.body.length,
+          color: req.body.color,
+  });
+
+  try {
+    await ready.save();
+
+    res.json(ready);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+
+// UPDATE : by ID
+
+app.patch("/wait/:waitIds", async (req, res) => {
+
+ 
+  id = req.params.waitIds
+
+ let update = await FormInput.updateOne({_id: id}, {dob: req.body.dob, phone: req.body.phone, address: req.body.address, name: req.body.name, email: req.body.email, county: req.body.county, size: req.body.size, color: req.body.color, length: req.body.length, quantity: req.body.quantity})
+
+ res.json(update)
+
+;
+});
+
+
+app.delete("/wait/:waitIds", async (req, res) => {
+try {
+  const deleteById = await FormInput.deleteOne({ _id: req.params.waitIds });
 
 res.json(deleteById);
 
@@ -604,10 +731,6 @@ app.get("/binders", async (req, res) => {
   //send the inventory, right now just called email test
   let allInventory = await BinderInventory.find({});
   res.send(allInventory);
-});
-app.get("/requests", async (req, res) => {
-  let allRequests = await FormInput.find({});
-  res.send(allRequests);
 });
 
 app.get("/waitlist", async (req, res) => {
