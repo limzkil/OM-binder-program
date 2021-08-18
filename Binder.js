@@ -8,7 +8,7 @@ color : String,
 
 length : String,
 
-quantity: Number,
+quantity: String,
 
 dateSaved: {
 
