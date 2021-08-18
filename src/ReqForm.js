@@ -69,9 +69,6 @@ export default function ReqForm() {
 
   const [bindSize, setBindSize] = useState("");
 
-  const [noPref, setNoPref] = useState(false);
-  const [waitLength, setWaitLength] = useState(false);
-  const [waitColor, setWaitColor] = useState(false);
   const [waitLenCol, setWaitLenCol] = useState(false);
 
   const [bindLength, setBindLength] = useState("");
@@ -86,10 +83,12 @@ export default function ReqForm() {
   const [validNameElse, setValidNameElse] = useState(false);
   const [validElseEmail, setValidElseEmail] = useState(false);
   const [validElsePhone, setValidElsePhone] = useState(false);
+  const [validConsent, setValidConsent] = useState(false);
   const [validName, setValidName] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
+  const [validSize, setValidSize] = useState(false)
   const [isError, setIsError] = useState(true);
-const [submitState, setSubmitState] = useState(true)
+  const [submitState, setSubmitState] = useState(true);
   const style = useStyles();
   const handlePhone = (event) => {
     let phone = event.target.value;
@@ -98,6 +97,39 @@ const [submitState, setSubmitState] = useState(true)
       setValidPhone(true);
     } else {
       setValidPhone(false);
+    }
+  };
+  const handleSize = (event) => {
+    let size = event.target.value
+    setBindSize(size)
+    if(size === ""){
+      setValidSize(false)
+    } else {
+      setValidSize(true)
+    }
+  }
+  const handleSelfOrElse = (event) => {
+    let SoE = event.target.value;
+    setSelfOrElse(SoE);
+    if (SoE === true) {
+      setValidElsePhone(false);
+      setValidElseEmail(false);
+      setValidNameElse(false);
+      setValidConsent(false);
+    } else if (SoE === false) {
+      setValidElsePhone(true);
+      setValidElseEmail(true);
+      setValidNameElse(true);
+      setValidConsent(true);
+    }
+  };
+  const handleConsent = (event) => {
+    let consent = event.target.checked;
+    setMinorConsent(consent);
+    if (consent === true) {
+      setValidConsent(true);
+    } else {
+      setValidConsent(false);
     }
   };
   const handleElsePhone = (event) => {
@@ -174,6 +206,7 @@ const [submitState, setSubmitState] = useState(true)
   const handleSend = async (e) => {
     setSent(true);
     try {
+      console.log(bindColor + " " + bindLength)
       await fetch("http://localhost:5000/send_mail", {
         body: JSON.stringify({
           emailSelf: emailSelf,
@@ -186,8 +219,12 @@ const [submitState, setSubmitState] = useState(true)
           nameSelf: nameSelf,
           nameElse: nameElse,
           dob: birth,
-          bindLength: bindLength,
-          bindColor: bindColor,
+          bindLength: bindLength === "" ? "No preference" : bindLength,
+          bindColor: bindColor === "" ? "No preference" : bindColor,
+          willWait: waitLenCol,
+          moreInfo: moreInf,
+          yesSurvey: yesSurvey
+
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -278,7 +315,7 @@ const [submitState, setSubmitState] = useState(true)
                   <NativeSelect
                     id="selfOrElse"
                     value={selfOrElse}
-                    onChange={(e) => setSelfOrElse(e.target.value)}
+                    onChange={handleSelfOrElse}
                   >
                     <option value={false}>I am requesting for myself.</option>
                     <option value={true}>
@@ -297,7 +334,13 @@ const [submitState, setSubmitState] = useState(true)
                         control={
                           <Checkbox
                             checked={minorConsent}
-                            onChange={(e) => setMinorConsent(e.target.checked)}
+                            error={validConsent ? false : isError}
+                            helperTExt={
+                              !validConsent
+                                ? "Consent is required for this request"
+                                : null
+                            }
+                            onChange={handleConsent}
                           />
                         }
                         label="I have consent to make this request and ship it to the given address."
@@ -385,6 +428,12 @@ const [submitState, setSubmitState] = useState(true)
                   <NativeSelect
                     id="ageCheck"
                     value={ageCheck}
+                    error={ageCheck ? false : isError}
+                    helperText={
+                      !ageCheck
+                        ? "You must be between the ages of 14 and 22 to receive a binder"
+                        : null
+                    }
                     onChange={(e) => setAgeCheck(e.target.value)}
                   >
                     <option value={true}>Yes</option>
@@ -495,7 +544,9 @@ const [submitState, setSubmitState] = useState(true)
                     id="bindSize"
                     name="size"
                     value={bindSize}
-                    onChange={(e) => setBindSize(e.target.value)}
+                    error={validSize ? false : isError}
+                    helperTExt={!validSize ? "Please Select a Size" : null}
+                    onChange={handleSize}
                   >
                     <option value="">Select size</option>
                     <option value={"X-small"}>X-small</option>
@@ -509,12 +560,10 @@ const [submitState, setSubmitState] = useState(true)
                     <option value={"5X-large"}>5X-large</option>
                   </NativeSelect>
                 </Grid>
-
-                <InputLabel className={style.formItemContain}>
+                {/* <InputLabel className={style.formItemContain}>
                   Please check ONE box regarding your preferences.
-                </InputLabel>
-
-                <Grid item xs={12} className={style.formItemContain}>
+                </InputLabel> */}
+                {/* <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -524,44 +573,7 @@ const [submitState, setSubmitState] = useState(true)
                     }
                     label="I have no preference on color or length."
                   />
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitLength}
-                        onChange={(e) => setWaitLength(e.target.checked)}
-                      />
-                    }
-                    label="I have preference on length and I am willing to wait."
-                  />
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitColor}
-                        onChange={(e) => setWaitColor(e.target.checked)}
-                      />
-                    }
-                    label="I have preference on color and I am willing to wait."
-                  />
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitLenCol}
-                        onChange={(e) => setWaitLenCol(e.target.checked)}
-                      />
-                    }
-                    label="I have preference on color and length and I am willing to wait."
-                  />
-                </Grid>
-
+                </Grid> */}
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your preferred length?</InputLabel>
                   <NativeSelect
@@ -571,11 +583,11 @@ const [submitState, setSubmitState] = useState(true)
                     onChange={(e) => setBindLength(e.target.value)}
                   >
                     <option value="">Select length</option>
+                    <option value={"No Preference"}>No preference</option>
                     <option value={"Short"}>Short</option>
                     <option value={"Long"}>Long</option>
                   </NativeSelect>
                 </Grid>
-
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your preferred color?</InputLabel>
                   <NativeSelect
@@ -585,6 +597,7 @@ const [submitState, setSubmitState] = useState(true)
                     onChange={(e) => setBindColor(e.target.value)}
                   >
                     <option value="">Select color</option>
+                    <option value={"No Preference"}>No preference</option>
                     <option value={"Red"}>Red</option>
                     <option value={"Purple"}>Purple</option>
                     <option value={"Green"}>Green</option>
@@ -595,6 +608,17 @@ const [submitState, setSubmitState] = useState(true)
                     <option value={"Grey"}>Grey</option>
                     <option value={"White"}>White</option>
                   </NativeSelect>
+                </Grid>
+                <Grid item xs={12} className={style.formItemContain}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={waitLenCol}
+                        onChange={(e) => setWaitLenCol(e.target.checked)}
+                      />
+                    }
+                    label="I have a strong preference on color and/or length and I am willing to wait."
+                  />
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
@@ -644,7 +668,20 @@ const [submitState, setSubmitState] = useState(true)
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                  disabled={validEmail && validDate && validRes && validNameElse && validElseEmail && validElsePhone && validName && validPhone ? false : true}
+                  disabled={
+                    validSize &&
+                    validConsent &&
+                    validEmail &&
+                    validDate &&
+                    validRes &&
+                    validNameElse &&
+                    validElseEmail &&
+                    validElsePhone &&
+                    validName &&
+                    validPhone
+                      ? false
+                      : true
+                  }
                 >
                   Submit
                 </Button>
