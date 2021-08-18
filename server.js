@@ -148,23 +148,6 @@ app.post("/login", async (req, res, next) => {
   });
 });
 
-//set up a schema to test
-const formSchema = new mongoose.Schema({
-  county: String,
-  elseEmail: String,
-  elsePhone: Number,
-  nameSelf: String,
-  nameElse: String,
-  dob: String,
-  email: String,
-  phone: Number,
-  address: String,
-  size: String,
-  length: String,
-  color: String,
-  date: Date,
-});
-
 // Model for inventorys collection that uses the binderschema
 const BinderInventory = mongoose.model(`inventorys`, Binder);
 
