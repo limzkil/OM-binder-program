@@ -44,7 +44,7 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:5001`
+  baseURL: `http://localhost:3000`
 })
 
 export default function Waitlist() {
@@ -201,7 +201,7 @@ export default function Waitlist() {
                       return <div key={i}>{msg}</div>
                   })}
               </Alert>
-            }       
+            }
           </div>
             <MaterialTable
               title="WaitListed Requests"
