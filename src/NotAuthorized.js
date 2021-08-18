@@ -2,7 +2,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import React from "react"
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",

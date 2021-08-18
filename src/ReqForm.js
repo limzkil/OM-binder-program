@@ -11,7 +11,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import validator from "validator";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const useStyles = makeStyles({
   formContain: {
@@ -83,10 +83,12 @@ export default function ReqForm() {
   const [validNameElse, setValidNameElse] = useState(false);
   const [validElseEmail, setValidElseEmail] = useState(false);
   const [validElsePhone, setValidElsePhone] = useState(false);
+  const [validConsent, setValidConsent] = useState(false);
   const [validName, setValidName] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
+  const [validSize, setValidSize] = useState(false)
   const [isError, setIsError] = useState(true);
-  const [submitState, setSubmitState] = useState(true)
+  const [submitState, setSubmitState] = useState(true);
   const style = useStyles();
   const handlePhone = (event) => {
     let phone = event.target.value;
@@ -95,6 +97,39 @@ export default function ReqForm() {
       setValidPhone(true);
     } else {
       setValidPhone(false);
+    }
+  };
+  const handleSize = (event) => {
+    let size = event.target.value
+    setBindSize(size)
+    if(size === ""){
+      setValidSize(false)
+    } else {
+      setValidSize(true)
+    }
+  }
+  const handleSelfOrElse = (event) => {
+    let SoE = event.target.value;
+    setSelfOrElse(SoE);
+    if (SoE === true) {
+      setValidElsePhone(false);
+      setValidElseEmail(false);
+      setValidNameElse(false);
+      setValidConsent(false);
+    } else if (SoE === false) {
+      setValidElsePhone(true);
+      setValidElseEmail(true);
+      setValidNameElse(true);
+      setValidConsent(true);
+    }
+  };
+  const handleConsent = (event) => {
+    let consent = event.target.checked;
+    setMinorConsent(consent);
+    if (consent === true) {
+      setValidConsent(true);
+    } else {
+      setValidConsent(false);
     }
   };
   const handleElsePhone = (event) => {
@@ -280,7 +315,7 @@ export default function ReqForm() {
                   <NativeSelect
                     id="selfOrElse"
                     value={selfOrElse}
-                    onChange={(e) => setSelfOrElse(e.target.value)}
+                    onChange={handleSelfOrElse}
                   >
                     <option value={false}>I am requesting for myself.</option>
                     <option value={true}>
@@ -299,7 +334,13 @@ export default function ReqForm() {
                         control={
                           <Checkbox
                             checked={minorConsent}
-                            onChange={(e) => setMinorConsent(e.target.checked)}
+                            error={validConsent ? false : isError}
+                            helperTExt={
+                              !validConsent
+                                ? "Consent is required for this request"
+                                : null
+                            }
+                            onChange={handleConsent}
                           />
                         }
                         label="I have consent to make this request and ship it to the given address."
@@ -387,6 +428,12 @@ export default function ReqForm() {
                   <NativeSelect
                     id="ageCheck"
                     value={ageCheck}
+                    error={ageCheck ? false : isError}
+                    helperText={
+                      !ageCheck
+                        ? "You must be between the ages of 14 and 22 to receive a binder"
+                        : null
+                    }
                     onChange={(e) => setAgeCheck(e.target.value)}
                   >
                     <option value={true}>Yes</option>
@@ -497,7 +544,9 @@ export default function ReqForm() {
                     id="bindSize"
                     name="size"
                     value={bindSize}
-                    onChange={(e) => setBindSize(e.target.value)}
+                    error={validSize ? false : isError}
+                    helperTExt={!validSize ? "Please Select a Size" : null}
+                    onChange={handleSize}
                   >
                     <option value="">Select size</option>
                     <option value={"X-small"}>X-small</option>
@@ -619,7 +668,20 @@ export default function ReqForm() {
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                  //disabled={validEmail && validDate && validRes && validNameElse && validElseEmail && validElsePhone && validName && validPhone ? false : true}
+                  disabled={
+                    validSize &&
+                    validConsent &&
+                    validEmail &&
+                    validDate &&
+                    validRes &&
+                    validNameElse &&
+                    validElseEmail &&
+                    validElsePhone &&
+                    validName &&
+                    validPhone
+                      ? false
+                      : true
+                  }
                 >
                   Submit
                 </Button>

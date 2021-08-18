@@ -2,7 +2,7 @@ import Grid from "@material-ui/core/Grid";
 import Image from "material-ui-image";
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
-
+import React from "react";
 import OMlogo from "../img/OMlogo.png";
 
 
