@@ -1,18 +1,21 @@
 const mongoose = require("mongoose");
  
         const CreateSchema = new mongoose.Schema({
-        email: String,
-          elseEmail: String,
-          numberSelf: Number,
-          numberElse: Number,
-          address: String,
           county: String,
+          elseEmail: String,
+          elsePhone: Number,
           nameSelf: String,
           nameElse: String,
-          dob: Date,
+          dob: String,
+          email: String,
+          phone: Number,
+          address: String,
           size: String,
           length: String,
-          color: String
+          color: String,
+          willWait: Boolean,
+          moreInfo: String,
+          date: Date,
         })
 
-        module.exports = mongoose.model('readytoships', CreateSchema);
+        module.exports = CreateSchema
