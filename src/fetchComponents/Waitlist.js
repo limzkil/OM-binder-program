@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
-
+import { makeStyles } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -21,7 +21,12 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios'
-
+const useStyles = makeStyles({
+  details: {
+    fontFamily: "Oswald",
+    textAlign: "center",
+  },
+});
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -50,7 +55,7 @@ const api = axios.create({
 export default function Waitlist() {
 
 
- 
+ const style= useStyles()
 
   var columns = [
     {title: "id", field: "id", hidden: true},
@@ -226,6 +231,14 @@ export default function Waitlist() {
               options={{
                 exportButton: true,
               }}
+              detailPanel={[
+                {
+                  tooltip: "Show Comments",
+                  render: (data) => {
+                    return <div className={style.details}>{data.moreInfo}</div>;
+                  },
+                },
+              ]}
             />
     </>
   );

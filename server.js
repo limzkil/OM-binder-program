@@ -340,6 +340,36 @@ app.delete("/wait/:waitIds", async (req, res) => {
   }
 });
 
+//API Route for moving from Inventory to Processed
+
+app.post("/binders/move", async (req, res) => {
+  BinderInventory.findOne({id: req.body._id})
+    .then(doc => {
+        console.log(doc);
+
+        // Inserting the doc in the destination collection
+        ProcessedInventory.insertMany([doc])
+            .then(d => {
+                console.log("New Entry Saved");
+            })
+            .catch(error => {
+                console.log(error);
+            })
+  
+        // Removing doc from the first collection
+        BinderInventory.deleteOne({ id: req.body._id })
+            .then(d => {
+                console.log("Removed Old Entry")
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    })
+    .catch(error => {
+        console.log(error);
+})
+});
+
 //API Route for Sending Emails
 
 app.post("/send_mail", async (req, res) => {

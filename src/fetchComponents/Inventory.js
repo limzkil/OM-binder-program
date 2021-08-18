@@ -21,6 +21,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 
 const tableIcons = {
@@ -213,6 +214,15 @@ function App() {
               options={{
                 exportButton: true,
               }}
+              actions={[
+                {
+                  icon: ArrowForwardIcon,
+                  tooltip: 'Move to Processed',
+                  onClick: (event, rowData) => {
+                    api.post("/binders/move",{ size: rowData.size, length: rowData.length, color: rowData.color, quantity: rowData.quantity })
+                    alert("Move Successful")}
+                }
+              ]}
             />
 
     </div>
