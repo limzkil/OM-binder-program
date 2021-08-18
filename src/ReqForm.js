@@ -76,7 +76,6 @@ export default function ReqForm() {
   const [moreInf, setMoreInf] = useState("");
 
   const [yesConfirm, setYesConfirm] = useState(false);
-  const [yesSurvey, setYesSurvey] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   const [validDate, setValidDate] = useState(false);
   const [validRes, setValidRes] = useState(false);
