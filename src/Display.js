@@ -19,7 +19,7 @@ import Grid from '@material-ui/core/Grid';
 
 //components to pass in fetched data
 import Inventory from "./fetchComponents/Inventory";
-import Requests from "./fetchComponents/Requests";
+import ReadyToShip from "./fetchComponents/ReadyToShip";
 import WaitList from "./fetchComponents/WaitList";
 
 //header component
@@ -36,13 +36,13 @@ const Display = (props) => {
 
   const tabNameToIndex = {
     0: "inventory",
-    1: "requests",
+    1: "readytoship",
     2: "waitlist"
   };
 
   const indexToTabName = {
     inventory: 0,
-    requests: 1,
+    readytoship: 1,
     waitlist: 2
   };
 
@@ -66,7 +66,7 @@ const Display = (props) => {
       }
     }
     if (inventoryData.length === 0) {
-      fetch("/inventory")
+      fetch("/binders")
         .then((response) => response.json())
 
         .then((result) => {
@@ -75,7 +75,7 @@ const Display = (props) => {
     }
 
     if (requestData.length === 0) {
-      fetch("/requests")
+      fetch("/ready")
         .then((response) => response.json())
         .then((result) => {
           setRequestData(result);
@@ -83,7 +83,7 @@ const Display = (props) => {
     }
 
     if(waitListData.length === 0){
-      fetch("/waitlist")
+      fetch("/wait")
         .then(res => res.json())
         .then(setWaitListData)
     }
@@ -105,7 +105,7 @@ if(isAuthenticated)
       <AppBar position="static">
         <Tabs value={tabSelect} onChange={handleTab}>
           <Tab label="Inventory" />
-          <Tab label="Binder Requests" />
+          <Tab label="Ready to Ship" />
           <Tab label="Wait List" />
         </Tabs>
       </AppBar>
@@ -113,9 +113,9 @@ if(isAuthenticated)
       </Grid>
       </Grid>
 
-      {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
-      {tabSelect === 1 && <Requests requestData={requestData} />}
-      {tabSelect === 2 && <WaitList waitListData={waitListData} />}
+      {tabSelect === 0 && <Inventory />}
+      {tabSelect === 1 && <ReadyToShip />}
+      {tabSelect === 2 && <WaitList />}
     </>
   )}else{
     return(
