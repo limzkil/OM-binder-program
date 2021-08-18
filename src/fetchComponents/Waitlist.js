@@ -227,6 +227,9 @@ export default function WaitList() {
                     handleRowDelete(oldData, resolve)
                   }),
               }}
+              options={{
+                exportButton: true,
+              }}
             />
           </Grid>
           <Grid item xs={3}></Grid>
