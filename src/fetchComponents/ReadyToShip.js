@@ -227,6 +227,23 @@ export default function ReadyToShip() {
     options={{
       exportButton: true,
     }}
+    detailPanel={[
+      { tooltip: "Show Comments",
+      render: data => {
+        return(
+          <div
+          style= {{fontSize: 100,
+                  textAlign: 'center',
+                  color: 'white',
+                  backgroundColor: '#E53935',}}
+          >
+            {data.moreInfo}
+          </div>
+        )
+      }
+    }
+     
+    ]}
             />
 
     
