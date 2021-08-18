@@ -11,6 +11,7 @@ const app = express();
 
 const Binder = require("./Binder");
 const Create = require("./Schema");
+const { create } = require("./Schema");
 
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -137,9 +138,8 @@ const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 
 // Model for waitListeds that uses the formScehma
 const waitListed = mongoose.model("waitListeds", Create);
-// Model for readytoships that uses formSchema
-const FormInput = mongoose.model("readytoships", Create);
 
+const FormInput = mongoose.model("readytoships", Create);
 //Binder Inventory APIs
 
 app.get("/binders", async (req, res) => {
@@ -260,8 +260,8 @@ app.delete("/ready/:readyIds", async (req, res) => {
 
     res.json(deleteById);
   } catch (err) {
-    console.log("ERROR : " + res.json({ message: err }));
-  }
+    console.log("ERROR : " + res.json({ message: err }))};
+    // Look in waitListed for newly added binder(changedDocument)
 });
 
 //WaitListed API routes
