@@ -213,6 +213,7 @@ app.post("/ready/save", async (req, res) => {
     numberElse: req.body.elsePhone,
     address: req.body.address,
     county: req.body.county,
+    progSource: req.body.progSource,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
@@ -244,6 +245,7 @@ app.patch("/ready/:readyIds", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       county: req.body.county,
+      progSource: req.body.progSource,
       size: req.body.size,
       color: req.body.color,
       length: req.body.length,
@@ -285,6 +287,7 @@ app.post("/wait/save", async (req, res) => {
     numberElse: req.body.elsePhone,
     address: req.body.address,
     county: req.body.county,
+    progSource: req.body.progSource,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
@@ -316,6 +319,7 @@ app.patch("/wait/:waitIds", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       county: req.body.county,
+      progSource: req.body.progSource,
       size: req.body.size,
       color: req.body.color,
       length: req.body.length,
@@ -404,69 +408,7 @@ app.post("/send_mail", async (req, res) => {
     }
     // if they've not selected they want to wait
   } else if (req.body.willWait === false) {
-    // first check to see if they have any preferred color/length
-    if (
-      req.body.bindColor !== "No preference" &&
-      req.body.bindLength !== "No preference"
-    ) {
-      // query binder inventory for requested size, length, and color with a quantity greater than 0
-      binderInventory = await BinderInventory.findOne({
-        size: { $in: [req.body.size] },
-        length: { $in: [req.body.bindLength] },
-        color: { $in: [req.body.bindColor] },
-        quantity: { $gte: 1 },
-      });
-      // if nothing matches exact params, search by just size requested with quantity greater than 0
-      if (binderInventory === null) {
-        binderInventory = await BinderInventory.find({
-          size: { $in: [req.body.size] },
-          quantity: { $gte: 1 },
-          // sort by quantity field with largest at the top
-        }).sort({ quantity: -1 });
-        // grab binder with highest quantity
-        binderInventory = binderInventory[0];
-      }
-      // check if they've only selected a preferred color
-    } else if (req.body.bindColor !== "No preference") {
-      // query binder inventory for requested size AND color with quantity greater than 0
-      binderInventory = await BinderInventory.find({
-        size: { $in: [req.body.size] },
-        color: { $in: [req.body.bindColor] },
-        quantity: { $gte: 1 },
-        // sort by quantity with highest at the top
-      }).sort({ quantity: -1 });
-      // if nothing matches previous query
-      if (binderInventory === null) {
-        // search by just requested size and quantity greater than 0
-        binderInventory = await BinderInventory.find({
-          size: { $in: [req.body.size] },
-          quantity: { $gte: 1 },
-          // sort by quantity with highest at the top
-        }).sort({ quantity: -1 });
-      } // grab binder at index 0 for highest quantity
-      binderInventory = binderInventory[0];
-      // check to see if they have a preferred length
-    } else if (req.body.bindLength !== "No preference") {
-      // query binder inventory for requested size and length with quantity greater than 0
-      binderInventory = await BinderInventory.find({
-        size: { $in: [req.body.size] },
-        length: { $in: [req.body.bindLength] },
-        quantity: { $gte: 1 },
-        // sort returned results so highest quantity is first
-      }).sort({ quantity: -1 });
-      // if previous query returned no results
-      if (binderInventory === null) {
-        // search just by size and quantity greater than 0
-        binderInventory = await BinderInventory.find({
-          size: { $in: [req.body.size] },
-          quantity: { $gte: 1 },
-          // sort returned results so highest quantity is first
-        }).sort({ quantity: -1 });
-      }
-      // grab binder at index 0 for highest quantity
-      binderInventory = binderInventory[0];
-    } else {
-      // if they have no preferences and just selected size, query inventory just by size
+      // if they have no preferences, query inventory just by size
       binderInventory = await BinderInventory.find({
         size: { $in: [req.body.size] },
         quantity: { $gte: 1 },
@@ -474,7 +416,6 @@ app.post("/send_mail", async (req, res) => {
       }).sort({ quantity: -1 });
       // grab binder at index 0 for highest quantity
       binderInventory = binderInventory[0];
-    }
   }
   // If the user types into "email" texbox
       if (req.body.emailSelf) {
@@ -482,6 +423,7 @@ app.post("/send_mail", async (req, res) => {
         if (binderInventory === null) {
           let newEntry = waitListed({
             county: req.body.county,
+            progSource: req.body.progSource,
             nameSelf: req.body.nameSelf,
             dob: req.body.dob,
             email: req.body.emailSelf,
@@ -492,7 +434,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
           // Save that entry
@@ -523,6 +464,7 @@ app.post("/send_mail", async (req, res) => {
         else if (binderInventory.quantity === 0) {
           let newEntry = waitListed({
             county: req.body.county,
+            progSource: req.body.progSource,
             nameSelf: req.body.nameSelf,
             dob: req.body.dob,
             email: req.body.emailSelf,
@@ -533,7 +475,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
           // Save that entry
@@ -564,6 +505,7 @@ app.post("/send_mail", async (req, res) => {
         } else if (binderInventory.quantity > 0) {
           let newEntry = FormInput({
             county: req.body.county,
+            progSource: req.body.progSource,
             nameSelf: req.body.nameSelf,
             dob: req.body.dob,
             email: req.body.emailSelf,
@@ -574,7 +516,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
 
@@ -643,6 +584,7 @@ app.post("/send_mail", async (req, res) => {
         if (binderInventory === null) {
           let newEntry = waitListed({
             county: req.body.county,
+            progSource: req.body.progSource,
             nameSelf: req.body.nameSelf,
             dob: req.body.dob,
             email: req.body.emailSelf,
@@ -653,7 +595,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
           // Save that entry
@@ -683,6 +624,7 @@ app.post("/send_mail", async (req, res) => {
         } else if (binderInventory === null) {
           let newEntry = waitListed({
             county: req.body.county,
+            progSource: req.body.progSource,
             nameElse: req.body.nameElse,
             dob: req.body.dob,
             elseEmail: req.body.emailElse,
@@ -693,7 +635,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
           await newEntry.save();
@@ -721,6 +662,7 @@ app.post("/send_mail", async (req, res) => {
         } else if (binderInventory.quantity > 0) {
           let newEntry = FormInput({
             county: req.body.county,
+            progSource: req.body.progSource,
             nameElse: req.body.nameElse,
             dob: req.body.dob,
             elseEmail: req.body.emailElse,
@@ -731,7 +673,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
 
@@ -925,7 +866,6 @@ BinderInventory.watch().on("change", async (change) => {
        
                 <p>All the best, Shadman</p>
                  </div >
-              
             `,
             });
           }

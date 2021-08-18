@@ -215,6 +215,7 @@ export default function ReqForm() {
           addressSelf: addressSelf,
           size: bindSize,
           county: resMaine,
+          progSource: progSource,
           nameSelf: nameSelf,
           nameElse: nameElse,
           dob: birth,
@@ -222,7 +223,6 @@ export default function ReqForm() {
           bindColor: bindColor === "" ? "No preference" : bindColor,
           willWait: waitLenCol,
           moreInfo: moreInf,
-          /* yesSurvey: yesSurvey */
 
         }),
         headers: { "content-type": "application/json" },
@@ -306,6 +306,36 @@ export default function ReqForm() {
                     <option value={"York"}>York</option>
                   </NativeSelect>
                 </Grid>
+
+                <Grid item xs={12} className={style.formItemContain}>
+                      <InputLabel>
+                        Where did you hear about the Binder Donation program?
+                      </InputLabel>
+                      <NativeSelect
+                        id="progSource"
+                        name="progSource"
+                        value={progSource}
+                        onChange={(e) => setProgSource(e.target.value)}
+                      >
+                        <option value="">Select option</option>
+                        <option value={"Facebook"}>Facebook</option>
+                        <option value={"Instagram"}>Instagram</option>
+                        <option value={"Word of mouth"}>Word of mouth</option>
+                        <option value={"GSTA"}>GSTA</option>
+                        <option value={"Teacher/School Advisor"}>
+                        Teacher/School Advisor
+                        </option>
+                        <option value={"Friend or family member"}>
+                          Friend or family member
+                        </option>
+                        <option value={"Community member"}>
+                          Community member
+                        </option>
+                        <option value={"Other"}>
+                          Other
+                        </option>
+                      </NativeSelect>
+                    </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
@@ -401,15 +431,14 @@ export default function ReqForm() {
                         onChange={(e) => setRelMinor(e.target.value)}
                       >
                         <option value="">Select relationship</option>
-                        <option value={"Parent"}>Parent</option>
-                        <option value={"Relative"}>Relative</option>
-                        <option value={"Friend"}>Friend</option>
-                        <option value={"Mentor"}>Mentor</option>
-                        <option value={"School employee"}>
-                          School employee
+                        <option value={"Parent or guardian"}>Parent or guardian</option>
+                        <option value={"Teacher or other school staff"}>Teacher or other school staff</option>
+                        <option value={"Sibling or friend"}>Sibling or friend</option>
+                        <option value={"Counselor, therapist or other medical staff"}>
+                        Counselor, therapist or other medical staff
                         </option>
-                        <option value={"Other trusted person"}>
-                          Other trusted person
+                        <option value={"Other"}>
+                          Other
                         </option>
                       </NativeSelect>
                     </Grid>
@@ -421,8 +450,7 @@ export default function ReqForm() {
                 </Typography>
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                    Are you or the person you are requesting for between the ages 14 and
-                    22?
+                  "Are you, or the person you are requesting the binder for, between the ages of 14 & 22"
                   </InputLabel>
                   <NativeSelect
                     id="ageCheck"
@@ -430,7 +458,7 @@ export default function ReqForm() {
                     error={ageCheck ? false : isError}
                     helperText={
                       !ageCheck
-                        ? "You must be between the ages of 14 and 22 to receive a binder"
+                        ? "You must be between the ages of 14 & 22 to receive a binder"
                         : null
                     }
                     onChange={(e) => setAgeCheck(e.target.value)}
@@ -442,8 +470,7 @@ export default function ReqForm() {
 
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                    Is the first binder owned by you or the person you are
-                    requesting for?
+                  Will this be the first binder that you, or the person you're requesting for, have owned?
                   </InputLabel>
                   <NativeSelect
                     id="isFirstBind"
@@ -533,10 +560,9 @@ export default function ReqForm() {
                         onChange={(e) => setYesMeasure(e.target.checked)}
                       />
                     }
-                    label="I have measured the binder size according to the FAQ."
+                    label="I have measured myself for the correct sized binder."
                   />
                 </Grid>
-
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your size?</InputLabel>
                   <NativeSelect
@@ -621,7 +647,6 @@ export default function ReqForm() {
                     onChange={(e) => setMoreInf(e.target.value)}
                   />
                 </Grid>
-
                 <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
@@ -633,39 +658,26 @@ export default function ReqForm() {
                     label="I am confirming I have double checked the given information."
                   />
                 </Grid>
-
-               {/*  <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={yesSurvey}
-                        onChange={(e) => setYesSurvey(e.target.checked)}
-                      />
-                    }
-                    label="I am willing to complete a short survey after receiving my binder."
-                  />
-                </Grid> */}
-
                 <Button
                   color="primary"
                   variant="contained"
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                  // disabled={
-                  //   validSize &&
-                  //   validConsent &&
-                  //   validEmail &&
-                  //   validDate &&
-                  //   validRes &&
-                  //   validNameElse &&
-                  //   validElseEmail &&
-                  //   validElsePhone &&
-                  //   validName &&
-                  //   validPhone
-                  //     ? false
-                  //     : true
-                  // }
+                  disabled={
+                    validSize &&
+                    validConsent &&
+                    validEmail &&
+                    validDate &&
+                    validRes &&
+                    validNameElse &&
+                    validElseEmail &&
+                    validElsePhone &&
+                    validName &&
+                    validPhone
+                      ? false
+                      : true
+                  }
                 >
                   Submit
                 </Button>

@@ -55,7 +55,7 @@ function App() {
     {title: "Color", field: "color"},
     {title: "Length", field: "length"},
     {title: "Quantity", field: "quantity"},
-    {title: "Date added", field: "dateSaved"}
+    {title: "Date added", field: "dateSaved", editable: "never"}
   ]
   const [data, setData] = useState([]); //table data
 

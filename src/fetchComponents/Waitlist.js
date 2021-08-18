@@ -52,7 +52,7 @@ const api = axios.create({
   baseURL: `http://localhost:3000`
 })
 
-export default function WaitList() {
+export default function Waitlist() {
 
 
  const style= useStyles()
@@ -206,7 +206,7 @@ export default function WaitList() {
                       return <div key={i}>{msg}</div>
                   })}
               </Alert>
-            }       
+            }
           </div>
             <MaterialTable
               title="WaitListed Requests"
