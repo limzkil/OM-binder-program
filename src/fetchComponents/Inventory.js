@@ -44,7 +44,7 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:3000`
+  baseURL: `http://localhost:5001`
 })
 
 function App() {
@@ -157,10 +157,7 @@ function App() {
       resolve()
     }
 
-    
   }
-
-  
 
   const handleRowDelete = (oldData, resolve) => {
 
