@@ -84,8 +84,10 @@ const Display = (props) => {
 
     if(waitListData.length === 0){
       fetch("/wait")
-        .then(res => res.json())
-        .then(setWaitListData)
+      .then((response) => response.json())
+      .then((result) => {
+        setWaitListData(result);
+      });
     }
 
   });

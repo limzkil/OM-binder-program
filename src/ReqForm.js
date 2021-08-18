@@ -209,10 +209,10 @@ export default function ReqForm() {
       await fetch("http://localhost:5000/send_mail", {
         body: JSON.stringify({
           emailSelf: emailSelf,
-          elseEmail: emailElse,
+          emailElse: emailElse,
           numberSelf: numberSelf,
           numberElse: numberElse,
-          addressSelf: addressSelf,
+          address: addressSelf,
           size: bindSize,
           county: resMaine,
           progSource: progSource,
