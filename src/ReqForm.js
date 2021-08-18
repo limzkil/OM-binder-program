@@ -76,7 +76,6 @@ export default function ReqForm() {
   const [moreInf, setMoreInf] = useState("");
 
   const [yesConfirm, setYesConfirm] = useState(false);
-  const [yesSurvey, setYesSurvey] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   const [validDate, setValidDate] = useState(false);
   const [validRes, setValidRes] = useState(false);
@@ -223,7 +222,6 @@ export default function ReqForm() {
           bindColor: bindColor === "" ? "No preference" : bindColor,
           willWait: waitLenCol,
           moreInfo: moreInf,
-          yesSurvey: yesSurvey
 
         }),
         headers: { "content-type": "application/json" },
@@ -537,7 +535,6 @@ export default function ReqForm() {
                     label="I have measured the binder size according to the FAQ."
                   />
                 </Grid>
-
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your size?</InputLabel>
                   <NativeSelect
@@ -622,7 +619,6 @@ export default function ReqForm() {
                     onChange={(e) => setMoreInf(e.target.value)}
                   />
                 </Grid>
-
                 <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
@@ -634,19 +630,6 @@ export default function ReqForm() {
                     label="I am confirming I have double checked the given information."
                   />
                 </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={yesSurvey}
-                        onChange={(e) => setYesSurvey(e.target.checked)}
-                      />
-                    }
-                    label="I am willing to complete a short survey after receiving my binder."
-                  />
-                </Grid>
-
                 <Button
                   color="primary"
                   variant="contained"
