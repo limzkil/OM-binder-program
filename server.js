@@ -726,7 +726,6 @@ app.post("/send_mail", async (req, res) => {
             color: req.body.bindColor,
             willWait: req.body.willWait,
             moreInfo: req.body.moreInfo,
-            yesSurvey: req.body.yesSurvey,
             date: Date.now(),
           });
 
