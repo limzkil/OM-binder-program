@@ -785,7 +785,9 @@ app.post("/send_mail", async (req, res) => {
 });
 
 // post request for moving binder from "requested" to "shipped"
-app.post("/confirmSent", async (req, res) => {});
+app.post("/confirmSent", async (req, res) => {
+  
+});
 
 //app.get for the fetch request
 app.get("/inventory", async (req, res) => {

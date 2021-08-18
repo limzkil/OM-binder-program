@@ -122,7 +122,6 @@ if(isAuthenticated)
       <NotAuthorized />
     )
   }
-  
 };
 
 export default Display;
