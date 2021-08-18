@@ -559,21 +559,18 @@ export default function ReqForm() {
                     <option value={"5X-large"}>5X-large</option>
                   </NativeSelect>
                 </Grid>
-                {/* <InputLabel className={style.formItemContain}>
-                  Please check ONE box regarding your preferences.
-                </InputLabel> */}
-                {/* <Grid item xs={12} className={style.formItemContain}>
+                <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={noPref}
-                        onChange={(e) => setNoPref(e.target.checked)}
+                        checked={waitLenCol}
+                        onChange={(e) => setWaitLenCol(e.target.checked)}
                       />
                     }
-                    label="I have no preference on color or length."
+                    label="I have a strong preference on color and/or length and I am willing to wait."
                   />
-                </Grid> */}
-                <Grid item xs={12} className={style.formItemContain}>
+                </Grid>
+                {waitLenCol ? (<><Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your preferred length?</InputLabel>
                   <NativeSelect
                     id="bindLength"
@@ -607,19 +604,7 @@ export default function ReqForm() {
                     <option value={"Grey"}>Grey</option>
                     <option value={"White"}>White</option>
                   </NativeSelect>
-                </Grid>
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitLenCol}
-                        onChange={(e) => setWaitLenCol(e.target.checked)}
-                      />
-                    }
-                    label="I have a strong preference on color and/or length and I am willing to wait."
-                  />
-                </Grid>
-
+                </Grid></>) : null}
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
                     Any additional information regarding this request?

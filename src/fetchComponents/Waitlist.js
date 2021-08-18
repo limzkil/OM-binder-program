@@ -193,11 +193,7 @@ export default function WaitList() {
 
 
   return (
-    <div className="App">
-      
-      <Grid container spacing={1}>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
+  <>
           <div>
             {iserror && 
               <Alert severity="error">
@@ -231,10 +227,7 @@ export default function WaitList() {
                 exportButton: true,
               }}
             />
-          </Grid>
-          <Grid item xs={3}></Grid>
-        </Grid>
-    </div>
+    </>
   );
 }
 
