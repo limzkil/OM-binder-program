@@ -69,9 +69,6 @@ export default function ReqForm() {
 
   const [bindSize, setBindSize] = useState("");
 
-  const [noPref, setNoPref] = useState(false);
-  const [waitLength, setWaitLength] = useState(false);
-  const [waitColor, setWaitColor] = useState(false);
   const [waitLenCol, setWaitLenCol] = useState(false);
 
   const [bindLength, setBindLength] = useState("");
@@ -209,6 +206,7 @@ export default function ReqForm() {
   const handleSend = async (e) => {
     setSent(true);
     try {
+      console.log(bindColor + " " + bindLength)
       await fetch("http://localhost:5000/send_mail", {
         body: JSON.stringify({
           emailSelf: emailSelf,
@@ -221,8 +219,12 @@ export default function ReqForm() {
           nameSelf: nameSelf,
           nameElse: nameElse,
           dob: birth,
-          bindLength: bindLength,
-          bindColor: bindColor,
+          bindLength: bindLength === "" ? "No preference" : bindLength,
+          bindColor: bindColor === "" ? "No preference" : bindColor,
+          willWait: waitLenCol,
+          moreInfo: moreInf,
+          yesSurvey: yesSurvey
+
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -558,12 +560,10 @@ export default function ReqForm() {
                     <option value={"5X-large"}>5X-large</option>
                   </NativeSelect>
                 </Grid>
-
-                <InputLabel className={style.formItemContain}>
+                {/* <InputLabel className={style.formItemContain}>
                   Please check ONE box regarding your preferences.
-                </InputLabel>
-
-                <Grid item xs={12} className={style.formItemContain}>
+                </InputLabel> */}
+                {/* <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -573,44 +573,7 @@ export default function ReqForm() {
                     }
                     label="I have no preference on color or length."
                   />
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitLength}
-                        onChange={(e) => setWaitLength(e.target.checked)}
-                      />
-                    }
-                    label="I have preference on length and I am willing to wait."
-                  />
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitColor}
-                        onChange={(e) => setWaitColor(e.target.checked)}
-                      />
-                    }
-                    label="I have preference on color and I am willing to wait."
-                  />
-                </Grid>
-
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitLenCol}
-                        onChange={(e) => setWaitLenCol(e.target.checked)}
-                      />
-                    }
-                    label="I have preference on color and length and I am willing to wait."
-                  />
-                </Grid>
-
+                </Grid> */}
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your preferred length?</InputLabel>
                   <NativeSelect
@@ -620,11 +583,11 @@ export default function ReqForm() {
                     onChange={(e) => setBindLength(e.target.value)}
                   >
                     <option value="">Select length</option>
+                    <option value={"No Preference"}>No preference</option>
                     <option value={"Short"}>Short</option>
                     <option value={"Long"}>Long</option>
                   </NativeSelect>
                 </Grid>
-
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your preferred color?</InputLabel>
                   <NativeSelect
@@ -634,6 +597,7 @@ export default function ReqForm() {
                     onChange={(e) => setBindColor(e.target.value)}
                   >
                     <option value="">Select color</option>
+                    <option value={"No Preference"}>No preference</option>
                     <option value={"Red"}>Red</option>
                     <option value={"Purple"}>Purple</option>
                     <option value={"Green"}>Green</option>
@@ -644,6 +608,17 @@ export default function ReqForm() {
                     <option value={"Grey"}>Grey</option>
                     <option value={"White"}>White</option>
                   </NativeSelect>
+                </Grid>
+                <Grid item xs={12} className={style.formItemContain}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={waitLenCol}
+                        onChange={(e) => setWaitLenCol(e.target.checked)}
+                      />
+                    }
+                    label="I have a strong preference on color and/or length and I am willing to wait."
+                  />
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
