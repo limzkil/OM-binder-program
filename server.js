@@ -11,6 +11,7 @@ const app = express();
 
 const Binder = require("./Binder");
 const Create = require("./Schema");
+const { create } = require("./Schema");
 
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -46,25 +47,6 @@ mongoose.connect(
 //var to refer to the database
 const db = mongoose.connection;
 
-//set up a schema to test
-const formSchema = new mongoose.Schema({
-  county: String,
-  elseEmail: String,
-  elsePhone: Number,
-  nameSelf: String,
-  nameElse: String,
-  dob: String,
-  email: String,
-  phone: Number,
-  address: String,
-  size: String,
-  length: String,
-  color: String,
-  willWait: Boolean,
-  moreInfo: String,
-  yesSurvey: Boolean,
-  date: Date,
-});
 // admin schema
 const adminSchema = new mongoose.Schema({
   username: String,
@@ -155,8 +137,9 @@ const BinderInventory = mongoose.model(`inventorys`, Binder);
 const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 
 // Model for waitListeds that uses the formScehma
-const waitListed = mongoose.model("waitListeds", formSchema);
+const waitListed = mongoose.model("waitListeds", Create);
 
+const FormInput = mongoose.model("readytoships", Create);
 //Binder Inventory APIs
 
 app.get("/binders", async (req, res) => {
@@ -188,7 +171,7 @@ app.post("/binders/save", async (req, res) => {
 // UPDATE : by ID
 
 app.patch("/binders/:binderIds", async (req, res) => {
-  id = req.params.binderIds;
+  let id = req.params.binderIds;
 
   let update = await BinderInventory.updateOne(
     { _id: id },
@@ -218,12 +201,12 @@ app.delete("/binders/:binderIds", async (req, res) => {
 //readytoship API routes
 
 app.get("/ready", async (req, res) => {
-  let allRequests = await Create.find({});
+  let allRequests = await FormInput.find({});
   res.send(allRequests);
 });
 
 app.post("/ready/save", async (req, res) => {
-  const ready = new Create({
+  const ready = new FormInput({
     email: req.body.emailSelf,
     elseEmail: req.body.emailElse,
     numberSelf: req.body.phone,
@@ -250,7 +233,7 @@ app.post("/ready/save", async (req, res) => {
 // UPDATE : by ID
 
 app.patch("/ready/:readyIds", async (req, res) => {
-  id = req.params.readyIds;
+  let id = req.params.readyIds;
 
   let update = await FormInput.updateOne(
     { _id: id },
@@ -277,125 +260,8 @@ app.delete("/ready/:readyIds", async (req, res) => {
 
     res.json(deleteById);
   } catch (err) {
-    console.log("ERROR : " + res.json({ message: err }));
+    console.log("ERROR : " + res.json({ message: err }))};
     // Look in waitListed for newly added binder(changedDocument)
-    await waitListed
-      .findOne({
-        size: { $in: [changedDocument.size] },
-        length: { $in: [changedDocument.length] },
-        color: { $in: [changedDocument.color] },
-      })
-      .then(async function (doc) {
-        // If there is no waitListed entry matching the newly added binder, just return
-        if (doc === null) {
-          return;
-          // Otherwise, add the waitlisted entry into readytoship
-        } else {
-          //   readytoship
-          FormInput.insertMany([doc])
-            .then((doc) => {
-              console.log("New Entry Saved in readytoships");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          // Delete that entire document from waitListed
-          await waitListed.deleteOne(doc);
-
-          // Look in ProcessedInventory for that same newly added binder (changedDocument)
-          let processedBind = await ProcessedInventory.findOne({
-            size: { $in: [changedDocument.size] },
-            length: { $in: [changedDocument.length] },
-            color: { $in: [changedDocument.color] },
-          });
-
-          //If that binder doesnt exist in processedinventory, create it
-          if (processedBind === null) {
-            let newEntry = ProcessedInventory({
-              size: changedDocument.size,
-              length: changedDocument.length,
-              color: changedDocument.color,
-              quantity: 1,
-            });
-            await newEntry.save();
-          } else {
-            // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
-            await ProcessedInventory.updateOne(
-              { _id: processedBind._id },
-              { $set: { quantity: processedBind.quantity + 1 } }
-            );
-          }
-
-          // After finding that binder in BinderInventory, update the quantity by decrementing by 1. The stock has now been updated.
-          await BinderInventory.updateOne(
-            { _id: changedDocument._id },
-            { $set: { quantity: changedDocument.quantity - 1 } }
-          );
-
-          // Create a transport variable using nodemailer
-          const transport = nodemailer.createTransport({
-            // Sending from Gmail. User and pass are the variables in the .env
-            service: "Gmail",
-            auth: {
-              user: process.env.GMAIL_USER,
-              pass: process.env.GMAIL_PASS,
-            },
-          });
-          // If the user enters info in "email"
-          if (doc.email) {
-            // Send an email
-            await transport.sendMail({
-              // Sent from an email address in .env file
-              from: process.env.GMAIL_USER,
-              // Sent to the email that the user typed in "email" texbox
-              to: doc.email,
-              subject: "test email",
-              // This represents the actual email message. Can be styled with HTML. Email below confirms when a binder is in stock after a person is added to the waitlist.
-              html: `<div className="email" style="
-                border: 1px solid black;
-                padding: 20px;
-                font-family: sans-serif;
-                line-height: 2;
-                font-size: 20px; 
-                ">
-                <p>Great news! Your binder in size <strong>${doc.size}</strong> is now in stock! It will be shipped out within a few business days. But before we do that please verify if the information below is correct. If anything is missing or incorrect, please email example@outmaine.com</p>
-                <p><strong>Email:</strong> ${doc.email}</p>
-                <p><strong>Phone number:</strong> ${doc.phone}</p>
-                <p><strong>Address:</strong> ${doc.address}</p>
-       
-                <p>All the best, Shadman</p>
-                 </div >
-              
-            `,
-            });
-            // Code is essentially the same as above except for if the user enters info in "email (else)"". This means the person is ordering a binder for someone else"
-          } else {
-            await transport.sendMail({
-              from: process.env.GMAIL_USER,
-              // Sent to the email that the user typed in "email (else)" texbox
-              to: doc.elseEmail,
-              subject: "test email",
-              html: `<div className="email" style="
-                border: 1px solid black;
-                padding: 20px;
-                font-family: sans-serif;
-                line-height: 2;
-                font-size: 20px; 
-                ">
-                <p>Great news! Your binder in size <strong>${doc.size}</strong> is now in stock! It will be shipped out within a few business days. But before we do that please verify if the information below is correct. If anything is missing or incorrect, please email example@outmaine.com</p>
-                <p><strong>Email:</strong> ${doc.elseEmail}</p>
-                <p><strong>Phone number:</strong> ${doc.elsePhone}</p>
-                <p><strong>Address:</strong> ${doc.address}</p>
-       
-                <p>All the best, Shadman</p>
-                 </div >
-              
-            `,
-            });
-          }
-        }
-      });
-  }
 });
 
 //WaitListed API routes
@@ -412,7 +278,7 @@ app.get("/wait", async (req, res) => {
 });
 
 app.post("/wait/save", async (req, res) => {
-  const ready = new Create({
+  const ready = new FormInput({
     email: req.body.emailSelf,
     elseEmail: req.body.emailElse,
     numberSelf: req.body.phone,
@@ -439,7 +305,7 @@ app.post("/wait/save", async (req, res) => {
 // UPDATE : by ID
 
 app.patch("/wait/:waitIds", async (req, res) => {
-  id = req.params.waitIds;
+  let id = req.params.waitIds;
 
   const update = await FormInput.updateOne(
     { _id: id },
@@ -483,141 +349,134 @@ app.post("/send_mail", async (req, res) => {
       pass: process.env.GMAIL_PASS,
     },
   });
-
-  // If the user types into "email" texbox
-  if (req.body.emailSelf) {
+  // initialize variable for storing the returned values of collection queries
+  let binderInventory;
+  // check to see if they've marked they are willing to wait AND they've selected both length and color properties
+  if (
+    req.body.willWait === true &&
+    req.body.bindColor !== "No preference" &&
+    req.body.bindLength !== "No preference"
+  ) {
     // Look in BinderInventory for a binder with size length and color equivalent to what the user input
-    // initialize variable for storing the returned values of collection queries
-    let binderInventory;
-    // check to see if they've marked they are willing to wait AND they've selected both length and color properties
+    binderInventory = await BinderInventory.findOne({
+      size: { $in: [req.body.size] },
+      length: { $in: [req.body.bindLength] },
+      color: { $in: [req.body.bindColor] },
+    });
+    // next check if they've marked that they're willing to wait AND they've only got a preference on color
+  } else if (
+    req.body.willWait === true &&
+    req.body.bindColor !== "No preference"
+  ) {
+    // query binder inventory for requested size and color with a quantity greater than 0
+    binderInventory = await BinderInventory.find({
+      size: { $in: [req.body.size] },
+      color: { $in: [req.body.bindColor] },
+      quantity: { $gte: 1 },
+      // sort results by quantity field with highest quantity at the top
+    }).sort({ quantity: -1 });
+    // if there are no binders with that size/color in stock
+    if (binderInventory === null) {
+      // make sure results show null
+      binderInventory = null;
+    } else {
+      // if there are some in stock, give them one with the highest quantity
+      binderInventory = binderInventory[0];
+    }
+    // next check that the they've marked they're willing to wait AND they've selected a preference on length
+  } else if (
+    req.body.willWait === true &&
+    req.body.bindLength !== "No preference"
+  ) {
+    // query binder inventory for requested size and length with a quantity greater than 0
+    binderInventory = await BinderInventory.find({
+      size: { $in: [req.body.size] },
+      length: { $in: [req.body.bindLength] },
+      quantity: { $gte: 1 },
+      // sort by quantity field with highest being at the top
+    }).sort({ quantity: -1 });
+    if (binderInventory === null) {
+      // if there are no results from previous query, make sure binderInventory returns null
+      binderInventory = null;
+    } else {
+      // otherwise grab the binder in that size/length with the highest quantity
+      binderInventory = binderInventory[0];
+    }
+    // if they've not selected they want to wait
+  } else if (req.body.willWait === false) {
+    // first check to see if they have any preferred color/length
     if (
-      req.body.willWait === true &&
       req.body.bindColor !== "No preference" &&
       req.body.bindLength !== "No preference"
     ) {
-      // Look in BinderInventory for a binder with size length and color equivalent to what the user input
+      // query binder inventory for requested size, length, and color with a quantity greater than 0
       binderInventory = await BinderInventory.findOne({
         size: { $in: [req.body.size] },
         length: { $in: [req.body.bindLength] },
         color: { $in: [req.body.bindColor] },
+        quantity: { $gte: 1 },
       });
-      // next check if they've marked that they're willing to wait AND they've only got a preference on color
-    } else if (
-      req.body.willWait === true &&
-      req.body.bindColor !== "No preference"
-    ) {
-      // query binder inventory for requested size and color with a quantity greater than 0
+      // if nothing matches exact params, search by just size requested with quantity greater than 0
+      if (binderInventory === null) {
+        binderInventory = await BinderInventory.find({
+          size: { $in: [req.body.size] },
+          quantity: { $gte: 1 },
+          // sort by quantity field with largest at the top
+        }).sort({ quantity: -1 });
+        // grab binder with highest quantity
+        binderInventory = binderInventory[0];
+      }
+      // check if they've only selected a preferred color
+    } else if (req.body.bindColor !== "No preference") {
+      // query binder inventory for requested size AND color with quantity greater than 0
       binderInventory = await BinderInventory.find({
         size: { $in: [req.body.size] },
         color: { $in: [req.body.bindColor] },
         quantity: { $gte: 1 },
-        // sort results by quantity field with highest quantity at the top
+        // sort by quantity with highest at the top
       }).sort({ quantity: -1 });
-      // if there are no binders with that size/color in stock
+      // if nothing matches previous query
       if (binderInventory === null) {
-        // make sure results show null
-        binderInventory = null;
-      } else {
-        // if there are some in stock, give them one with the highest quantity
-        binderInventory = binderInventory[0];
-      }
-      // next check that the they've marked they're willing to wait AND they've selected a preference on length
-    } else if (
-      req.body.willWait === true &&
-      req.body.bindLength !== "No preference"
-    ) {
-      // query binder inventory for requested size and length with a quantity greater than 0
+        // search by just requested size and quantity greater than 0
+        binderInventory = await BinderInventory.find({
+          size: { $in: [req.body.size] },
+          quantity: { $gte: 1 },
+          // sort by quantity with highest at the top
+        }).sort({ quantity: -1 });
+      } // grab binder at index 0 for highest quantity
+      binderInventory = binderInventory[0];
+      // check to see if they have a preferred length
+    } else if (req.body.bindLength !== "No preference") {
+      // query binder inventory for requested size and length with quantity greater than 0
       binderInventory = await BinderInventory.find({
         size: { $in: [req.body.size] },
         length: { $in: [req.body.bindLength] },
         quantity: { $gte: 1 },
-        // sort by quantity field with highest being at the top
+        // sort returned results so highest quantity is first
       }).sort({ quantity: -1 });
+      // if previous query returned no results
       if (binderInventory === null) {
-        // if there are no results from previous query, make sure binderInventory returns null
-        binderInventory = null;
-      } else {
-        // otherwise grab the binder in that size/length with the highest quantity
-        binderInventory = binderInventory[0];
-      }
-      // if they've not selected they want to wait
-    } else if (req.body.willWait === false) {
-      // first check to see if they have any preferred color/length
-      if (
-        req.body.bindColor !== "No preference" &&
-        req.body.bindLength !== "No preference"
-      ) {
-        // query binder inventory for requested size, length, and color with a quantity greater than 0
-        binderInventory = await BinderInventory.findOne({
-          size: { $in: [req.body.size] },
-          length: { $in: [req.body.bindLength] },
-          color: { $in: [req.body.bindColor] },
-          quantity: { $gte: 1 },
-        });
-        // if nothing matches exact params, search by just size requested with quantity greater than 0
-        if (binderInventory === null) {
-          binderInventory = await BinderInventory.find({
-            size: { $in: [req.body.size] },
-            quantity: { $gte: 1 },
-            // sort by quantity field with largest at the top
-          }).sort({ quantity: -1 });
-          // grab binder with highest quantity
-          binderInventory = binderInventory[0];
-        }
-        // check if they've only selected a preferred color
-      } else if (req.body.bindColor !== "No preference") {
-        // query binder inventory for requested size AND color with quantity greater than 0
-        binderInventory = await BinderInventory.find({
-          size: { $in: [req.body.size] },
-          color: { $in: [req.body.bindColor] },
-          quantity: { $gte: 1 },
-          // sort by quantity with highest at the top
-        }).sort({ quantity: -1 });
-        // if nothing matches previous query
-        if (binderInventory === null) {
-          // search by just requested size and quantity greater than 0
-          binderInventory = await BinderInventory.find({
-            size: { $in: [req.body.size] },
-            quantity: { $gte: 1 },
-            // sort by quantity with highest at the top
-          }).sort({ quantity: -1 });
-        } // grab binder at index 0 for highest quantity
-        binderInventory = binderInventory[0];
-        // check to see if they have a preferred length
-      } else if (req.body.bindLength !== "No preference") {
-        // query binder inventory for requested size and length with quantity greater than 0
-        binderInventory = await BinderInventory.find({
-          size: { $in: [req.body.size] },
-          length: { $in: [req.body.bindLength] },
-          quantity: { $gte: 1 },
-          // sort returned results so highest quantity is first
-        }).sort({ quantity: -1 });
-        // if previous query returned no results
-        if (binderInventory === null) {
-          // search just by size and quantity greater than 0
-          binderInventory = await BinderInventory.find({
-            size: { $in: [req.body.size] },
-            quantity: { $gte: 1 },
-            // sort returned results so highest quantity is first
-          }).sort({ quantity: -1 });
-        }
-        // grab binder at index 0 for highest quantity
-        binderInventory = binderInventory[0];
-      } else {
-        // if they have no preferences and just selected size, query inventory just by size
+        // search just by size and quantity greater than 0
         binderInventory = await BinderInventory.find({
           size: { $in: [req.body.size] },
           quantity: { $gte: 1 },
           // sort returned results so highest quantity is first
         }).sort({ quantity: -1 });
-        // grab binder at index 0 for highest quantity
-        binderInventory = binderInventory[0];
       }
+      // grab binder at index 0 for highest quantity
+      binderInventory = binderInventory[0];
+    } else {
+      // if they have no preferences and just selected size, query inventory just by size
+      binderInventory = await BinderInventory.find({
+        size: { $in: [req.body.size] },
+        quantity: { $gte: 1 },
+        // sort returned results so highest quantity is first
+      }).sort({ quantity: -1 });
+      // grab binder at index 0 for highest quantity
+      binderInventory = binderInventory[0];
     }
-
-    // If it is not in stock, add that user as a whole new entry in the waitlist based on their form input.
-    if (binderInventory.quantity === 0) {
-      // If the user types into "email" texbox
+  }
+  // If the user types into "email" texbox
       if (req.body.emailSelf) {
         // if binder does nto exists in db at all, add to waitlist
         if (binderInventory === null) {
@@ -932,8 +791,8 @@ app.post("/send_mail", async (req, res) => {
           });
         }
       }
-    }
-  }
+    
+  
 });
 
 // post request for moving binder from "requested" to "shipped"

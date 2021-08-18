@@ -100,8 +100,8 @@ if(isAuthenticated)
       <Grid item xs = {12}>
       <LogoHead />
       </Grid>
-      <Grid item xs = {2} />
-      <Grid item xs = {8}>
+      
+      <Grid item xs = {12}>
       <AppBar position="static">
         <Tabs value={tabSelect} onChange={handleTab}>
           <Tab label="Inventory" />
@@ -109,7 +109,7 @@ if(isAuthenticated)
           <Tab label="Wait List" />
         </Tabs>
       </AppBar>
-      <Grid item xs = {2} />
+      
       </Grid>
       </Grid>
 
@@ -122,7 +122,6 @@ if(isAuthenticated)
       <NotAuthorized />
     )
   }
-  
 };
 
 export default Display;

@@ -76,7 +76,6 @@ export default function ReqForm() {
   const [moreInf, setMoreInf] = useState("");
 
   const [yesConfirm, setYesConfirm] = useState(false);
-  const [yesSurvey, setYesSurvey] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   const [validDate, setValidDate] = useState(false);
   const [validRes, setValidRes] = useState(false);
@@ -422,7 +421,7 @@ export default function ReqForm() {
                 </Typography>
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                    Are you or the person you are requesting for between 14 and
+                    Are you or the person you are requesting for between the ages 14 and
                     22?
                   </InputLabel>
                   <NativeSelect
@@ -560,21 +559,18 @@ export default function ReqForm() {
                     <option value={"5X-large"}>5X-large</option>
                   </NativeSelect>
                 </Grid>
-                {/* <InputLabel className={style.formItemContain}>
-                  Please check ONE box regarding your preferences.
-                </InputLabel> */}
-                {/* <Grid item xs={12} className={style.formItemContain}>
+                <Grid item xs={12} className={style.formItemContain}>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={noPref}
-                        onChange={(e) => setNoPref(e.target.checked)}
+                        checked={waitLenCol}
+                        onChange={(e) => setWaitLenCol(e.target.checked)}
                       />
                     }
-                    label="I have no preference on color or length."
+                    label="I have a strong preference on color and/or length and I am willing to wait."
                   />
-                </Grid> */}
-                <Grid item xs={12} className={style.formItemContain}>
+                </Grid>
+                {waitLenCol ? (<><Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>What is your preferred length?</InputLabel>
                   <NativeSelect
                     id="bindLength"
@@ -608,19 +604,7 @@ export default function ReqForm() {
                     <option value={"Grey"}>Grey</option>
                     <option value={"White"}>White</option>
                   </NativeSelect>
-                </Grid>
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={waitLenCol}
-                        onChange={(e) => setWaitLenCol(e.target.checked)}
-                      />
-                    }
-                    label="I have a strong preference on color and/or length and I am willing to wait."
-                  />
-                </Grid>
-
+                </Grid></>) : null}
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
                     Any additional information regarding this request?
@@ -668,20 +652,20 @@ export default function ReqForm() {
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                  disabled={
-                    validSize &&
-                    validConsent &&
-                    validEmail &&
-                    validDate &&
-                    validRes &&
-                    validNameElse &&
-                    validElseEmail &&
-                    validElsePhone &&
-                    validName &&
-                    validPhone
-                      ? false
-                      : true
-                  }
+                  // disabled={
+                  //   validSize &&
+                  //   validConsent &&
+                  //   validEmail &&
+                  //   validDate &&
+                  //   validRes &&
+                  //   validNameElse &&
+                  //   validElseEmail &&
+                  //   validElsePhone &&
+                  //   validName &&
+                  //   validPhone
+                  //     ? false
+                  //     : true
+                  // }
                 >
                   Submit
                 </Button>
