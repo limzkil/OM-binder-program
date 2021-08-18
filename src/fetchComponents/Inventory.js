@@ -184,10 +184,6 @@ function App() {
 
   return (
     <div className="App">
-      
-      <Grid container spacing={1}>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
           <div>
             {iserror && 
               <Alert severity="error">
@@ -221,9 +217,7 @@ function App() {
                 exportButton: true,
               }}
             />
-          </Grid>
-          <Grid item xs={3}></Grid>
-        </Grid>
+
     </div>
   );
 }

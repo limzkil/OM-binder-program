@@ -193,11 +193,7 @@ export default function ReadyToShip() {
 
 
   return (
-    <div className="App">
-      
-      <Grid container spacing={1}>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
+    <>
           <div>
             {iserror && 
               <Alert severity="error">
@@ -232,10 +228,9 @@ export default function ReadyToShip() {
       exportButton: true,
     }}
             />
-          </Grid>
-          <Grid item xs={3}></Grid>
-        </Grid>
-    </div>
+
+    
+    </>
   );
 }
 
