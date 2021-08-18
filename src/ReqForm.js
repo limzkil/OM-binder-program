@@ -221,8 +221,8 @@ export default function ReqForm() {
           bindLength: bindLength === "" ? "No preference" : bindLength,
           bindColor: bindColor === "" ? "No preference" : bindColor,
           willWait: waitLenCol,
-          moreInfo: moreInf,
-          yesSurvey: yesSurvey
+          moreInfo: moreInf
+         
 
         }),
         headers: { "content-type": "application/json" },
@@ -634,17 +634,7 @@ export default function ReqForm() {
                   />
                 </Grid>
 
-                <Grid item xs={12} className={style.formItemContain}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={yesSurvey}
-                        onChange={(e) => setYesSurvey(e.target.checked)}
-                      />
-                    }
-                    label="I am willing to complete a short survey after receiving my binder."
-                  />
-                </Grid>
+
 
                 <Button
                   color="primary"

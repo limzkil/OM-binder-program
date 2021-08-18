@@ -20,7 +20,7 @@ import Grid from '@material-ui/core/Grid';
 //components to pass in fetched data
 import Inventory from "./fetchComponents/Inventory";
 import ReadyToShip from "./fetchComponents/ReadyToShip";
-import WaitList from "./fetchComponents/WaitList";
+import Waitlist from "./fetchComponents/Waitlist";
 
 //header component
 import LogoHead from './displayComponents/LogoHead'
@@ -115,7 +115,7 @@ if(isAuthenticated)
 
       {tabSelect === 0 && <Inventory />}
       {tabSelect === 1 && <ReadyToShip />}
-      {tabSelect === 2 && <WaitList />}
+      {tabSelect === 2 && <Waitlist />}
     </>
   )}else{
     return(
