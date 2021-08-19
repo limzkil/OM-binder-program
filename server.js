@@ -432,10 +432,10 @@ app.post("/binders/move", async (req, res) => {
 app.post("/send_mail", async (req, res) => {
   let {
     emailSelf,
-    elseEmail,
+    emailElse,
     numberSelf,
     numberElse,
-    addressSelf,
+    address,
     size,
     county,
   } = req.body;
@@ -596,9 +596,9 @@ app.post("/send_mail", async (req, res) => {
         font-size: 20px; 
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${elseEmail}</p>
+        <p><strong>Email:</strong> ${emailElse}</p>
         <p><strong>Phone number:</strong> ${numberSelf}</p>
-        <p><strong>Address:</strong> ${addressSelf}</p>
+        <p><strong>Address:</strong> ${address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -624,7 +624,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailSelf}</p>
         <p><strong>Phone number:</strong> ${numberSelf}</p>
-        <p><strong>Address:</strong> ${addressSelf}</p>
+        <p><strong>Address:</strong> ${address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -809,7 +809,7 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${doc.elseEmail}</p>
+              <p><strong>Email:</strong> ${doc.emailElse}</p>
               <p><strong>Phone number:</strong> ${doc.elsePhone}</p>
               <p><strong>Address:</strong> ${doc.address}</p>
               <p>Binder Details</p>
