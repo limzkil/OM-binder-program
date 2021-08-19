@@ -19,6 +19,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -227,6 +228,15 @@ export default function ReadyToShip() {
         options={{
           exportButton: true,
         }}
+        actions={[
+          {
+            icon: ArrowForwardIcon,
+            tooltip: 'Move to Shipped',
+            onClick: (event, rowData) => {
+              api.post("/ready/move",{ id: rowData._id })
+              alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")}
+          }
+        ]}
         detailPanel={[
           {
             tooltip: "Show Comments",

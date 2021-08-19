@@ -139,6 +139,8 @@ const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 const waitListed = mongoose.model("waitListeds", Create);
 
 const FormInput = mongoose.model("readytoships", Create);
+
+const Shipped = mongoose.model("shippeds", Create);
 //Binder Inventory APIs
 
 app.get("/binders", async (req, res) => {
@@ -275,8 +277,8 @@ app.delete("/ready/:readyIds", async (req, res) => {
 //})
 
 app.get("/wait", async (req, res) => {
-  let allRequests = await waitListed.find({});
-  res.send(allRequests);
+  let waiting = await waitListed.find({});
+  res.json(waiting);
 });
 
 app.post("/wait/save", async (req, res) => {
@@ -358,6 +360,35 @@ app.post("/binders/move", async (req, res) => {
   
         // Removing doc from the first collection
         BinderInventory.deleteOne({ id: req.body._id })
+            .then(d => {
+                console.log("Removed Old Entry")
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    })
+    .catch(error => {
+        console.log(error);
+})
+});
+
+//API Route for button to move ReadytoShip items to Shipped
+app.post("/ready/move", async (req, res) => {
+  FormInput.findOne({id: req.body._id})
+    .then(doc => {
+        console.log(doc);
+
+        // Inserting the doc in the destination collection
+        Shipped.insertMany([doc])
+            .then(d => {
+                console.log("New Entry Saved");
+            })
+            .catch(error => {
+                console.log(error);
+            })
+  
+        // Removing doc from the first collection
+        FormInput.deleteOne({ id: req.body._id })
             .then(d => {
                 console.log("Removed Old Entry")
             })
@@ -770,10 +801,10 @@ BinderInventory.watch().on("change", async (change) => {
   }
 });
 
-app.get("/waitlist", async (req, res) => {
-  let waitlist = await waitListed.find({});
-  res.send(waitlist);
-});
+//app.get("/waitlist", async (req, res) => {
+  //let waitlist = await waitListed.find({});
+ // res.send(waitlist);
+//});
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
