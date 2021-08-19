@@ -26,10 +26,15 @@ const useStyles = makeStyles({
     width: "25em",
   },
   formHeadings: {
-    margin: "1em 1em 1em .5em",
+    margin: "1em 1em .5em .5em",
     textDecoration: "underline",
     fontFamily: "Oswald",
     color: "#993399",
+  },
+  formSubtitle: {
+    margin: "1em",
+    fontFamily: "Oswald",
+    textDecoration: "underline",
   },
   submitBtn: {
     margin: "1.5em",
@@ -373,6 +378,9 @@ export default function ReqForm() {
                     <Typography className={style.formHeadings} variant="h4">
                       Requester Information
                     </Typography>
+                    <Typography className = {style.formSubtitle} variant="subtitle1">
+                      "Requester" refers to the person making the <div style = {{color: "red", display: "inline"}}>request for someone else</div>
+                    </Typography>
                     <Grid item xs={12} className={style.formItemContain}>
                       <FormControlLabel
                         control={
@@ -469,10 +477,12 @@ export default function ReqForm() {
                 <Typography className={style.formHeadings} variant="h4">
                   Requestee Information
                 </Typography>
+                <Typography className = {style.formSubtitle} variant="subtitle1">
+                      "Requestee" refers to the person who will be <div style = {{color: "red", display: "inline"}}>wearing the binder</div>
+                    </Typography>
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                    "Are you, or the person you are requesting the binder for,
-                    between the ages of 14 & 22"
+                  Are you, or the person you are requesting the binder for, between the ages of 14 & 22
                   </InputLabel>
                   <NativeSelect
                     id="ageCheck"
@@ -551,10 +561,13 @@ export default function ReqForm() {
                   />
                 </Grid>
                 <Grid item xs={12} className={style.formItemContain}>
+                <InputLabel>
+                    Enter your phone number in 000-000-0000 format
+                  </InputLabel>
                   <TextField
                     type="text"
                     name="phone"
-                    placeholder="Enter your number (requestee)"
+                    placeholder=""
                     value={numberSelf}
                     className={style.formItemField}
                     helperText={
