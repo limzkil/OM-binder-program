@@ -179,7 +179,7 @@ app.patch("/binders/:binderIds", async (req, res) => {
       size: req.body.size,
       color: req.body.color,
       length: req.body.length,
-      quantity: req.body.quantity,
+      quantity: parseInt(req.body.quantity),
     }
   );
 
