@@ -13,6 +13,7 @@ import NotAuthorized from "./NotAuthorized";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography"
 
 //grid import
 import Grid from '@material-ui/core/Grid';
@@ -23,7 +24,8 @@ import ReadyToShip from "./fetchComponents/ReadyToShip";
 import Waitlist from "./fetchComponents/Waitlist";
 
 //header component
-import LogoHead from './displayComponents/LogoHead'
+import Header from './displayComponents/Header'
+import Banner from './displayComponents/Banner'
 
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
@@ -99,17 +101,21 @@ if(isAuthenticated)
     <>
       <CssBaseline />
       <Grid container spacing = {1}>
+    
       <Grid item xs = {12}>
-      <LogoHead />
+      <Banner />
       </Grid>
       
       <Grid item xs = {12}>
-      <AppBar position="static">
-        <Tabs value={tabSelect} onChange={handleTab}>
+      <AppBar position="static" style = {{backgroundColor: "#339999"}}>
+      <Typography variant = "h2" style = {{fontFamily: 'Oswald'}}>Binder Program Management</Typography>
+        <Tabs value={tabSelect} onChange={handleTab} TabIndicatorProps={{
+           style: { background: "#ffcc33", height: ".5em" }}}>
           <Tab label="Inventory" />
           <Tab label="Ready to Ship" />
           <Tab label="Wait List" />
         </Tabs>
+    
       </AppBar>
       
       </Grid>
@@ -118,6 +124,10 @@ if(isAuthenticated)
       {tabSelect === 0 && <Inventory />}
       {tabSelect === 1 && <ReadyToShip />}
       {tabSelect === 2 && <Waitlist />}
+
+      <Grid item xs = {12} >
+      
+      </Grid>
     </>
   )}else{
     return(
