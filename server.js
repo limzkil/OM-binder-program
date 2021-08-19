@@ -11,6 +11,7 @@ const app = express();
 
 const Binder = require("./Binder");
 const Create = require("./Schema");
+const { create } = require("./Schema");
 
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -138,8 +139,6 @@ const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 const waitListed = mongoose.model("waitListeds", Create);
 
 const FormInput = mongoose.model("readytoships", Create);
-
-const Shipped = mongoose.model("shippeds", Create);
 //Binder Inventory APIs
 
 app.get("/binders", async (req, res) => {
@@ -207,21 +206,19 @@ app.get("/ready", async (req, res) => {
 
 app.post("/ready/save", async (req, res) => {
   const ready = new FormInput({
+    email: req.body.emailSelf,
+    elseEmail: req.body.emailElse,
+    numberSelf: req.body.phone,
+    numberElse: req.body.elsePhone,
+    address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
-    elseEmail: req.body.emailElse,
-    elsePhone: req.body.elsePhone,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
-    email: req.body.emailSelf,
-    phone: req.body.numberSelf,
-    address: req.body.address,
     size: req.body.size,
-    length: req.body.bindLength,
-    color: req.body.bindColor,
-    willWait: req.body.willWait,
-    moreInfo: req.body.moreInfo,
+    length: req.body.length,
+    color: req.body.color,
   });
 
   try {
@@ -241,21 +238,17 @@ app.patch("/ready/:readyIds", async (req, res) => {
   let update = await FormInput.updateOne(
     { _id: id },
     {
+      dob: req.body.dob,
+      phone: req.body.phone,
+      address: req.body.address,
+      name: req.body.name,
+      email: req.body.email,
       county: req.body.county,
       progSource: req.body.progSource,
-      elseEmail: req.body.emailElse,
-      elsePhone: req.body.elsePhone,
-      nameSelf: req.body.nameSelf,
-      nameElse: req.body.nameElse,
-      dob: req.body.dob,
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: req.body.address,
       size: req.body.size,
-      length: req.body.bindLength,
-      color: req.body.bindColor,
-      willWait: req.body.willWait,
-      moreInfo: req.body.moreInfo,
+      color: req.body.color,
+      length: req.body.length,
+      quantity: req.body.quantity,
     }
   );
 
@@ -282,27 +275,25 @@ app.delete("/ready/:readyIds", async (req, res) => {
 //})
 
 app.get("/wait", async (req, res) => {
-  let waiting = await waitListed.find({});
-  res.json(waiting);
+  let allRequests = await waitListed.find({});
+  res.send(allRequests);
 });
 
 app.post("/wait/save", async (req, res) => {
   const ready = new FormInput({
+    email: req.body.emailSelf,
+    elseEmail: req.body.emailElse,
+    numberSelf: req.body.phone,
+    numberElse: req.body.elsePhone,
+    address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
-    elseEmail: req.body.emailElse,
-    elsePhone: req.body.elsePhone,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
-    email: req.body.emailSelf,
-    phone: req.body.numberSelf,
-    address: req.body.address,
     size: req.body.size,
-    length: req.body.bindLength,
-    color: req.body.bindColor,
-    willWait: req.body.willWait,
-    moreInfo: req.body.moreInfo,
+    length: req.body.length,
+    color: req.body.color,
   });
 
   try {
@@ -322,21 +313,17 @@ app.patch("/wait/:waitIds", async (req, res) => {
   const update = await FormInput.updateOne(
     { _id: id },
     {
+      dob: req.body.dob,
+      phone: req.body.phone,
+      address: req.body.address,
+      name: req.body.name,
+      email: req.body.email,
       county: req.body.county,
       progSource: req.body.progSource,
-      elseEmail: req.body.emailElse,
-      elsePhone: req.body.elsePhone,
-      nameSelf: req.body.nameSelf,
-      nameElse: req.body.nameElse,
-      dob: req.body.dob,
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: req.body.address,
       size: req.body.size,
-      length: req.body.bindLength,
-      color: req.body.bindColor,
-      willWait: req.body.willWait,
-      moreInfo: req.body.moreInfo,
+      color: req.body.color,
+      length: req.body.length,
+      quantity: req.body.quantity,
     }
   );
 
@@ -353,90 +340,15 @@ app.delete("/wait/:waitIds", async (req, res) => {
   }
 });
 
-//shipped API Routes
+//API Route for moving from Inventory to Processed
 
-app.get("/shipped", async (req, res) => {
-  let allShipped = await Shipped.find({});
-  res.json(allShipped);
-});
-
-app.post("/shipped/save", async (req, res) => {
-  const ready = new Shipped({
-    county: req.body.county,
-    progSource: req.body.progSource,
-    elseEmail: req.body.emailElse,
-    elsePhone: req.body.elsePhone,
-    nameSelf: req.body.nameSelf,
-    nameElse: req.body.nameElse,
-    dob: req.body.dob,
-    email: req.body.emailSelf,
-    phone: req.body.numberSelf,
-    address: req.body.address,
-    size: req.body.size,
-    length: req.body.bindLength,
-    color: req.body.bindColor,
-    willWait: req.body.willWait,
-    moreInfo: req.body.moreInfo,
-  });
-
-  try {
-    await ready.save();
-
-    res.json(ready);
-  } catch (err) {
-    console.log("ERROR : " + res.json({ message: err }));
-  }
-});
-
-// UPDATE : by ID
-
-app.patch("/shipped/:shippedIds", async (req, res) => {
-  let id = req.params.shippedIds;
-
-  let update = await Shipped.updateOne(
-    { _id: id },
-    {
-      county: req.body.county,
-      progSource: req.body.progSource,
-      elseEmail: req.body.emailElse,
-      elsePhone: req.body.elsePhone,
-      nameSelf: req.body.nameSelf,
-      nameElse: req.body.nameElse,
-      dob: req.body.dob,
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: req.body.address,
-      size: req.body.size,
-      length: req.body.bindLength,
-      color: req.body.bindColor,
-      willWait: req.body.willWait,
-      moreInfo: req.body.moreInfo,
-    }
-  );
-
-  res.json(update);
-});
-
-app.delete("/shipped/:shippedIds", async (req, res) => {
-  try {
-    const deleteById = await Shipped.deleteOne({ _id: req.params.shippedIds });
-
-    res.json(deleteById);
-  } catch (err) {
-    console.log("ERROR : " + res.json({ message: err }));
-  }
-  
-});
-
-
-//API Route for button to move ReadytoShip items to Shipped
-app.post("/ready/move", async (req, res) => {
-  FormInput.findOne({id: req.params._id})
+app.post("/binders/move", async (req, res) => {
+  BinderInventory.findOne({id: req.body._id})
     .then(doc => {
         console.log(doc);
 
         // Inserting the doc in the destination collection
-        Shipped.insertMany([doc])
+        ProcessedInventory.insertMany([doc])
             .then(d => {
                 console.log("New Entry Saved");
             })
@@ -445,7 +357,7 @@ app.post("/ready/move", async (req, res) => {
             })
   
         // Removing doc from the first collection
-        FormInput.deleteOne({ id: req.body._id })
+        BinderInventory.deleteOne({ id: req.body._id })
             .then(d => {
                 console.log("Removed Old Entry")
             })
@@ -461,6 +373,15 @@ app.post("/ready/move", async (req, res) => {
 //API Route for Sending Emails
 
 app.post("/send_mail", async (req, res) => {
+  let {
+    emailSelf,
+    elseEmail,
+    numberSelf,
+    numberElse,
+    addressSelf,
+    size,
+    county,
+  } = req.body;
   const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -618,9 +539,9 @@ app.post("/send_mail", async (req, res) => {
         font-size: 20px; 
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${req.body.emailElse}</p>
-        <p><strong>Phone number:</strong> ${req.body.elsePhone}</p>
-        <p><strong>Address:</strong> ${req.body.address}</p>
+        <p><strong>Email:</strong> ${elseEmail}</p>
+        <p><strong>Phone number:</strong> ${numberSelf}</p>
+        <p><strong>Address:</strong> ${addressSelf}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -644,9 +565,9 @@ app.post("/send_mail", async (req, res) => {
         font-size: 20px; 
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${req.body.emailSelf}</p>
-        <p><strong>Phone number:</strong> ${req.body.phone}</p>
-        <p><strong>Address:</strong> ${req.body.address}</p>
+        <p><strong>Email:</strong> ${emailSelf}</p>
+        <p><strong>Phone number:</strong> ${numberSelf}</p>
+        <p><strong>Address:</strong> ${addressSelf}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -849,10 +770,10 @@ BinderInventory.watch().on("change", async (change) => {
   }
 });
 
-//app.get("/waitlist", async (req, res) => {
-  //let waitlist = await waitListed.find({});
- // res.send(waitlist);
-//});
+app.get("/waitlist", async (req, res) => {
+  let waitlist = await waitListed.find({});
+  res.send(waitlist);
+});
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
