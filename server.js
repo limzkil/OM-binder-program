@@ -353,39 +353,85 @@ app.delete("/wait/:waitIds", async (req, res) => {
   }
 });
 
-//API Route for moving from Inventory to Processed
+//shipped API Routes
 
-app.post("/binders/move", async (req, res) => {
-  BinderInventory.findOne({ id: req.body._id })
-    .then((doc) => {
-      console.log(doc);
-
-      // Inserting the doc in the destination collection
-      ProcessedInventory.insertMany([doc])
-        .then((d) => {
-          console.log("New Entry Saved");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      // Removing doc from the first collection
-      BinderInventory.deleteOne({ id: req.body._id })
-        .then((d) => {
-          console.log("Removed Old Entry");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+app.get("/shipped", async (req, res) => {
+  let allShipped = await Shipped.find({});
+  res.json(allShipped);
 });
+
+app.post("/shipped/save", async (req, res) => {
+  const ready = new Shipped({
+    county: req.body.county,
+    progSource: req.body.progSource,
+    elseEmail: req.body.emailElse,
+    elsePhone: req.body.elsePhone,
+    nameSelf: req.body.nameSelf,
+    nameElse: req.body.nameElse,
+    dob: req.body.dob,
+    email: req.body.emailSelf,
+    phone: req.body.numberSelf,
+    address: req.body.address,
+    size: req.body.size,
+    length: req.body.bindLength,
+    color: req.body.bindColor,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
+  });
+
+  try {
+    await ready.save();
+
+    res.json(ready);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+// UPDATE : by ID
+
+app.patch("/shipped/:shippedIds", async (req, res) => {
+  let id = req.params.shippedIds;
+
+  let update = await Shipped.updateOne(
+    { _id: id },
+    {
+      county: req.body.county,
+      progSource: req.body.progSource,
+      elseEmail: req.body.emailElse,
+      elsePhone: req.body.elsePhone,
+      nameSelf: req.body.nameSelf,
+      nameElse: req.body.nameElse,
+      dob: req.body.dob,
+      email: req.body.emailSelf,
+      phone: req.body.numberSelf,
+      address: req.body.address,
+      size: req.body.size,
+      length: req.body.bindLength,
+      color: req.body.bindColor,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
+    }
+  );
+
+  res.json(update);
+});
+
+app.delete("/shipped/:shippedIds", async (req, res) => {
+  try {
+    const deleteById = await Shipped.deleteOne({ _id: req.params.shippedIds });
+
+    res.json(deleteById);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+  
+});
+
 
 //API Route for button to move ReadytoShip items to Shipped
 app.post("/ready/move", async (req, res) => {
-  FormInput.findOne({id: req.body._id})
+  FormInput.findOne({id: req.params._id})
     .then(doc => {
         console.log(doc);
 
