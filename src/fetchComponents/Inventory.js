@@ -219,8 +219,8 @@ function App() {
                   icon: ArrowForwardIcon,
                   tooltip: 'Move to Processed',
                   onClick: (event, rowData) => {
-                    api.post("/binders/move",{ size: rowData.size, length: rowData.length, color: rowData.color, quantity: rowData.quantity })
-                    alert("Move Successful")}
+                    api.post("/binders/move",{ id: rowData._id})
+                    alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")}
                 }
               ]}
             />
