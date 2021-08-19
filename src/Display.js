@@ -13,6 +13,7 @@ import NotAuthorized from "./NotAuthorized";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography"
 
 //grid import
 import Grid from '@material-ui/core/Grid';
@@ -21,14 +22,17 @@ import Grid from '@material-ui/core/Grid';
 import Inventory from "./fetchComponents/Inventory";
 import ReadyToShip from "./fetchComponents/ReadyToShip";
 import Waitlist from "./fetchComponents/Waitlist";
+import Shipped from "./fetchComponents/Shipped"
 
 //header component
-import LogoHead from './displayComponents/LogoHead'
+import Header from './displayComponents/Header'
+import Banner from './displayComponents/Banner'
 
 const Display = (props) => {
   const [inventoryData, setInventoryData] = useState([]);
   const [requestData, setRequestData] = useState([]);
   const [waitListData, setWaitListData] = useState([]);
+  const [shippedData, setShippedData] = useState([]);
 
   const { match, history } = props;
   const { params } = match;
@@ -36,14 +40,16 @@ const Display = (props) => {
 
   const tabNameToIndex = {
     0: "inventory",
-    1: "readytoship",
-    2: "waitlist"
+    1: "waitlist",
+    2: "readytoship",
+    3: "shipped"
   };
 
   const indexToTabName = {
     inventory: 0,
-    readytoship: 1,
-    waitlist: 2
+    waitlist: 1,
+    readytoship: 2,
+    shipped: 3
   };
 
   const [tabSelect, setTabSelect] = useState(indexToTabName[page]);
@@ -90,6 +96,13 @@ const Display = (props) => {
       });
     }
 
+    if(shippedData.length === 0){
+      fetch("/shipped")
+      .then((response) => response.json())
+      .then((result) => {
+        setShippedData(result);
+      });
+    }
   });
 
 
@@ -99,25 +112,35 @@ if(isAuthenticated)
     <>
       <CssBaseline />
       <Grid container spacing = {1}>
+    
       <Grid item xs = {12}>
-      <LogoHead />
+      <Banner />
       </Grid>
       
       <Grid item xs = {12}>
-      <AppBar position="static">
-        <Tabs value={tabSelect} onChange={handleTab}>
+      <AppBar position="static" style = {{backgroundColor: "#339999"}}>
+      <Typography variant = "h2" style = {{fontFamily: 'Oswald'}}>Binder Program Management</Typography>
+        <Tabs value={tabSelect} onChange={handleTab} TabIndicatorProps={{
+           style: { background: "#ffcc33", height: ".5em" }}}>
           <Tab label="Inventory" />
-          <Tab label="Ready to Ship" />
           <Tab label="Wait List" />
+          <Tab label="Ready to Ship" />
+          <Tab label="Shipped" />
         </Tabs>
+    
       </AppBar>
       
       </Grid>
       </Grid>
 
       {tabSelect === 0 && <Inventory />}
-      {tabSelect === 1 && <ReadyToShip />}
-      {tabSelect === 2 && <Waitlist />}
+      {tabSelect === 1 && <Waitlist />}
+      {tabSelect === 2 && <ReadyToShip />}
+      {tabSelect === 3 && <Shipped />}
+
+      <Grid item xs = {12} >
+      
+      </Grid>
     </>
   )}else{
     return(
