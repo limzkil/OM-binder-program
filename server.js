@@ -11,7 +11,6 @@ const app = express();
 
 const Binder = require("./Binder");
 const Create = require("./Schema");
-const { create } = require("./Schema");
 
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -206,19 +205,21 @@ app.get("/ready", async (req, res) => {
 
 app.post("/ready/save", async (req, res) => {
   const ready = new FormInput({
-    email: req.body.emailSelf,
-    elseEmail: req.body.emailElse,
-    numberSelf: req.body.phone,
-    numberElse: req.body.elsePhone,
-    address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
+    elseEmail: req.body.emailElse,
+    elsePhone: req.body.elsePhone,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
+    email: req.body.emailSelf,
+    phone: req.body.numberSelf,
+    address: req.body.address,
     size: req.body.size,
-    length: req.body.length,
-    color: req.body.color,
+    length: req.body.bindLength,
+    color: req.body.bindColor,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
   });
 
   try {
@@ -238,17 +239,21 @@ app.patch("/ready/:readyIds", async (req, res) => {
   let update = await FormInput.updateOne(
     { _id: id },
     {
-      dob: req.body.dob,
-      phone: req.body.phone,
-      address: req.body.address,
-      name: req.body.name,
-      email: req.body.email,
       county: req.body.county,
       progSource: req.body.progSource,
+      elseEmail: req.body.emailElse,
+      elsePhone: req.body.elsePhone,
+      nameSelf: req.body.nameSelf,
+      nameElse: req.body.nameElse,
+      dob: req.body.dob,
+      email: req.body.emailSelf,
+      phone: req.body.numberSelf,
+      address: req.body.address,
       size: req.body.size,
-      color: req.body.color,
-      length: req.body.length,
-      quantity: req.body.quantity,
+      length: req.body.bindLength,
+      color: req.body.bindColor,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
     }
   );
 
@@ -281,19 +286,21 @@ app.get("/wait", async (req, res) => {
 
 app.post("/wait/save", async (req, res) => {
   const ready = new FormInput({
-    email: req.body.emailSelf,
-    elseEmail: req.body.emailElse,
-    numberSelf: req.body.phone,
-    numberElse: req.body.elsePhone,
-    address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
+    elseEmail: req.body.emailElse,
+    elsePhone: req.body.elsePhone,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
+    email: req.body.emailSelf,
+    phone: req.body.numberSelf,
+    address: req.body.address,
     size: req.body.size,
-    length: req.body.length,
-    color: req.body.color,
+    length: req.body.bindLength,
+    color: req.body.bindColor,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
   });
 
   try {
@@ -313,17 +320,21 @@ app.patch("/wait/:waitIds", async (req, res) => {
   const update = await FormInput.updateOne(
     { _id: id },
     {
-      dob: req.body.dob,
-      phone: req.body.phone,
-      address: req.body.address,
-      name: req.body.name,
-      email: req.body.email,
       county: req.body.county,
       progSource: req.body.progSource,
+      elseEmail: req.body.emailElse,
+      elsePhone: req.body.elsePhone,
+      nameSelf: req.body.nameSelf,
+      nameElse: req.body.nameElse,
+      dob: req.body.dob,
+      email: req.body.emailSelf,
+      phone: req.body.numberSelf,
+      address: req.body.address,
       size: req.body.size,
-      color: req.body.color,
-      length: req.body.length,
-      quantity: req.body.quantity,
+      length: req.body.bindLength,
+      color: req.body.bindColor,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
     }
   );
 
@@ -343,45 +354,36 @@ app.delete("/wait/:waitIds", async (req, res) => {
 //API Route for moving from Inventory to Processed
 
 app.post("/binders/move", async (req, res) => {
-  BinderInventory.findOne({id: req.body._id})
-    .then(doc => {
-        console.log(doc);
+  BinderInventory.findOne({ id: req.body._id })
+    .then((doc) => {
+      console.log(doc);
 
-        // Inserting the doc in the destination collection
-        ProcessedInventory.insertMany([doc])
-            .then(d => {
-                console.log("New Entry Saved");
-            })
-            .catch(error => {
-                console.log(error);
-            })
-  
-        // Removing doc from the first collection
-        BinderInventory.deleteOne({ id: req.body._id })
-            .then(d => {
-                console.log("Removed Old Entry")
-            })
-            .catch(error => {
-                console.log(error);
-            });
+      // Inserting the doc in the destination collection
+      ProcessedInventory.insertMany([doc])
+        .then((d) => {
+          console.log("New Entry Saved");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // Removing doc from the first collection
+      BinderInventory.deleteOne({ id: req.body._id })
+        .then((d) => {
+          console.log("Removed Old Entry");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     })
-    .catch(error => {
-        console.log(error);
-})
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 //API Route for Sending Emails
 
 app.post("/send_mail", async (req, res) => {
-  let {
-    emailSelf,
-    elseEmail,
-    numberSelf,
-    numberElse,
-    addressSelf,
-    size,
-    county,
-  } = req.body;
   const transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -539,9 +541,9 @@ app.post("/send_mail", async (req, res) => {
         font-size: 20px; 
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${elseEmail}</p>
-        <p><strong>Phone number:</strong> ${numberSelf}</p>
-        <p><strong>Address:</strong> ${addressSelf}</p>
+        <p><strong>Email:</strong> ${req.body.emailElse}</p>
+        <p><strong>Phone number:</strong> ${req.body.elsePhone}</p>
+        <p><strong>Address:</strong> ${req.body.address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -565,9 +567,9 @@ app.post("/send_mail", async (req, res) => {
         font-size: 20px; 
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${emailSelf}</p>
-        <p><strong>Phone number:</strong> ${numberSelf}</p>
-        <p><strong>Address:</strong> ${addressSelf}</p>
+        <p><strong>Email:</strong> ${req.body.emailSelf}</p>
+        <p><strong>Phone number:</strong> ${req.body.phone}</p>
+        <p><strong>Address:</strong> ${req.body.address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>

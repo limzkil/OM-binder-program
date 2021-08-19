@@ -10,6 +10,7 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
+import Card from '@material-ui/core/Card';
 import validator from "validator";
 import React, { useState, useEffect } from "react";
 
@@ -39,6 +40,20 @@ const useStyles = makeStyles({
     width: "35em",
     fontFamily: "Open Sans",
   },
+  colorCards: {
+    red: {color: "#ff0000",
+          minHeight: 275,
+          minWidth: 275
+  },
+    purple: {color: "#663399"},
+    green: {color: "#228b22"},
+    beige: {color: "#f5f5dc"},
+    tan: {color: "#d2b48c"},
+    brown: {color: "#8b4513"},
+    black: {color: "#000000"},
+    grey: {color: "#808080"},
+    white: {color: "#f5f5f5"}
+  }
 });
 
 //to add to schema: progSource, isFirstBind, moreInf, yesSurvey
@@ -630,7 +645,19 @@ export default function ReqForm() {
                     <option value={"Grey"}>Grey</option>
                     <option value={"White"}>White</option>
                   </NativeSelect>
-                </Grid></>) : null}
+                </Grid>
+                <Grid item xs={12} className={style.formItemContain}>
+                  <Card className={style.colorCards.red}></Card>
+                  <Card className={style.colorCards.purple}></Card>
+                  <Card className={style.colorCards.green}></Card>
+                  <Card className={style.colorCards.beige}></Card>
+                  <Card className={style.colorCards.tan}></Card>
+                  <Card className={style.colorCards.brown}></Card>
+                  <Card className={style.colorCards.black}></Card>
+                  <Card className={style.colorCards.grey}></Card>
+                  <Card className={style.colorCards.white}></Card>
+                </Grid>
+                </>) : null}
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
                     Any additional information regarding this request?
