@@ -79,6 +79,7 @@ export default function Waitlist() {
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => { 
+    console.log("hehe")
     api.get("/wait")
         .then(res => {               
             setData(res.data)

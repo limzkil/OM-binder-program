@@ -90,7 +90,7 @@ export default function ReadyToShip() {
       .catch((error) => {
         console.log("Error");
       });
-  }, []);
+  }, [data]);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
@@ -234,7 +234,9 @@ export default function ReadyToShip() {
             tooltip: 'Move to Shipped',
             onClick: (event, rowData) => {
               api.post("/ready/move",{ id: rowData._id })
-              alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")}
+              setData([])
+              //alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")
+            }
           }
         ]}
         detailPanel={[

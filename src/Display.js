@@ -107,8 +107,8 @@ if(isAuthenticated)
       <AppBar position="static">
         <Tabs value={tabSelect} onChange={handleTab}>
           <Tab label="Inventory" />
-          <Tab label="Ready to Ship" />
-          <Tab label="Wait List" />
+          <Tab label={`Ready to Ship (${requestData.length})`} />
+          <Tab label={`Wait List (${waitListData.length})`} />
         </Tabs>
       </AppBar>
       

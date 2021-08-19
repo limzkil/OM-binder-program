@@ -287,7 +287,7 @@ app.get("/wait", async (req, res) => {
 });
 
 app.post("/wait/save", async (req, res) => {
-  const ready = new FormInput({
+  const ready = new waitListed({
     county: req.body.county,
     progSource: req.body.progSource,
     elseEmail: req.body.emailElse,
@@ -319,7 +319,7 @@ app.post("/wait/save", async (req, res) => {
 app.patch("/wait/:waitIds", async (req, res) => {
   let id = req.params.waitIds;
 
-  const update = await FormInput.updateOne(
+  const update = await waitListed.updateOne(
     { _id: id },
     {
       county: req.body.county,
@@ -345,7 +345,7 @@ app.patch("/wait/:waitIds", async (req, res) => {
 
 app.delete("/wait/:waitIds", async (req, res) => {
   try {
-    const deleteById = await FormInput.deleteOne({ _id: req.params.waitIds });
+    const deleteById = await waitListed.deleteOne({ _id: req.params.waitIds });
 
     res.json(deleteById);
   } catch (err) {
