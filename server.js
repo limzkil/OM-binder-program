@@ -135,18 +135,21 @@ const BinderInventory = mongoose.model(`inventorys`, Binder);
 // Model for processedinventorys that uses the binderschema
 const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 
-// Model for waitListeds that uses the formScehma
+// Schema models for WaitList, Ready to Ship and Shipped collection. Uses the CreateSchema
 const waitListed = mongoose.model("waitListeds", Create);
 
 const FormInput = mongoose.model("readytoships", Create);
-//Binder Inventory APIs
 
+const Shipped = mongoose.model("shippeds", Create);
+
+//Binder Inventory APIs
+//GET Route for displaying information from Inventory Collection
 app.get("/binders", async (req, res) => {
-  //send the inventory, right now just called email test
   let allInventory = await BinderInventory.find({});
-  res.send(allInventory);
+  res.json(allInventory);
 });
 
+//POST Route for adding a new entry into the Inventory Collection
 app.post("/binders/save", async (req, res) => {
   const binder = new BinderInventory({
     size: req.body.size,
@@ -162,18 +165,21 @@ app.post("/binders/save", async (req, res) => {
     await binder.save();
 
     res.json(binder);
-  } catch (err) {
+  } 
+  //displays an error message should the attempt to POST fail
+  catch (err) {
     console.log("ERROR : " + res.json({ message: err }));
   }
 });
 
-// UPDATE : by ID
-
+//UPDATE route for making edits to pieces of collection entries. Only 
 app.patch("/binders/:binderIds", async (req, res) => {
   let id = req.params.binderIds;
-
+//runs MongoDB update function
   let update = await BinderInventory.updateOne(
+    //sets target/filter to specific id
     { _id: id },
+    //list of all possible items one can edit
     {
       size: req.body.size,
       color: req.body.color,
@@ -263,16 +269,8 @@ app.delete("/ready/:readyIds", async (req, res) => {
   } catch (err) {
     console.log("ERROR : " + res.json({ message: err }));
   }
-  // Look in waitListed for newly added binder(changedDocument)
+  
 });
-
-//WaitListed API routes
-
-//Older API for getting WaitListed Data
-//app.get("/waitlist", async (req, res) => {
-//let waitlist = await waitListed.find({})
-//res.send(waitlist)
-//})
 
 app.get("/wait", async (req, res) => {
   let allRequests = await waitListed.find({});
@@ -280,12 +278,7 @@ app.get("/wait", async (req, res) => {
 });
 
 app.post("/wait/save", async (req, res) => {
-  const ready = new FormInput({
-    email: req.body.emailSelf,
-    elseEmail: req.body.emailElse,
-    numberSelf: req.body.phone,
-    numberElse: req.body.elsePhone,
-    address: req.body.address,
+  const ready = new waitListed({
     county: req.body.county,
     progSource: req.body.progSource,
     nameSelf: req.body.nameSelf,
@@ -310,7 +303,7 @@ app.post("/wait/save", async (req, res) => {
 app.patch("/wait/:waitIds", async (req, res) => {
   let id = req.params.waitIds;
 
-  const update = await FormInput.updateOne(
+  const update = await waitListed.updateOne(
     { _id: id },
     {
       dob: req.body.dob,
@@ -318,6 +311,70 @@ app.patch("/wait/:waitIds", async (req, res) => {
       address: req.body.address,
       name: req.body.name,
       email: req.body.email,
+      size: req.body.size,
+      length: req.body.bindLength,
+      color: req.body.bindColor,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
+    }
+  );
+
+  res.json(update);
+});
+
+app.delete("/wait/:waitIds", async (req, res) => {
+  try {
+    const deleteById = await waitListed.deleteOne({ _id: req.params.waitIds });
+
+    res.json(deleteById);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+//shipped API Routes
+
+app.get("/shipped", async (req, res) => {
+  let allShipped = await Shipped.find({});
+  res.json(allShipped);
+});
+
+app.post("/shipped/save", async (req, res) => {
+  const ready = new Shipped({
+    county: req.body.county,
+    progSource: req.body.progSource,
+    elseEmail: req.body.emailElse,
+    elsePhone: req.body.elsePhone,
+    nameSelf: req.body.nameSelf,
+    nameElse: req.body.nameElse,
+    dob: req.body.dob,
+    email: req.body.emailSelf,
+    phone: req.body.numberSelf,
+    address: req.body.address,
+    size: req.body.size,
+    length: req.body.bindLength,
+    color: req.body.bindColor,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
+  });
+
+  try {
+    await ready.save();
+
+    res.json(ready);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+// UPDATE : by ID
+
+app.patch("/shipped/:shippedIds", async (req, res) => {
+  let id = req.params.shippedIds;
+
+  let update = await Shipped.updateOne(
+    { _id: id },
+    {
       county: req.body.county,
       progSource: req.body.progSource,
       size: req.body.size,
