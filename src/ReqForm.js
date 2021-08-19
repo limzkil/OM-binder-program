@@ -24,6 +24,7 @@ const useStyles = makeStyles({
   },
   formItemField: {
     width: "25em",
+    margin: ".3em",
   },
   formHeadings: {
     margin: "1em 1em .5em .5em",
@@ -623,11 +624,12 @@ export default function ReqForm() {
                     className={style.formItemField}
                     onChange={(e) => setAddressZip(e.target.value)}
                   />
-                  <InputLabel>Please Choose your State</InputLabel>
+                  <InputLabel className={style.formItemField}>Please Choose your State</InputLabel>
                   <NativeSelect
                     id="addressState"
                     name="addressState"
                     placeholder="Please Choose your state (requestee)"
+                    className={style.formItemField}
                     value={addressState}
                     onChange={(e) => setAddressState(e.target.value)}
                   >
