@@ -10,7 +10,7 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
-import Card from '@material-ui/core/Card';
+import Card from "@material-ui/core/Card";
 import validator from "validator";
 import React, { useState, useEffect } from "react";
 
@@ -47,19 +47,16 @@ const useStyles = makeStyles({
     fontFamily: "Open Sans",
   },
   colorCards: {
-    red: {color: "#ff0000",
-          minHeight: 275,
-          minWidth: 275
+    red: { color: "#ff0000", minHeight: 275, minWidth: 275 },
+    purple: { color: "#663399" },
+    green: { color: "#228b22" },
+    beige: { color: "#f5f5dc" },
+    tan: { color: "#d2b48c" },
+    brown: { color: "#8b4513" },
+    black: { color: "#000000" },
+    grey: { color: "#808080" },
+    white: { color: "#f5f5f5" },
   },
-    purple: {color: "#663399"},
-    green: {color: "#228b22"},
-    beige: {color: "#f5f5dc"},
-    tan: {color: "#d2b48c"},
-    brown: {color: "#8b4513"},
-    black: {color: "#000000"},
-    grey: {color: "#808080"},
-    white: {color: "#f5f5f5"}
-  }
 });
 
 //to add to schema: progSource, isFirstBind, moreInf, yesSurvey
@@ -238,7 +235,13 @@ export default function ReqForm() {
           emailElse: emailElse,
           numberSelf: numberSelf,
           numberElse: numberElse,
-          address: addressSelf,
+          address: {
+            address1: address1,
+            address2: address2,
+            city: addressCity,
+            state: addressState,
+            zip: addressZip,
+          },
           size: bindSize,
           county: resMaine,
           progSource: progSource,
@@ -381,8 +384,14 @@ export default function ReqForm() {
                     <Typography className={style.formHeadings} variant="h4">
                       Requester Information
                     </Typography>
-                    <Typography className = {style.formSubtitle} variant="subtitle1">
-                      "Requester" refers to the person making the <div style = {{color: "red", display: "inline"}}>request for someone else</div>
+                    <Typography
+                      className={style.formSubtitle}
+                      variant="subtitle1"
+                    >
+                      "Requester" refers to the person making the{" "}
+                      <div style={{ color: "red", display: "inline" }}>
+                        request for someone else
+                      </div>
                     </Typography>
                     <Grid item xs={12} className={style.formItemContain}>
                       <FormControlLabel
@@ -480,12 +489,16 @@ export default function ReqForm() {
                 <Typography className={style.formHeadings} variant="h4">
                   Requestee Information
                 </Typography>
-                <Typography className = {style.formSubtitle} variant="subtitle1">
-                      "Requestee" refers to the person who will be <div style = {{color: "red", display: "inline"}}>wearing the binder</div>
-                    </Typography>
+                <Typography className={style.formSubtitle} variant="subtitle1">
+                  "Requestee" refers to the person who will be{" "}
+                  <div style={{ color: "red", display: "inline" }}>
+                    wearing the binder
+                  </div>
+                </Typography>
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                  Are you, or the person you are requesting the binder for, between the ages of 14 & 22
+                    Are you, or the person you are requesting the binder for,
+                    between the ages of 14 & 22
                   </InputLabel>
                   <NativeSelect
                     id="ageCheck"
@@ -564,7 +577,7 @@ export default function ReqForm() {
                   />
                 </Grid>
                 <Grid item xs={12} className={style.formItemContain}>
-                <InputLabel>
+                  <InputLabel>
                     Enter your phone number in 000-000-0000 format
                   </InputLabel>
                   <TextField
@@ -720,53 +733,56 @@ export default function ReqForm() {
                     label="I have a strong preference on color and/or length and I am willing to wait."
                   />
                 </Grid>
-                {waitLenCol ? (<><Grid item xs={12} className={style.formItemContain}>
-                  <InputLabel>What is your preferred length?</InputLabel>
-                  <NativeSelect
-                    id="bindLength"
-                    name="length"
-                    value={bindLength}
-                    onChange={(e) => setBindLength(e.target.value)}
-                  >
-                    <option value="">Select length</option>
-                    <option value={"No Preference"}>No preference</option>
-                    <option value={"Short"}>Short</option>
-                    <option value={"Long"}>Long</option>
-                  </NativeSelect>
-                </Grid>
-                <Grid item xs={12} className={style.formItemContain}>
-                  <InputLabel>What is your preferred color?</InputLabel>
-                  <NativeSelect
-                    id="bindColor"
-                    name="color"
-                    value={bindColor}
-                    onChange={(e) => setBindColor(e.target.value)}
-                  >
-                    <option value="">Select color</option>
-                    <option value={"No Preference"}>No preference</option>
-                    <option value={"Red"}>Red</option>
-                    <option value={"Purple"}>Purple</option>
-                    <option value={"Green"}>Green</option>
-                    <option value={"Beige"}>Beige</option>
-                    <option value={"Tan"}>Tan</option>
-                    <option value={"Brown"}>Brown</option>
-                    <option value={"Black"}>Black</option>
-                    <option value={"Grey"}>Grey</option>
-                    <option value={"White"}>White</option>
-                  </NativeSelect>
-                </Grid>
-                <Grid item xs={12} className={style.formItemContain}>
-                  <Card className={style.colorCards.red}></Card>
-                  <Card className={style.colorCards.purple}></Card>
-                  <Card className={style.colorCards.green}></Card>
-                  <Card className={style.colorCards.beige}></Card>
-                  <Card className={style.colorCards.tan}></Card>
-                  <Card className={style.colorCards.brown}></Card>
-                  <Card className={style.colorCards.black}></Card>
-                  <Card className={style.colorCards.grey}></Card>
-                  <Card className={style.colorCards.white}></Card>
-                </Grid>
-                </>) : null}
+                {waitLenCol ? (
+                  <>
+                    <Grid item xs={12} className={style.formItemContain}>
+                      <InputLabel>What is your preferred length?</InputLabel>
+                      <NativeSelect
+                        id="bindLength"
+                        name="length"
+                        value={bindLength}
+                        onChange={(e) => setBindLength(e.target.value)}
+                      >
+                        <option value="">Select length</option>
+                        <option value={"No Preference"}>No preference</option>
+                        <option value={"Short"}>Short</option>
+                        <option value={"Long"}>Long</option>
+                      </NativeSelect>
+                    </Grid>
+                    <Grid item xs={12} className={style.formItemContain}>
+                      <InputLabel>What is your preferred color?</InputLabel>
+                      <NativeSelect
+                        id="bindColor"
+                        name="color"
+                        value={bindColor}
+                        onChange={(e) => setBindColor(e.target.value)}
+                      >
+                        <option value="">Select color</option>
+                        <option value={"No Preference"}>No preference</option>
+                        <option value={"Red"}>Red</option>
+                        <option value={"Purple"}>Purple</option>
+                        <option value={"Green"}>Green</option>
+                        <option value={"Beige"}>Beige</option>
+                        <option value={"Tan"}>Tan</option>
+                        <option value={"Brown"}>Brown</option>
+                        <option value={"Black"}>Black</option>
+                        <option value={"Grey"}>Grey</option>
+                        <option value={"White"}>White</option>
+                      </NativeSelect>
+                    </Grid>
+                    <Grid item xs={12} className={style.formItemContain}>
+                      <Card className={style.colorCards.red}></Card>
+                      <Card className={style.colorCards.purple}></Card>
+                      <Card className={style.colorCards.green}></Card>
+                      <Card className={style.colorCards.beige}></Card>
+                      <Card className={style.colorCards.tan}></Card>
+                      <Card className={style.colorCards.brown}></Card>
+                      <Card className={style.colorCards.black}></Card>
+                      <Card className={style.colorCards.grey}></Card>
+                      <Card className={style.colorCards.white}></Card>
+                    </Grid>
+                  </>
+                ) : null}
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
                     Any additional information regarding this request?
