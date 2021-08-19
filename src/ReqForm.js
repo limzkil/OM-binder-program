@@ -379,7 +379,7 @@ export default function ReqForm() {
                       Requester Information
                     </Typography>
                     <Typography className = {style.formSubtitle} variant="subtitle1">
-                      "Requester" refers to the person making the request for someone else
+                      "Requester" refers to the person making the <div style = {{color: "red", display: "inline"}}>request for someone else</div>
                     </Typography>
                     <Grid item xs={12} className={style.formItemContain}>
                       <FormControlLabel
@@ -472,7 +472,7 @@ export default function ReqForm() {
                   Requestee Information
                 </Typography>
                 <Typography className = {style.formSubtitle} variant="subtitle1">
-                      "Requestee" refers to the person who will be wearing the binder
+                      "Requestee" refers to the person who will be <div style = {{color: "red", display: "inline"}}>wearing the binder</div>
                     </Typography>
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
