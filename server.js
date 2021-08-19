@@ -211,7 +211,13 @@ app.post("/ready/save", async (req, res) => {
     elseEmail: req.body.emailElse,
     numberSelf: req.body.phone,
     numberElse: req.body.elsePhone,
-    address: req.body.address,
+    address: {
+      address1: req.body.address1,
+    address2: req.body.address2,
+    city: req.body.addressCity,
+    state: req.body.addressState,
+    zip: req.body.addressZip
+  },
     county: req.body.county,
     progSource: req.body.progSource,
     nameSelf: req.body.nameSelf,
@@ -241,7 +247,13 @@ app.patch("/ready/:readyIds", async (req, res) => {
     {
       dob: req.body.dob,
       phone: req.body.phone,
-      address: req.body.address,
+      address: {
+        address1: req.body.address1,
+      address2: req.body.address2,
+      city: req.body.addressCity,
+      state: req.body.addressState,
+      zip: req.body.addressZip
+    },
       name: req.body.name,
       email: req.body.email,
       county: req.body.county,
@@ -285,7 +297,13 @@ app.post("/wait/save", async (req, res) => {
     elseEmail: req.body.emailElse,
     numberSelf: req.body.phone,
     numberElse: req.body.elsePhone,
-    address: req.body.address,
+    address: {
+      address1: req.body.address1,
+    address2: req.body.address2,
+    city: req.body.addressCity,
+    state: req.body.addressState,
+    zip: req.body.addressZip
+  },
     county: req.body.county,
     progSource: req.body.progSource,
     nameSelf: req.body.nameSelf,
@@ -315,7 +333,13 @@ app.patch("/wait/:waitIds", async (req, res) => {
     {
       dob: req.body.dob,
       phone: req.body.phone,
-      address: req.body.address,
+      address: {
+        address1: req.body.address1,
+      address2: req.body.address2,
+      city: req.body.addressCity,
+      state: req.body.addressState,
+      zip: req.body.addressZip
+    },
       name: req.body.name,
       email: req.body.email,
       county: req.body.county,
@@ -510,7 +534,13 @@ app.post("/send_mail", async (req, res) => {
             dob: req.body.dob,
             email: req.body.emailSelf,
             phone: req.body.numberSelf,
-            address: req.body.addressSelf,
+            address: {
+              address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.addressCity,
+            state: req.body.addressState,
+            zip: req.body.addressZip
+          },
             size: req.body.size,
             length: req.body.bindLength,
             color: req.body.bindColor,
@@ -667,7 +697,13 @@ app.post("/send_mail", async (req, res) => {
             dob: req.body.dob,
             elseEmail: req.body.emailElse,
             phone: req.body.numberSelf,
-            address: req.body.addressSelf,
+            address: {
+              address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.addressCity,
+            state: req.body.addressState,
+            zip: req.body.addressZip
+          },
             size: req.body.size,
             length: req.body.bindLength,
             color: req.body.bindColor,

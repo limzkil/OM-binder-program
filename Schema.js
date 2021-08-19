@@ -10,7 +10,13 @@ const CreateSchema = new mongoose.Schema({
   dob: String,
   email: String,
   phone: Number,
-  address: String,
+  address: {
+    address1: String,
+  address2: String,
+  city: String,
+  state: String,
+  zip: Number
+},
   size: String,
   length: String,
   color: String,
