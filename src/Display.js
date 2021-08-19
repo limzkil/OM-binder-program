@@ -1,3 +1,4 @@
+//React, useState and Effect import
 import React, { useState, useEffect } from "react";
 
 //auth import
@@ -28,9 +29,11 @@ import Shipped from "./fetchComponents/Shipped"
 import Header from './displayComponents/Header'
 import Banner from './displayComponents/Banner'
 
+//Main Display component used to sort through and render data from different fetch components 
 const Display = (props) => {
+  //useState variables used to house fetched data and make changes to it.
   const [inventoryData, setInventoryData] = useState([]);
-  const [requestData, setRequestData] = useState([]);
+  const [readyToShipData, setReadyToShipData] = useState([]);
   const [waitListData, setWaitListData] = useState([]);
   const [shippedData, setShippedData] = useState([]);
 
@@ -71,6 +74,9 @@ const Display = (props) => {
         setIsAuthenticated(true);
       }
     }
+
+  //if no information exists within state variables, attempts to fetch information from appropriate API route, 
+  //converts the information to json format and assigns the resulting value to the initial state variable
     if (inventoryData.length === 0) {
       fetch("/binders")
         .then((response) => response.json())
@@ -80,11 +86,11 @@ const Display = (props) => {
         });
     }
 
-    if (requestData.length === 0) {
+    if (readyToShipData.length === 0) {
       fetch("/ready")
         .then((response) => response.json())
         .then((result) => {
-          setRequestData(result);
+          setReadyToShipData(result);
         });
     }
 
@@ -106,6 +112,7 @@ const Display = (props) => {
   });
 
 
+//display properties for an authorized user
 if(isAuthenticated)
 {return (
     
@@ -142,7 +149,9 @@ if(isAuthenticated)
       
       </Grid>
     </>
-  )}else{
+  )}
+
+  else{
     return(
       <NotAuthorized />
     )
