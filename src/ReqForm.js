@@ -76,7 +76,6 @@ export default function ReqForm() {
   const [birth, setBirth] = useState("");
   const [emailSelf, setEmailSelf] = useState("");
   const [numberSelf, setNumberSelf] = useState("");
-  const [addressSelf, setAddressSelf] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [addressCity, setAddressCity] = useState("");

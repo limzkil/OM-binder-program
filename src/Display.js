@@ -25,8 +25,7 @@ import ReadyToShip from "./fetchComponents/ReadyToShip";
 import Waitlist from "./fetchComponents/Waitlist";
 import Shipped from "./fetchComponents/Shipped"
 
-//header component
-import Header from './displayComponents/Header'
+//banner component
 import Banner from './displayComponents/Banner'
 
 //Main Display component used to sort through and render data from different fetch components 
