@@ -213,8 +213,8 @@ app.post("/ready/save", async (req, res) => {
   const ready = new FormInput({
     email: req.body.emailSelf,
     elseEmail: req.body.emailElse,
-    numberSelf: req.body.numberSelf,
-    numberElse: req.body.numberElse,
+    phone: req.body.numberSelf,
+    elsePhone: req.body.numberElse,
     address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
@@ -245,9 +245,11 @@ app.patch("/ready/:readyIds", async (req, res) => {
     {
       dob: req.body.dob,
       phone: req.body.phone,
+      elsePhone: req.body.elsePhone,
       address: req.body.address,
       name: req.body.name,
       email: req.body.email,
+      elseEmail: req.body.elseEmail,
       county: req.body.county,
       progSource: req.body.progSource,
       size: req.body.size,
@@ -277,14 +279,19 @@ app.get("/wait", async (req, res) => {
 
 app.post("/wait/save", async (req, res) => {
   const ready = new waitListed({
+    dob: req.body.dob,
+    phone: req.body.phone,
+    elsePhone: req.body.elsePhone,
+    address: req.body.address,
+    name: req.body.name,
+    email: req.body.email,
+    elseEmail: req.body.elseEmail,
     county: req.body.county,
     progSource: req.body.progSource,
-    nameSelf: req.body.nameSelf,
-    nameElse: req.body.nameElse,
-    dob: req.body.dob,
     size: req.body.size,
-    length: req.body.length,
     color: req.body.color,
+    length: req.body.length,
+    quantity: req.body.quantity,
   });
 
   try {
@@ -309,9 +316,12 @@ app.patch("/wait/:waitIds", async (req, res) => {
       address: req.body.address,
       name: req.body.name,
       email: req.body.email,
+      elseEmail: req.body.elseEmail,
+      phone: req.body.phone,
+      elsePhone: req.body.elsePhone,
       size: req.body.size,
-      length: req.body.bindLength,
-      color: req.body.bindColor,
+      length: req.body.length,
+      color: req.body.color,
       willWait: req.body.willWait,
       moreInfo: req.body.moreInfo,
     }
@@ -341,17 +351,17 @@ app.post("/shipped/save", async (req, res) => {
   const ready = new Shipped({
     county: req.body.county,
     progSource: req.body.progSource,
-    elseEmail: req.body.emailElse,
-    elsePhone: req.body.numberElse,
+    elseEmail: req.body.elseEmail,
+    elsePhone: req.body.elsePhone,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
     email: req.body.emailSelf,
-    phone: req.body.numberSelf,
+    phone: req.body.phone,
     address: req.body.address,
     size: req.body.size,
-    length: req.body.bindLength,
-    color: req.body.bindColor,
+    length: req.body.length,
+    color: req.body.color,
     willWait: req.body.willWait,
     moreInfo: req.body.moreInfo,
   });
@@ -375,10 +385,20 @@ app.patch("/shipped/:shippedIds", async (req, res) => {
     {
       county: req.body.county,
       progSource: req.body.progSource,
+      elseEmail: req.body.elseEmail,
+      elsePhone: req.body.elsePhone,
+      nameSelf: req.body.nameSelf,
+      nameElse: req.body.nameElse,
+      dob: req.body.dob,
+      email: req.body.emailSelf,
+      phone: req.body.phone,
+      address: req.body.address,
       size: req.body.size,
-      color: req.body.color,
       length: req.body.length,
-      quantity: req.body.quantity,
+      color: req.body.color,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
+
     }
   );
 
@@ -398,11 +418,11 @@ app.delete("/wait/:waitIds", async (req, res) => {
 //API Route for button to move ReadytoShip items to Shipped
 app.post("/ready/move", async (req, res) => {
   FormInput.findOne({ id: req.params._id })
-    .then((doc) => {
-      console.log(doc);
+    .then((changedDocument) => {
+      console.log(changedDocument);
 
-      // Inserting the doc in the destination collection
-      Shipped.insertMany([doc])
+      // Inserting the changedDocument in the destination collection
+      Shipped.insertMany([changedDocument])
         .then((d) => {
           console.log("New Entry Saved");
         })
@@ -410,7 +430,7 @@ app.post("/ready/move", async (req, res) => {
           console.log(error);
         });
 
-      // Removing doc from the first collection
+      // Removing changedDocument from the first collection
       FormInput.deleteOne({ id: req.body._id })
         .then((d) => {
           console.log("Removed Old Entry");
@@ -594,7 +614,7 @@ app.post("/send_mail", async (req, res) => {
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailElse}</p>
-        <p><strong>Phone number:</strong> ${numberSelf}</p>
+        <p><strong>Phone number:</strong> ${numberElse}</p>
         <p><strong>Address:</strong> ${address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
@@ -681,9 +701,6 @@ app.post("/send_mail", async (req, res) => {
   }
 });
 
-// post request for moving binder from "requested" to "shipped"
-app.post("/confirmSent", async (req, res) => {});
-
 //Have a watch on the binder inventory collection (inventorys) everytime the collection is updated in some way. This watch will also send an email when a waitlisted person's item is in stock.
 BinderInventory.watch().on("change", async (change) => {
   // If the operation is delete, just return
@@ -707,22 +724,22 @@ BinderInventory.watch().on("change", async (change) => {
         length: { $in: [changedDocument.length] },
         color: { $in: [changedDocument.color] },
       })
-      .then(async function (doc) {
+      .then(async function (changedDocument) {
         // If there is no waitListed entry matching the newly added binder, just return
-        if (doc === null) {
+        if (changedDocument === null) {
           return;
           // Otherwise, add the waitlisted entry into readytoship
         } else {
           //   readytoship
-          FormInput.insertMany([doc])
-            .then((doc) => {
+          FormInput.insertMany([changedDocument])
+            .then((changedDocument) => {
               console.log("New Entry Saved in readytoships");
             })
             .catch((error) => {
               console.log(error);
             });
           // Delete that entire document from waitListed
-          await waitListed.deleteOne(doc);
+          await waitListed.deleteOne(changedDocument);
 
           // Look in ProcessedInventory for that same newly added binder (changedDocument)
           let processedBind = await ProcessedInventory.findOne({
@@ -764,12 +781,12 @@ BinderInventory.watch().on("change", async (change) => {
             },
           });
           // If the user enters info in "email"
-          if (doc.email) {
+          if (changedDocument.email) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: doc.email,
+              to: changedDocument.email,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;
@@ -779,9 +796,9 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${doc.email}</p>
-              <p><strong>Phone number:</strong> ${doc.phone}</p>
-              <p><strong>Address:</strong> ${doc.address}</p>
+              <p><strong>Email:</strong> ${changedDocument.email}</p>
+              <p><strong>Phone number:</strong> ${changedDocument.phone}</p>
+              <p><strong>Address:</strong> ${changedDocument.address}</p>
               <p>Binder Details</p>
               <p>Size: ${changedDocument.size}</p>
               <p>Color: ${changedDocument.color}</p>
@@ -796,7 +813,7 @@ BinderInventory.watch().on("change", async (change) => {
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: doc.emailElse,
+              to: changedDocument.elseEmail,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;
@@ -806,9 +823,9 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${doc.emailElse}</p>
-              <p><strong>Phone number:</strong> ${doc.elsePhone}</p>
-              <p><strong>Address:</strong> ${doc.address}</p>
+              <p><strong>Email:</strong> ${changedDocument.elseEmail}</p>
+              <p><strong>Phone number:</strong> ${changedDocument.elsePhone}</p>
+              <p><strong>Address:</strong> ${changedDocument.address}</p>
               <p>Binder Details</p>
               <p>Size: ${changedDocument.size}</p>
               <p>Color: ${changedDocument.color}</p>
@@ -824,10 +841,138 @@ BinderInventory.watch().on("change", async (change) => {
   }
 });
 
-//app.get("/waitlist", async (req, res) => {
-//let waitlist = await waitListed.find({});
-// res.send(waitlist);
-//});
+waitListed.watch().on("change", async (change) => {
+  // If the operation is delete, just return
+  if (change.operationType === "delete") {
+    return;
+  }
+
+  else {
+    //Otherwise, look for the newly added binder in binder inventory and find it using id
+    let changedDocument = await waitListed.findOne({
+      _id: { $in: [change.documentKey._id] },
+    });
+    console.log(changedDocument)
+
+    let foundBinder = await BinderInventory.findOne({
+      size: { $in: [changedDocument.size] },
+      length: { $in: [changedDocument.length] },
+      color: { $in: [changedDocument.color] },
+      // quantity: { $gte: 1 }
+    })
+    console.log(foundBinder)
+
+    if (foundBinder === null || foundBinder.quantity === 0) {
+      return;
+    }
+
+    else if (foundBinder) {
+      await waitListed.deleteOne(changedDocument)
+      await FormInput.insertMany([changedDocument])
+
+      // Look in ProcessedInventory for that same newly added binder (changedDocument)
+      let processedBind = await ProcessedInventory.findOne({
+        size: { $in: [changedDocument.size] },
+        length: { $in: [changedDocument.length] },
+        color: { $in: [changedDocument.color] },
+      });
+
+      //If that binder doesnt exist in processedinventory, create it
+      if (processedBind === null) {
+        let newEntry = ProcessedInventory({
+          size: changedDocument.size,
+          length: changedDocument.length,
+          color: changedDocument.color,
+          quantity: 1,
+        });
+        await newEntry.save();
+      } else {
+        // After finding that binder in ProcessedInventory, update the quantity by incrementing by 1
+        await ProcessedInventory.updateOne(
+          { _id: processedBind._id },
+          { $set: { quantity: processedBind.quantity + 1 } }
+        );
+      }
+
+      // After finding that binder in BinderInventory, update the quantity by decrementing by 1. The stock has now been updated.
+      await BinderInventory.updateOne(
+        { _id: foundBinder._id },
+        { $set: { quantity: foundBinder.quantity - 1 } }
+      );
+
+      // Create a transport variable using nodemailer
+      const transport = nodemailer.createTransport({
+        // Sending from Gmail. User and pass are the variables in the .env
+        service: "Gmail",
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_PASS,
+        },
+      });
+
+      // If the user enters info in "email"
+      if (changedDocument.email) {
+        console.log(" in changeddoc.email")
+        // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
+        await transport.sendMail({
+          from: process.env.GMAIL_USER,
+          // Send to the email that user typed in "email" textbox
+          to: changedDocument.email,
+          subject: "test email",
+          html: `<div className="email" style="
+          border: 1px solid black;
+          padding: 20px;
+          font-family: sans-serif;
+          line-height: 2;
+          font-size: 20px; 
+          ">
+          <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
+          <p><strong>Email:</strong> ${changedDocument.email}</p>
+          <p><strong>Phone number:</strong> ${changedDocument.phone}</p>
+          <p><strong>Address:</strong> ${changedDocument.address}</p>
+          <p>Binder Details</p>
+          <p>Size: ${changedDocument.size}</p>
+          <p>Color: ${changedDocument.color}</p>
+          <p>Length: ${changedDocument.length}</p>
+
+          <p>All the best, OutMaine Team</p>
+          </div>
+          `,
+        });
+        // Code is essentially the same as above except for if the user enters info in "email (else)"". This means the person is ordering a binder for someone else"
+      } else {
+        await transport.sendMail({
+          from: process.env.GMAIL_USER,
+          // Send to the email that user typed in "email" textbox
+          to: changedDocument.elseEmail,
+          subject: "test email",
+          html: `<div className="email" style="
+          border: 1px solid black;
+          padding: 20px;
+          font-family: sans-serif;
+          line-height: 2;
+          font-size: 20px; 
+          ">
+          <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
+          <p><strong>Email:</strong> ${changedDocument.elseEmail}</p>
+          <p><strong>Phone number:</strong> ${changedDocument.elsePhone}</p>
+          <p><strong>Address:</strong> ${changedDocument.address}</p>
+          <p>Binder Details</p>
+          <p>Size: ${changedDocument.size}</p>
+          <p>Color: ${changedDocument.color}</p>
+          <p>Length: ${changedDocument.length}</p>
+
+          <p>All the best, OutMaine Team</p>
+          </div>
+          `,
+        });
+      }
+
+
+
+    }
+  }
+})
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);

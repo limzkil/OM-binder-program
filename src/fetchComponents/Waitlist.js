@@ -67,7 +67,7 @@ export default function Waitlist() {
     {title: "DOB", field: "dob"},
     {title: "Email", field: "email"},
     {title: "Phone", field: "phone"},
-    {title: "Address", field: "address"},
+    {title: "Address", field: "address.address1"},
     {title: "Size", field: "size"},
     {title: "Length", field: "length"},
     {title: "Color", field: "color"}
