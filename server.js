@@ -214,26 +214,14 @@ app.post("/ready/save", async (req, res) => {
   const ready = new FormInput({
     email: req.body.emailSelf,
     elseEmail: req.body.emailElse,
-    numberSelf: req.body.phone,
-    numberElse: req.body.elsePhone,
+    numberSelf: req.body.numberSelf,
+    numberElse: req.body.numberElse,
     address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
-<<<<<<< HEAD
-=======
-    email: req.body.emailSelf,
-    phone: req.body.numberSelf,
-    address: {
-      address1: req.body.address1,
-    address2: req.body.address2,
-    city: req.body.addressCity,
-    state: req.body.addressState,
-    zip: req.body.addressZip
-  },
->>>>>>> 53fa43316805153989749e2a7dc2e48c89282456
     size: req.body.size,
     length: req.body.length,
     color: req.body.color,
@@ -257,24 +245,12 @@ app.patch("/ready/:readyIds", async (req, res) => {
     { _id: id },
     {
       dob: req.body.dob,
-<<<<<<< HEAD
       phone: req.body.phone,
       address: req.body.address,
       name: req.body.name,
       email: req.body.email,
       county: req.body.county,
       progSource: req.body.progSource,
-=======
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: {
-        address1: req.body.address1,
-      address2: req.body.address2,
-      city: req.body.addressCity,
-      state: req.body.addressState,
-      zip: req.body.addressZip
-    },
->>>>>>> 53fa43316805153989749e2a7dc2e48c89282456
       size: req.body.size,
       color: req.body.color,
       length: req.body.length,
@@ -308,18 +284,6 @@ app.post("/wait/save", async (req, res) => {
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
-<<<<<<< HEAD
-=======
-    email: req.body.emailSelf,
-    phone: req.body.numberSelf,
-    address: {
-      address1: req.body.address1,
-    address2: req.body.address2,
-    city: req.body.addressCity,
-    state: req.body.addressState,
-    zip: req.body.addressZip
-  },
->>>>>>> 53fa43316805153989749e2a7dc2e48c89282456
     size: req.body.size,
     length: req.body.length,
     color: req.body.color,
@@ -343,22 +307,10 @@ app.patch("/wait/:waitIds", async (req, res) => {
     { _id: id },
     {
       dob: req.body.dob,
-<<<<<<< HEAD
       phone: req.body.phone,
       address: req.body.address,
       name: req.body.name,
       email: req.body.email,
-=======
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: {
-        address1: req.body.address1,
-      address2: req.body.address2,
-      city: req.body.addressCity,
-      state: req.body.addressState,
-      zip: req.body.addressZip
-    },
->>>>>>> 53fa43316805153989749e2a7dc2e48c89282456
       size: req.body.size,
       length: req.body.bindLength,
       color: req.body.bindColor,
@@ -392,7 +344,7 @@ app.post("/shipped/save", async (req, res) => {
     county: req.body.county,
     progSource: req.body.progSource,
     elseEmail: req.body.emailElse,
-    elsePhone: req.body.elsePhone,
+    elsePhone: req.body.numberElse,
     nameSelf: req.body.nameSelf,
     nameElse: req.body.nameElse,
     dob: req.body.dob,
@@ -612,7 +564,7 @@ app.post("/send_mail", async (req, res) => {
       county: req.body.county,
       progSource: req.body.progSource,
       elseEmail: req.body.emailElse,
-      elsePhone: req.body.elsePhone,
+      elsePhone: req.body.numberElse,
       nameSelf: req.body.nameSelf,
       nameElse: req.body.nameElse,
       dob: req.body.dob,
@@ -687,7 +639,7 @@ app.post("/send_mail", async (req, res) => {
       county: req.body.county,
       progSource: req.body.progSource,
       elseEmail: req.body.emailElse,
-      elsePhone: req.body.elsePhone,
+      elsePhone: req.body.numberElse,
       nameSelf: req.body.nameSelf,
       nameElse: req.body.nameElse,
       dob: req.body.dob,
