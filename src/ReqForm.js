@@ -246,7 +246,9 @@ export default function ReqForm() {
           bindLength: bindLength === "" ? "No preference" : bindLength,
           bindColor: bindColor === "" ? "No preference" : bindColor,
           willWait: waitLenCol,
-          moreInfo: moreInf,
+          moreInfo: moreInf
+         
+
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -882,20 +884,20 @@ export default function ReqForm() {
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                  disabled={
-                    validSize &&
-                    validConsent &&
-                    validEmail &&
-                    validDate &&
-                    validRes &&
-                    validNameElse &&
-                    validElseEmail &&
-                    validElsePhone &&
-                    validName &&
-                    validPhone
-                      ? false
-                      : true
-                  }
+                  // disabled={
+                  //   validSize &&
+                  //   validConsent &&
+                  //   validEmail &&
+                  //   validDate &&
+                  //   validRes &&
+                  //   validNameElse &&
+                  //   validElseEmail &&
+                  //   validElsePhone &&
+                  //   validName &&
+                  //   validPhone
+                  //     ? false
+                  //     : true
+                  // }
                 >
                   Submit
                 </Button>

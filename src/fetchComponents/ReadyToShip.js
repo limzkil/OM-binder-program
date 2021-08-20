@@ -90,7 +90,7 @@ export default function ReadyToShip() {
       .catch((error) => {
         console.log("Error");
       });
-  }, [data]);
+  }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
