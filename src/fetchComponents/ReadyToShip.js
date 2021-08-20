@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
-import Grid from "@material-ui/core/Grid";
+
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -70,7 +70,7 @@ export default function ReadyToShip() {
     { title: "DOB", field: "dob" },
     { title: "Email", field: "email" },
     { title: "Phone", field: "phone" },
-    { title: "Address", field: "address" },
+    { title: "Address", field: "address.address1" },
     { title: "Size", field: "size" },
     { title: "Length", field: "length" },
     { title: "Color", field: "color" },

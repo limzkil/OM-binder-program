@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { forwardRef } from "react";
-import Grid from "@material-ui/core/Grid";
+import React, { useState, useEffect } from 'react';
+import { forwardRef } from 'react';
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
@@ -235,8 +235,8 @@ export default function Waitlist() {
             tooltip: "Show Comments",
             render: (data) => {
               return (
-                <div className={style.details}>{data.moreInfo}</div> 
-               /*  <MaterialTable
+              
+                <MaterialTable
                   title="details"
                   columns={detailColumns}
                   data={data}
@@ -254,7 +254,7 @@ export default function Waitlist() {
                       new Promise((resolve) => {
                         handleRowDelete(oldData, resolve);
                       }),
-                  }}/> */
+                  }}/> 
               )
             },
           },
@@ -263,4 +263,3 @@ export default function Waitlist() {
     </>
   );
 }
-{/* <div className={style.details}>{data.moreInfo}</div> */}
