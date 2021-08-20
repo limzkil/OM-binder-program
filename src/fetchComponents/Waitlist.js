@@ -67,7 +67,7 @@ export default function Waitlist() {
     {title: "DOB", field: "dob"},
     {title: "Email", field: "email"},
     {title: "Phone", field: "phone"},
-    {title: "Address", field: "address"},
+    {title: "Address", field: "address.address1"},
     {title: "Size", field: "size"},
     {title: "Length", field: "length"},
     {title: "Color", field: "color"}
@@ -236,7 +236,7 @@ export default function Waitlist() {
                 {
                   tooltip: "Show Comments",
                   render: (data) => {
-                    return <div className={style.details}>{data.moreInfo}</div>;
+                    return <div className={style.details}>{data.address.address1}{data.address.address2}</div>;
                   },
                 },
               ]}
