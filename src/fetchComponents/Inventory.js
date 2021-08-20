@@ -80,44 +80,41 @@ function App() {
  
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-    console.log(newData.color)
     //validation
     let errorList = [];
-    // if (
-    //   newData.size !== "X-small" ||
-    //   "Small" ||
-    //   "Medium" ||
-    //   "Large" ||
-    //   "X-large" ||
-    //   "2X-large" ||
-    //   "3X-large" ||
-    //   "4X-large" ||
-    //   "5X-large"
-    // ) {
-    //   errorList.push("Please enter a valid size.");
-    // }
     if (
-      newData.color !== "Red" ||
-      "Purple" ||
-      "Green" ||
-      "Beige" ||
-      "Tan" ||
-      "Brown" ||
-      "Black" ||
-      "Grey" ||
-      "White"
+      newData.size !== "X-small" &&
+      newData.size !=="Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
     ) {
-      errorList.push(newData.color + "Please enter a valid color.");
+      errorList.push(`You entered "${newData.size}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
     }
-    // if (newData.length !== "Short" || "Long") {
-    //   errorList.push("Please enter a valid length.");
-    // }
+    if (
+      newData.color !== "Red" && 
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !=="Black" &&
+      newData.color !=="Grey" &&
+      newData.color !=="White"
+    ) {
+      errorList.push(`You entered "${newData.color}", please enter a valid color. All values are capitalized.`);
+    }
+    if (newData.length !== "Short" && newData.length !== "Long") {
+      errorList.push(`You entered "${newData.length}", please enter a valid length. All values are capitalized.`);
+    }
 
     if (isNaN(newData.quantity)) {
-      errorList.push("Please enter a valid quantity.");
+      errorList.push(`You entered "${newData.quantity}", please enter a valid quantity. Only numbers are accepted.`);
     }
-
-    console.log(newData._id);
 
     if (errorList.length < 1) {
       api
@@ -146,18 +143,38 @@ function App() {
   const handleRowAdd = (newData, resolve) => {
     //validation
     let errorList = [];
-    if (newData.size === "") {
-      errorList.push("Please enter a valid size.");
+    if (
+      newData.size !== "X-small" &&
+      newData.size !=="Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
+    ) {
+      errorList.push(`You entered "${newData.size}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
     }
-    if (newData.color === "") {
-      errorList.push("Please enter a valid color.");
+    if (
+      newData.color !== "Red" && 
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !=="Black" &&
+      newData.color !=="Grey" &&
+      newData.color !=="White"
+    ) {
+      errorList.push(`You entered "${newData.color}", please enter a valid color. All values are capitalized.`);
     }
-    if (newData.length === "") {
-      errorList.push("Please enter a valid length.");
+    if (newData.length !== "Short" && newData.length !== "Long") {
+      errorList.push(`You entered "${newData.length}", please enter a valid length. All values are capitalized.`);
     }
 
-    if (newData.quantity === "") {
-      errorList.push("Please enter a valid quantity.");
+    if (isNaN(newData.quantity)) {
+      errorList.push(`You entered "${newData.quantity}", please enter a valid quantity. Only numbers are accepted.`);
     }
 
     if (errorList.length < 1) {
