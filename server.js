@@ -967,9 +967,6 @@ waitListed.watch().on("change", async (change) => {
           `,
         });
       }
-
-
-
     }
   }
 })
