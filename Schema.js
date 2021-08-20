@@ -4,18 +4,18 @@ const CreateSchema = new mongoose.Schema({
   county: String,
   progSource: String,
   elseEmail: String,
-  elsePhone: Number,
+  elsePhone: String,
   nameSelf: String,
   nameElse: String,
   dob: String,
   email: String,
-  phone: Number,
+  phone: String,
   address: {
     address1: String,
   address2: String,
   city: String,
   state: String,
-  zip: Number
+  zip: String
 },
   size: String,
   length: String,
