@@ -134,20 +134,21 @@ const BinderInventory = mongoose.model(`inventorys`, Binder);
 // Model for processedinventorys that uses the binderschema
 const ProcessedInventory = mongoose.model("processedinventorys", Binder);
 
-// Model for waitListeds that uses the formScehma
+// Schema models for WaitList, Ready to Ship and Shipped collection. Uses the CreateSchema
 const waitListed = mongoose.model("waitListeds", Create);
 
 const FormInput = mongoose.model("readytoships", Create);
 
 const Shipped = mongoose.model("shippeds", Create);
-//Binder Inventory APIs
 
+//Binder Inventory APIs
+//GET Route for displaying information from Inventory Collection
 app.get("/binders", async (req, res) => {
-  //send the inventory, right now just called email test
   let allInventory = await BinderInventory.find({});
-  res.send(allInventory);
+  res.json(allInventory);
 });
 
+//POST Route for adding a new entry into the Inventory Collection
 app.post("/binders/save", async (req, res) => {
   const binder = new BinderInventory({
     size: req.body.size,
@@ -164,22 +165,24 @@ app.post("/binders/save", async (req, res) => {
 
     res.json(binder);
   } catch (err) {
+    //displays an error message should the attempt to POST fail
     console.log("ERROR : " + res.json({ message: err }));
   }
 });
 
-// UPDATE : by ID
-
+//UPDATE route for making edits to pieces of collection entries. Only
 app.patch("/binders/:binderIds", async (req, res) => {
   let id = req.params.binderIds;
-
+  //runs MongoDB update function
   let update = await BinderInventory.updateOne(
+    //sets target/filter to specific id
     { _id: id },
+    //list of all possible items one can edit
     {
       size: req.body.size,
       color: req.body.color,
       length: req.body.length,
-      quantity: req.body.quantity,
+      quantity: parseInt(req.body.quantity),
     }
   );
 
@@ -216,7 +219,13 @@ app.post("/ready/save", async (req, res) => {
     dob: req.body.dob,
     email: req.body.emailSelf,
     phone: req.body.numberSelf,
-    address: req.body.address,
+    address: {
+      address1: req.body.address1,
+      address2: req.body.address2,
+      city: req.body.addressCity,
+      state: req.body.addressState,
+      zip: req.body.addressZip,
+    },
     size: req.body.size,
     length: req.body.bindLength,
     color: req.body.bindColor,
@@ -250,7 +259,13 @@ app.patch("/ready/:readyIds", async (req, res) => {
       dob: req.body.dob,
       email: req.body.emailSelf,
       phone: req.body.numberSelf,
-      address: req.body.address,
+      address: {
+        address1: req.body.address1,
+        address2: req.body.address2,
+        city: req.body.addressCity,
+        state: req.body.addressState,
+        zip: req.body.addressZip,
+      },
       size: req.body.size,
       length: req.body.bindLength,
       color: req.body.bindColor,
@@ -270,16 +285,7 @@ app.delete("/ready/:readyIds", async (req, res) => {
   } catch (err) {
     console.log("ERROR : " + res.json({ message: err }));
   }
-  // Look in waitListed for newly added binder(changedDocument)
 });
-
-//WaitListed API routes
-
-//Older API for getting WaitListed Data
-//app.get("/waitlist", async (req, res) => {
-//let waitlist = await waitListed.find({})
-//res.send(waitlist)
-//})
 
 app.get("/wait", async (req, res) => {
   let waiting = await waitListed.find({});
@@ -297,7 +303,13 @@ app.post("/wait/save", async (req, res) => {
     dob: req.body.dob,
     email: req.body.emailSelf,
     phone: req.body.numberSelf,
-    address: req.body.address,
+    address: {
+      address1: req.body.address1,
+      address2: req.body.address2,
+      city: req.body.addressCity,
+      state: req.body.addressState,
+      zip: req.body.addressZip,
+    },
     size: req.body.size,
     length: req.body.bindLength,
     color: req.body.bindColor,
@@ -331,7 +343,13 @@ app.patch("/wait/:waitIds", async (req, res) => {
       dob: req.body.dob,
       email: req.body.emailSelf,
       phone: req.body.numberSelf,
-      address: req.body.address,
+      address: {
+        address1: req.body.address1,
+        address2: req.body.address2,
+        city: req.body.addressCity,
+        state: req.body.addressState,
+        zip: req.body.addressZip,
+      },
       size: req.body.size,
       length: req.body.bindLength,
       color: req.body.bindColor,
@@ -353,15 +371,88 @@ app.delete("/wait/:waitIds", async (req, res) => {
   }
 });
 
-//API Route for moving from Inventory to Processed
+//shipped API Routes
 
-app.post("/binders/move", async (req, res) => {
-  BinderInventory.findOne({ id: req.body._id })
+app.get("/shipped", async (req, res) => {
+  let allShipped = await Shipped.find({});
+  res.json(allShipped);
+});
+
+app.post("/shipped/save", async (req, res) => {
+  const ready = new Shipped({
+    county: req.body.county,
+    progSource: req.body.progSource,
+    elseEmail: req.body.emailElse,
+    elsePhone: req.body.elsePhone,
+    nameSelf: req.body.nameSelf,
+    nameElse: req.body.nameElse,
+    dob: req.body.dob,
+    email: req.body.emailSelf,
+    phone: req.body.numberSelf,
+    address: req.body.address,
+    size: req.body.size,
+    length: req.body.bindLength,
+    color: req.body.bindColor,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
+  });
+
+  try {
+    await ready.save();
+
+    res.json(ready);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+// UPDATE : by ID
+
+app.patch("/shipped/:shippedIds", async (req, res) => {
+  let id = req.params.shippedIds;
+
+  let update = await Shipped.updateOne(
+    { _id: id },
+    {
+      county: req.body.county,
+      progSource: req.body.progSource,
+      elseEmail: req.body.emailElse,
+      elsePhone: req.body.elsePhone,
+      nameSelf: req.body.nameSelf,
+      nameElse: req.body.nameElse,
+      dob: req.body.dob,
+      email: req.body.emailSelf,
+      phone: req.body.numberSelf,
+      address: req.body.address,
+      size: req.body.size,
+      length: req.body.bindLength,
+      color: req.body.bindColor,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
+    }
+  );
+
+  res.json(update);
+});
+
+app.delete("/shipped/:shippedIds", async (req, res) => {
+  try {
+    const deleteById = await Shipped.deleteOne({ _id: req.params.shippedIds });
+
+    res.json(deleteById);
+  } catch (err) {
+    console.log("ERROR : " + res.json({ message: err }));
+  }
+});
+
+//API Route for button to move ReadytoShip items to Shipped
+app.post("/ready/move", async (req, res) => {
+  FormInput.findOne({ id: req.params._id })
     .then((doc) => {
       console.log(doc);
 
       // Inserting the doc in the destination collection
-      ProcessedInventory.insertMany([doc])
+      Shipped.insertMany([doc])
         .then((d) => {
           console.log("New Entry Saved");
         })
@@ -370,7 +461,7 @@ app.post("/binders/move", async (req, res) => {
         });
 
       // Removing doc from the first collection
-      BinderInventory.deleteOne({ id: req.body._id })
+      FormInput.deleteOne({ id: req.body._id })
         .then((d) => {
           console.log("Removed Old Entry");
         })
@@ -381,35 +472,6 @@ app.post("/binders/move", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
-});
-
-//API Route for button to move ReadytoShip items to Shipped
-app.post("/ready/move", async (req, res) => {
-  FormInput.findOne({id: req.body._id})
-    .then(doc => {
-        console.log(doc);
-
-        // Inserting the doc in the destination collection
-        Shipped.insertMany([doc])
-            .then(d => {
-                console.log("New Entry Saved");
-            })
-            .catch(error => {
-                console.log(error);
-            })
-  
-        // Removing doc from the first collection
-        FormInput.deleteOne({ id: req.body._id })
-            .then(d => {
-                console.log("Removed Old Entry")
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    })
-    .catch(error => {
-        console.log(error);
-})
 });
 
 //API Route for Sending Emails
@@ -804,8 +866,8 @@ BinderInventory.watch().on("change", async (change) => {
 });
 
 //app.get("/waitlist", async (req, res) => {
-  //let waitlist = await waitListed.find({});
- // res.send(waitlist);
+//let waitlist = await waitListed.find({});
+// res.send(waitlist);
 //});
 
 app.listen(port, () => {

@@ -214,15 +214,6 @@ function App() {
               options={{
                 exportButton: true,
               }}
-              actions={[
-                {
-                  icon: ArrowForwardIcon,
-                  tooltip: 'Move to Processed',
-                  onClick: (event, rowData) => {
-                    api.post("/binders/move",{ id: rowData._id})
-                    alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")}
-                }
-              ]}
             />
 
     </div>

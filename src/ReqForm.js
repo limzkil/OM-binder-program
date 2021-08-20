@@ -25,12 +25,18 @@ const useStyles = makeStyles({
   },
   formItemField: {
     width: "25em",
+    margin: ".3em",
   },
   formHeadings: {
-    margin: "1em 1em 1em .5em",
+    margin: "1em 1em .5em .5em",
     textDecoration: "underline",
     fontFamily: "Oswald",
     color: "#993399",
+  },
+  formSubtitle: {
+    margin: "1em",
+    fontFamily: "Oswald",
+    textDecoration: "underline",
   },
   submitBtn: {
     margin: "1.5em",
@@ -71,6 +77,11 @@ export default function ReqForm() {
   const [emailSelf, setEmailSelf] = useState("");
   const [numberSelf, setNumberSelf] = useState("");
   const [addressSelf, setAddressSelf] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [addressCity, setAddressCity] = useState("");
+  const [addressZip, setAddressZip] = useState("");
+  const [addressState, setAddressState] = useState("");
 
   const [yesMeasure, setYesMeasure] = useState(false);
 
@@ -94,7 +105,7 @@ export default function ReqForm() {
   const [validPhone, setValidPhone] = useState(false);
   const [validSize, setValidSize] = useState(false);
   const [isError, setIsError] = useState(true);
-  const [submitState, setSubmitState] = useState(true);
+
   const style = useStyles();
   const handlePhone = (event) => {
     let phone = event.target.value;
@@ -360,6 +371,9 @@ export default function ReqForm() {
                     <Typography className={style.formHeadings} variant="h4">
                       Requester Information
                     </Typography>
+                    <Typography className = {style.formSubtitle} variant="subtitle1">
+                      "Requester" refers to the person making the <div style = {{color: "red", display: "inline"}}>request for someone else</div>
+                    </Typography>
                     <Grid item xs={12} className={style.formItemContain}>
                       <FormControlLabel
                         control={
@@ -456,10 +470,12 @@ export default function ReqForm() {
                 <Typography className={style.formHeadings} variant="h4">
                   Requestee Information
                 </Typography>
+                <Typography className = {style.formSubtitle} variant="subtitle1">
+                      "Requestee" refers to the person who will be <div style = {{color: "red", display: "inline"}}>wearing the binder</div>
+                    </Typography>
                 <Grid item xs={12} className={style.formItemContain}>
                   <InputLabel>
-                    "Are you, or the person you are requesting the binder for,
-                    between the ages of 14 & 22"
+                  Are you, or the person you are requesting the binder for, between the ages of 14 & 22
                   </InputLabel>
                   <NativeSelect
                     id="ageCheck"
@@ -538,10 +554,13 @@ export default function ReqForm() {
                   />
                 </Grid>
                 <Grid item xs={12} className={style.formItemContain}>
+                <InputLabel>
+                    Enter your phone number in 000-000-0000 format
+                  </InputLabel>
                   <TextField
                     type="text"
                     name="phone"
-                    placeholder="Enter your number (requestee)"
+                    placeholder=""
                     value={numberSelf}
                     className={style.formItemField}
                     helperText={
@@ -554,12 +573,97 @@ export default function ReqForm() {
                 <Grid item xs={12} className={style.formItemContain}>
                   <TextField
                     type="text"
-                    name="address"
-                    placeholder="Enter your address (requestee)"
-                    value={addressSelf}
+                    name="address1"
+                    placeholder="Enter your address 1(requestee)"
+                    value={address1}
                     className={style.formItemField}
-                    onChange={(e) => setAddressSelf(e.target.value)}
+                    onChange={(e) => setAddress1(e.target.value)}
                   />
+                  <TextField
+                    type="text"
+                    name="address2"
+                    placeholder="Enter your address 2(requestee)"
+                    value={address2}
+                    className={style.formItemField}
+                    onChange={(e) => setAddress2(e.target.value)}
+                  />
+                  <TextField
+                    type="text"
+                    name="addressCity"
+                    placeholder="Enter your City (requestee)"
+                    value={addressCity}
+                    className={style.formItemField}
+                    onChange={(e) => setAddressCity(e.target.value)}
+                  />
+                  <TextField
+                    type="text"
+                    name="addressZip"
+                    placeholder="Enter your Zip code (requestee)"
+                    value={addressZip}
+                    className={style.formItemField}
+                    onChange={(e) => setAddressZip(e.target.value)}
+                  />
+                  <InputLabel className={style.formItemField}>Please Choose your State</InputLabel>
+                  <NativeSelect
+                    id="addressState"
+                    name="addressState"
+                    placeholder="Please Choose your state (requestee)"
+                    className={style.formItemField}
+                    value={addressState}
+                    onChange={(e) => setAddressState(e.target.value)}
+                  >
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </NativeSelect>
                 </Grid>
 
                 <Grid item xs={12} className={style.formItemContain}>
