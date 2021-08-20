@@ -97,10 +97,10 @@ export default function ReqForm() {
   const [validEmail, setValidEmail] = useState(false);
   const [validDate, setValidDate] = useState(false);
   const [validRes, setValidRes] = useState(false);
-  const [validNameElse, setValidNameElse] = useState(false);
-  const [validElseEmail, setValidElseEmail] = useState(false);
-  const [validElsePhone, setValidElsePhone] = useState(false);
-  const [validConsent, setValidConsent] = useState(false);
+  const [validNameElse, setValidNameElse] = useState(true);
+  const [validElseEmail, setValidElseEmail] = useState(true);
+  const [validElsePhone, setValidElsePhone] = useState(true);
+  const [validConsent, setValidConsent] = useState(true);
   const [validName, setValidName] = useState(false);
   const [validPhone, setValidPhone] = useState(false);
   const [validSize, setValidSize] = useState(false);
@@ -127,13 +127,14 @@ export default function ReqForm() {
   };
   const handleSelfOrElse = (event) => {
     let SoE = event.target.value;
+    console.log(SoE)
     setSelfOrElse(SoE);
-    if (SoE === true) {
+    if (SoE === "true") {
       setValidElsePhone(false);
       setValidElseEmail(false);
       setValidNameElse(false);
       setValidConsent(false);
-    } else if (SoE === false) {
+    } else if (SoE === "false") {
       setValidElsePhone(true);
       setValidElseEmail(true);
       setValidNameElse(true);
