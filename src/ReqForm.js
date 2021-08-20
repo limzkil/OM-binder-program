@@ -11,6 +11,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
+import Tooltip from "@material-ui/core/Tooltip";
 import validator from "validator";
 import React, { useState, useEffect } from "react";
 
@@ -47,15 +48,9 @@ const useStyles = makeStyles({
     fontFamily: "Open Sans",
   },
   colorCards: {
-    red: { color: "#ff0000", minHeight: 275, minWidth: 275 },
-    purple: { color: "#663399" },
-    green: { color: "#228b22" },
-    beige: { color: "#f5f5dc" },
-    tan: { color: "#d2b48c" },
-    brown: { color: "#8b4513" },
-    black: { color: "#000000" },
-    grey: { color: "#808080" },
-    white: { color: "#f5f5f5" },
+    height: "3rem",
+    width: "3rem",
+    marginLeft: ".2rem",
   },
 });
 
@@ -771,15 +766,88 @@ export default function ReqForm() {
                       </NativeSelect>
                     </Grid>
                     <Grid item xs={12} className={style.formItemContain}>
-                      <Card className={style.colorCards.red}></Card>
-                      <Card className={style.colorCards.purple}></Card>
-                      <Card className={style.colorCards.green}></Card>
-                      <Card className={style.colorCards.beige}></Card>
-                      <Card className={style.colorCards.tan}></Card>
-                      <Card className={style.colorCards.brown}></Card>
-                      <Card className={style.colorCards.black}></Card>
-                      <Card className={style.colorCards.grey}></Card>
-                      <Card className={style.colorCards.white}></Card>
+                      <Tooltip title="Red">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Red",
+                            display: "inline-block",
+                            marginLeft: "0"
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Purple">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Purple",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Green">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Green",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Beige">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Beige",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Tan">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Tan",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Brown">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Brown",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Black">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Black",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="Grey">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "Grey",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
+                      <Tooltip title="White">
+                        <Card
+                          className={style.colorCards}
+                          style={{
+                            backgroundColor: "White",
+                            display: "inline-block",
+                          }}
+                        ></Card>
+                      </Tooltip>
                     </Grid>
                   </>
                 ) : null}

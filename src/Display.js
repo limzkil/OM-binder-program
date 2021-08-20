@@ -130,9 +130,8 @@ if(isAuthenticated)
         <Tabs value={tabSelect} onChange={handleTab} TabIndicatorProps={{
            style: { background: "#ffcc33", height: ".5em" }}}>
           <Tab label="Inventory" />
-          <Tab label="Wait List" />
-          <Tab label="Ready to Ship" />
-          <Tab label="Shipped" />
+          <Tab label={`Ready to Ship (${readyToShipData.length})`} />
+          <Tab label={`Wait List (${waitListData.length})`} />
         </Tabs>
     
       </AppBar>
