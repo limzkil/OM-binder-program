@@ -133,7 +133,7 @@ export default function ReqForm() {
       setValidElseEmail(false);
       setValidNameElse(false);
       setValidConsent(false);
-    } else if (SoE === "false") {
+    } else if (SoE === "falsDWe") {
       setValidElsePhone(true);
       setValidElseEmail(true);
       setValidNameElse(true);
@@ -884,20 +884,20 @@ export default function ReqForm() {
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                  // disabled={
-                  //   validSize &&
-                  //   validConsent &&
-                  //   validEmail &&
-                  //   validDate &&
-                  //   validRes &&
-                  //   validNameElse &&
-                  //   validElseEmail &&
-                  //   validElsePhone &&
-                  //   validName &&
-                  //   validPhone
-                  //     ? false
-                  //     : true
-                  // }
+                   disabled={
+                    validSize &&
+                    validConsent &&
+                    validEmail &&
+                    validDate &&
+                    validRes &&
+                     validNameElse &&
+                     validElseEmail &&
+                     validElsePhone &&
+                    validName &&
+                     validPhone
+                       ? false
+                       : true
+                }
                 >
                   Submit
                 </Button>
