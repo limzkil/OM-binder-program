@@ -25,8 +25,7 @@ import ReadyToShip from "./fetchComponents/ReadyToShip";
 import Waitlist from "./fetchComponents/Waitlist";
 import Shipped from "./fetchComponents/Shipped"
 
-//header component
-import Header from './displayComponents/Header'
+//banner component
 import Banner from './displayComponents/Banner'
 
 //Main Display component used to sort through and render data from different fetch components 
@@ -36,6 +35,7 @@ const Display = (props) => {
   const [readyToShipData, setReadyToShipData] = useState([]);
   const [waitListData, setWaitListData] = useState([]);
   const [shippedData, setShippedData] = useState([]);
+  const [fetchedData, setFetchedData] = useState(false);
 
   const { match, history } = props;
   const { params } = match;
@@ -77,7 +77,8 @@ const Display = (props) => {
 
   //if no information exists within state variables, attempts to fetch information from appropriate API route, 
   //converts the information to json format and assigns the resulting value to the initial state variable
-    if (inventoryData.length === 0) {
+    if (inventoryData.length === 0 && fetchedData === false) {
+      setFetchedData(true)
       fetch("/binders")
         .then((response) => response.json())
 
@@ -86,7 +87,8 @@ const Display = (props) => {
         });
     }
 
-    if (readyToShipData.length === 0) {
+    if (readyToShipData.length === 0 && fetchedData === false) {
+      setFetchedData(true)
       fetch("/ready")
         .then((response) => response.json())
         .then((result) => {
@@ -94,7 +96,8 @@ const Display = (props) => {
         });
     }
 
-    if(waitListData.length === 0){
+    if(waitListData.length === 0 && fetchedData === false){
+      setFetchedData(true)
       fetch("/wait")
       .then((response) => response.json())
       .then((result) => {
@@ -102,7 +105,8 @@ const Display = (props) => {
       });
     }
 
-    if(shippedData.length === 0){
+    if(shippedData.length === 0 && fetchedData === false){
+      setFetchedData(true)
       fetch("/shipped")
       .then((response) => response.json())
       .then((result) => {

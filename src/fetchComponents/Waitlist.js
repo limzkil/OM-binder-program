@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
-import Grid from '@material-ui/core/Grid'
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
@@ -236,7 +236,7 @@ export default function Waitlist() {
                 {
                   tooltip: "Show Comments",
                   render: (data) => {
-                    return <div className={style.details}>{data.moreInfo}</div>;
+                    return <div className={style.details}>{data.address.address1}{data.address.address2}</div>;
                   },
                 },
               ]}
