@@ -133,7 +133,7 @@ export default function ReqForm() {
       setValidElseEmail(false);
       setValidNameElse(false);
       setValidConsent(false);
-    } else if (SoE === "falsDWe") {
+    } else if (SoE === "false") {
       setValidElsePhone(true);
       setValidElseEmail(true);
       setValidNameElse(true);
