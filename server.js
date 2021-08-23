@@ -630,7 +630,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailElse}</p>
         <p><strong>Phone number:</strong> ${phoneElse}</p>
-        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>Address:</strong> ${address.address1}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -656,7 +656,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailSelf}</p>
         <p><strong>Phone number:</strong> ${phoneSelf}</p>
-        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>Address:</strong> ${address.address1}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
@@ -726,7 +726,7 @@ BinderInventory.watch().on("change", async (change) => {
     let changedDocument = await BinderInventory.findOne({
       _id: { $in: [change.documentKey._id] },
     });
-
+    console.log(changedDocument)
     //If the quantity of the binder is 0, return so that we no longer look for that specified binder.
     if (changedDocument.quantity === 0) {
       return;
