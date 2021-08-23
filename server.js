@@ -773,7 +773,6 @@ BinderInventory.watch().on("change", async (change) => {
     let changedDocument = await BinderInventory.findOne({
       _id: { $in: [change.documentKey._id] },
     });
-    console.log(changedDocument)
 
     //If the quantity of the binder is 0, return so that we no longer look for that specified binder.
     if (changedDocument.quantity === 0) {
@@ -787,36 +786,36 @@ BinderInventory.watch().on("change", async (change) => {
         length: { $in: [changedDocument.length] },
         color: { $in: [changedDocument.color] },
       })
-      .then(async function (changedDocument) {
+      .then(async function (doc) {
         // If there is no waitListed entry matching the newly added binder, just return
-        if (changedDocument === null) {
+        if (doc === null) {
           return;
           // Otherwise, add the waitlisted entry into readytoship
         } else {
           //   readytoship
-          FormInput.insertMany([changedDocument])
-            .then((changedDocument) => {
+          FormInput.insertMany([doc])
+            .then((doc) => {
               console.log("New Entry Saved in readytoships");
             })
             .catch((error) => {
               console.log(error);
             });
           // Delete that entire document from waitListed
-          await waitListed.deleteOne(changedDocument);
+          await waitListed.deleteOne(doc);
 
-          // Look in ProcessedInventory for that same newly added binder (changedDocument)
+          // Look in ProcessedInventory for that same newly added binder (doc)
           let processedBind = await ProcessedInventory.findOne({
-            size: { $in: [changedDocument.size] },
-            length: { $in: [changedDocument.length] },
-            color: { $in: [changedDocument.color] },
+            size: { $in: [doc.size] },
+            length: { $in: [doc.length] },
+            color: { $in: [doc.color] },
           });
 
           //If that binder doesnt exist in processedinventory, create it
           if (processedBind === null) {
             let newEntry = ProcessedInventory({
-              size: changedDocument.size,
-              length: changedDocument.length,
-              color: changedDocument.color,
+              size: doc.size,
+              length: doc.length,
+              color: doc.color,
               quantity: 1,
             });
             await newEntry.save();
@@ -827,13 +826,11 @@ BinderInventory.watch().on("change", async (change) => {
               { $set: { quantity: processedBind.quantity + 1 } }
             );
           }
-          console.log("Before binder inv update")
           // After finding that binder in BinderInventory, update the quantity by decrementing by 1. The stock has now been updated.
           await BinderInventory.updateOne(
             { _id: changedDocument._id },
             { $set: { quantity: changedDocument.quantity - 1 } }
           );
-          console.log("After binder inv update")
           // Create a transport variable using nodemailer
           const transport = nodemailer.createTransport({
             // Sending from Gmail. User and pass are the variables in the .env
@@ -844,11 +841,11 @@ BinderInventory.watch().on("change", async (change) => {
             },
           });
           // If the user enters info in "email"
-          if (changedDocument.elseEmail) {
+          if (doc.elseEmail) {
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: changedDocument.elseEmail,
+              to: doc.elseEmail,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;
@@ -858,13 +855,13 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${changedDocument.elseEmail}</p>
-              <p><strong>Phone number:</strong> ${changedDocument.elsePhone}</p>
-              <p><strong>Address:</strong> ${changedDocument.address}</p>
+              <p><strong>Email:</strong> ${doc.elseEmail}</p>
+              <p><strong>Phone number:</strong> ${doc.elsePhone}</p>
+              <p><strong>Address:</strong> ${doc.address}</p>
               <p>Binder Details</p>
-              <p>Size: ${changedDocument.size}</p>
-              <p>Color: ${changedDocument.color}</p>
-              <p>Length: ${changedDocument.length}</p>
+              <p>Size: ${doc.size}</p>
+              <p>Color: ${doc.color}</p>
+              <p>Length: ${doc.length}</p>
 
               <p>All the best, OutMaine Team</p>
               </div>
@@ -877,7 +874,7 @@ BinderInventory.watch().on("change", async (change) => {
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: changedDocument.email,
+              to: doc.email,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;
@@ -887,13 +884,13 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${changedDocument.email}</p>
-              <p><strong>Phone number:</strong> ${changedDocument.phone}</p>
-              <p><strong>Address:</strong> ${changedDocument.address}</p>
+              <p><strong>Email:</strong> ${doc.email}</p>
+              <p><strong>Phone number:</strong> ${doc.phone}</p>
+              <p><strong>Address:</strong> ${doc.address}</p>
               <p>Binder Details</p>
-              <p>Size: ${changedDocument.size}</p>
-              <p>Color: ${changedDocument.color}</p>
-              <p>Length: ${changedDocument.length}</p>
+              <p>Size: ${doc.size}</p>
+              <p>Color: ${doc.color}</p>
+              <p>Length: ${doc.length}</p>
 
               <p>All the best, OutMaine Team</p>
               </div>
