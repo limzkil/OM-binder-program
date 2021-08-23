@@ -225,7 +225,7 @@ app.post("/ready/save", async (req, res) => {
     color: req.body.color,
     willWait: req.body.willWait,
     moreInfo: req.body.moreInfo,
-    date: Date.now()
+    date: Date.now(),
   });
 
   try {
@@ -298,7 +298,7 @@ app.post("/wait/save", async (req, res) => {
     color: req.body.color,
     willWait: req.body.willWait,
     moreInfo: req.body.moreInfo,
-    date: Date.now()
+    date: Date.now(),
   });
 
   try {
@@ -373,7 +373,7 @@ app.post("/shipped/save", async (req, res) => {
     color: req.body.color,
     willWait: req.body.willWait,
     moreInfo: req.body.moreInfo,
-    date: Date.now()
+    date: Date.now(),
   });
 
   try {
@@ -383,8 +383,6 @@ app.post("/shipped/save", async (req, res) => {
   } catch (err) {
     console.log("ERROR : " + res.json({ message: err }));
   }
-
-
 });
 
 // UPDATE : by ID
@@ -512,8 +510,6 @@ app.post("/ready/move", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
-
-
 });
 
 //API Route for Sending Emails
@@ -534,7 +530,7 @@ app.post("/send_mail", async (req, res) => {
     length,
     color,
     willWait,
-    moreInfo
+    moreInfo,
   } = req.body;
   const transport = nodemailer.createTransport({
     service: "Gmail",
@@ -559,10 +555,7 @@ app.post("/send_mail", async (req, res) => {
       quantity: { $gte: 1 },
     });
     // next check if they've marked that they're willing to wait AND they've only got a preference on color
-  } else if (
-    willWait === true &&
-    color !== "No preference"
-  ) {
+  } else if (willWait === true && color !== "No preference") {
     // query binder inventory for requested size and color with a quantity greater than 0
     binderInventory = await BinderInventory.find({
       size: { $in: [size] },
@@ -579,10 +572,7 @@ app.post("/send_mail", async (req, res) => {
       binderInventory = binderInventory[0];
     }
     // next check that the they've marked they're willing to wait AND they've selected a preference on length
-  } else if (
-    willWait === true &&
-    length !== "No preference"
-  ) {
+  } else if (willWait === true && length !== "No preference") {
     // query binder inventory for requested size and length with a quantity greater than 0
     binderInventory = await BinderInventory.find({
       size: { $in: [size] },
@@ -792,7 +782,7 @@ BinderInventory.watch().on("change", async (change) => {
     let changedDocument = await BinderInventory.findOne({
       _id: { $in: [change.documentKey._id] },
     });
-    console.log(changedDocument)
+    console.log(changedDocument);
     //If the quantity of the binder is 0, return so that we no longer look for that specified binder.
     if (changedDocument.quantity === 0) {
       return;
@@ -925,9 +915,7 @@ waitListed.watch().on("change", async (change) => {
   // If the operation is delete, just return
   if (change.operationType === "delete") {
     return;
-  }
-
-  else {
+  } else {
     //Otherwise, look for the newly added binder in binder inventory and find it using id
     let changedDocument = await waitListed.findOne({
       _id: { $in: [change.documentKey._id] },
@@ -939,16 +927,14 @@ waitListed.watch().on("change", async (change) => {
       length: { $in: [changedDocument.length] },
       color: { $in: [changedDocument.color] },
       // quantity: { $gte: 1 }
-    })
+    });
     // console.log(foundBinder)
 
     if (foundBinder === null || foundBinder.quantity === 0) {
       return;
-    }
-
-    else if (foundBinder) {
-      await waitListed.deleteOne(changedDocument)
-      await FormInput.insertMany([changedDocument])
+    } else if (foundBinder) {
+      await waitListed.deleteOne(changedDocument);
+      await FormInput.insertMany([changedDocument]);
 
       // Look in ProcessedInventory for that same newly added binder (changedDocument)
       let processedBind = await ProcessedInventory.findOne({
@@ -1019,7 +1005,6 @@ waitListed.watch().on("change", async (change) => {
         });
         // Code is essentially the same as above except for if the user enters info in "email (else)"". This means the person is ordering a binder for someone else"
       } else {
-
         // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
         await transport.sendMail({
           from: process.env.GMAIL_USER,
@@ -1046,11 +1031,10 @@ waitListed.watch().on("change", async (change) => {
           </div>
           `,
         });
-
       }
     }
   }
-})
+});
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
