@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { forwardRef } from 'react';
+import React, { useState, useEffect } from "react";
+import { forwardRef } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -21,6 +21,8 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { Button } from "@material-ui/core";
+import Modal from "@material-ui/core/Modal";
 const useStyles = makeStyles({
   details: {
     fontFamily: "Oswald",
@@ -79,7 +81,23 @@ export default function Waitlist() {
     { title: "Color", field: "color" },
   ];
   const [data, setData] = useState([]); //table data
+  //Modal code
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
+  async function handleOpen(rowData) {
+    modalData.push(rowData)
+    /* setModalData(newArray) */;
+
+    setOpen(true);
+  }
+ const handleActionOpen = () => {
+   console.log(modalData)
+ }
+  const handleClose = () => {
+    setModalData([])
+    setOpen(false);
+  };
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -97,69 +115,87 @@ export default function Waitlist() {
   }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-     //validation
-     let errorList = [];
-     if (
-       newData.county !== "Androscoggin" &&
-       newData.county !== "Aroostook" &&
-       newData.county !== "Cumberland" &&
-       newData.county !== "Franklin" &&
-       newData.county !== "Hancock" &&
-       newData.county !== "Kennebec" &&
-       newData.county !== "Knox" &&
-       newData.county !== "Lincoln" &&
-       newData.county !== "Oxford" &&
-       newData.county !== "Penobscot" &&
- 
-       newData.county !== "Piscataquis" &&
-       newData.county !== "Sagadahoc" &&
-       newData.county !== "Somerset" &&
-       newData.county !== "Waldo" &&
-       newData.county !== "Washington" &&
-       newData.county !== "York" 
-       
-       
-     ) {
-       errorList.push(`You entered "${newData.county || "no value"}", please enter a valid Maine county. All values are capitalized.`);
-     }
-     if (newData.nameSelf === "") {
-       errorList.push("This field cannot be empty.");
-     }
-     if (newData.dob === "") {
-       errorList.push("This field cannot be empty.");
-     }
- 
-     if (
-       newData.size !== "X-small" &&
-       newData.size !=="Small" &&
-       newData.size !== "Medium" &&
-       newData.size !== "Large" &&
-       newData.size !== "X-large" &&
-       newData.size !== "2X-large" &&
-       newData.size !== "3X-large" &&
-       newData.size !== "4X-large" &&
-       newData.size !== "5X-large"
-     ) {
-       errorList.push(`You entered "${newData.size  || "empty value"}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
-     }
-     if (
-       newData.color !== "Red" && 
-       newData.color !== "Purple" &&
-       newData.color !== "Green" &&
-       newData.color !== "Beige" &&
-       newData.color !== "Tan" &&
-       newData.color !== "Brown" &&
-       newData.color !=="Black" &&
-       newData.color !=="Grey" &&
-       newData.color !=="White" &&
-       newData.color !== "" &&
-       newData.color !== null
-     ) {
-       errorList.push(`You entered "${newData.color  || "an invalid value"}", please enter a valid color. All values are capitalized.`);
-     }
-     if (newData.length !== "Short" && newData.length !== "Long" && newData.length !== "" && newData.length !== null) {
-       errorList.push(`You entered "${newData.length || "an invalid value"}", please enter a valid length. All values are capitalized.`);
-     }
+    //validation
+    let errorList = [];
+    if (
+      newData.county !== "Androscoggin" &&
+      newData.county !== "Aroostook" &&
+      newData.county !== "Cumberland" &&
+      newData.county !== "Franklin" &&
+      newData.county !== "Hancock" &&
+      newData.county !== "Kennebec" &&
+      newData.county !== "Knox" &&
+      newData.county !== "Lincoln" &&
+      newData.county !== "Oxford" &&
+      newData.county !== "Penobscot" &&
+      newData.county !== "Piscataquis" &&
+      newData.county !== "Sagadahoc" &&
+      newData.county !== "Somerset" &&
+      newData.county !== "Waldo" &&
+      newData.county !== "Washington" &&
+      newData.county !== "York"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
+    }
+    if (newData.nameSelf === "") {
+      errorList.push("This field cannot be empty.");
+    }
+    if (newData.dob === "") {
+      errorList.push("This field cannot be empty.");
+    }
+
+    if (
+      newData.size !== "X-small" &&
+      newData.size !== "Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
+    }
+    if (
+      newData.color !== "Red" &&
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
+      newData.color !== "" &&
+      newData.color !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
+    }
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
+    }
 
     if (errorList.length < 1) {
       api
@@ -200,17 +236,18 @@ export default function Waitlist() {
       newData.county !== "Lincoln" &&
       newData.county !== "Oxford" &&
       newData.county !== "Penobscot" &&
-
       newData.county !== "Piscataquis" &&
       newData.county !== "Sagadahoc" &&
       newData.county !== "Somerset" &&
       newData.county !== "Waldo" &&
       newData.county !== "Washington" &&
-      newData.county !== "York" 
-      
-      
+      newData.county !== "York"
     ) {
-      errorList.push(`You entered "${newData.county || "no value"}", please enter a valid Maine county. All values are capitalized.`);
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
     }
     if (newData.nameSelf === "") {
       errorList.push("This field cannot be empty.");
@@ -221,7 +258,7 @@ export default function Waitlist() {
 
     if (
       newData.size !== "X-small" &&
-      newData.size !=="Small" &&
+      newData.size !== "Small" &&
       newData.size !== "Medium" &&
       newData.size !== "Large" &&
       newData.size !== "X-large" &&
@@ -230,25 +267,42 @@ export default function Waitlist() {
       newData.size !== "4X-large" &&
       newData.size !== "5X-large"
     ) {
-      errorList.push(`You entered "${newData.size  || "empty value"}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
     }
     if (
-      newData.color !== "Red" && 
+      newData.color !== "Red" &&
       newData.color !== "Purple" &&
       newData.color !== "Green" &&
       newData.color !== "Beige" &&
       newData.color !== "Tan" &&
       newData.color !== "Brown" &&
-      newData.color !=="Black" &&
-      newData.color !=="Grey" &&
-      newData.color !=="White" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
       newData.color !== "" &&
       newData.color !== null
     ) {
-      errorList.push(`You entered "${newData.color  || "an invalid value"}", please enter a valid color. All values are capitalized.`);
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
     }
-    if (newData.length !== "Short" && newData.length !== "Long" && newData.length !== "" && newData.length !== null) {
-      errorList.push(`You entered "${newData.length || "an invalid value"}", please enter a valid length. All values are capitalized.`);
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
     }
 
     if (errorList.length < 1) {
@@ -310,6 +364,7 @@ export default function Waitlist() {
         columns={columns}
         data={data}
         icons={tableIcons}
+        onRowClick={(event, rowData) => handleOpen(rowData)}
         editable={{
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
@@ -327,36 +382,37 @@ export default function Waitlist() {
         options={{
           exportButton: true,
         }}
-        detailPanel={[
+        actions={[
           {
-            tooltip: "Show Comments",
-            render: (data) => {
-              return (
-              
-                <MaterialTable
-                  title="details"
-                  columns={columns}
-                  data={data}
-                  icons={tableIcons}
-                  editable={{
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve) => {
-                        handleRowUpdate(newData, oldData, resolve);
-                      }),
-                    onRowAdd: (newData) =>
-                      new Promise((resolve) => {
-                        handleRowAdd(newData, resolve);
-                      }),
-                    onRowDelete: (oldData) =>
-                      new Promise((resolve) => {
-                        handleRowDelete(oldData, resolve);
-                      }),
-                  }}/> 
-              )
-            },
+            icon: "D",
+            tooltip: "Additional Details",
+            onClick: handleActionOpen,
           },
         ]}
       />
+      
+      <Modal open={open} onClose={handleClose}>
+        <MaterialTable
+          title="Modal Table"
+          column={columns}
+          data={modalData}
+          icons={tableIcons}
+          editable={{
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve) => {
+                handleRowUpdate(newData, oldData, resolve);
+              }),
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
+                handleRowAdd(newData, resolve);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
+                handleRowDelete(oldData, resolve);
+              }),
+          }}
+        />
+      </Modal>
     </>
   );
 }
