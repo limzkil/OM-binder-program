@@ -107,7 +107,7 @@ export default function ReadyToShip() {
   const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState([]);
 
-  async function handleOpen(rowData) {
+  function handleOpen(rowData) {
     let newArray = [];
     newArray.push(rowData);
 console.log(data)

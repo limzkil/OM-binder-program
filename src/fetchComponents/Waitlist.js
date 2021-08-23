@@ -80,22 +80,41 @@ export default function Waitlist() {
     { title: "Length", field: "length" },
     { title: "Color", field: "color" },
   ];
+  let modalColumns = [
+    { title: "id", field: "id", hidden: true },
+    { title: "County", field: "county" },
+    { title: "Else Name", field: "nameElse" },
+    { title: "Else Email", field: "emailElse" },
+    { title: "Else Phone", field: "numberElse" },
+    { title: "Name", field: "nameSelf" },
+    { title: "DOB", field: "dob" },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone" },
+    { title: "Street", field: "address.address1" },
+    { title: "Apt/PO Box", field: "address.address2" },
+    { title: "City", field: "address.city" },
+    { title: "State", field: "address.state" },
+    { title: "ZipCode", field: "address.zip" },
+    { title: "Size", field: "size" },
+    { title: "Length", field: "length" },
+    { title: "Color", field: "color" },
+  ];
   const [data, setData] = useState([]); //table data
   //Modal code
   const [open, setOpen] = useState(false);
   const [modalData, setModalData] = useState([]);
 
-  async function handleOpen(rowData) {
-    modalData.push(rowData)
-    /* setModalData(newArray) */;
+  function handleOpen(rowData) {
+    let newArray = [];
+    newArray.push(rowData);
+    console.log(data);
+    console.log(newArray);
+    setModalData(newArray);
 
     setOpen(true);
   }
- const handleActionOpen = () => {
-   console.log(modalData)
- }
+
   const handleClose = () => {
-    setModalData([])
     setOpen(false);
   };
   //for error handling
@@ -382,19 +401,12 @@ export default function Waitlist() {
         options={{
           exportButton: true,
         }}
-        actions={[
-          {
-            icon: "D",
-            tooltip: "Additional Details",
-            onClick: handleActionOpen,
-          },
-        ]}
       />
-      
+
       <Modal open={open} onClose={handleClose}>
         <MaterialTable
           title="Modal Table"
-          column={columns}
+          columns={modalColumns}
           data={modalData}
           icons={tableIcons}
           editable={{
@@ -411,6 +423,14 @@ export default function Waitlist() {
                 handleRowDelete(oldData, resolve);
               }),
           }}
+          detailPanel={[
+            {
+              tooltip: "Show Comments",
+              render: (data) => {
+                return <div className={style.details}>{data.moreInfo}</div>;
+              },
+            },
+          ]}
         />
       </Modal>
     </>
