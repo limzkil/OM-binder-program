@@ -19,7 +19,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -90,6 +90,7 @@ export default function ReadyToShip() {
       .get("/ready")
       .then((res) => {
         setData(res.data);
+        console.log(res.data[0].address);
       })
       .catch((error) => {
         console.log("Error");
@@ -97,69 +98,87 @@ export default function ReadyToShip() {
   }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-      //validation
-      let errorList = [];
-      if (
-        newData.county !== "Androscoggin" &&
-        newData.county !== "Aroostook" &&
-        newData.county !== "Cumberland" &&
-        newData.county !== "Franklin" &&
-        newData.county !== "Hancock" &&
-        newData.county !== "Kennebec" &&
-        newData.county !== "Knox" &&
-        newData.county !== "Lincoln" &&
-        newData.county !== "Oxford" &&
-        newData.county !== "Penobscot" &&
-  
-        newData.county !== "Piscataquis" &&
-        newData.county !== "Sagadahoc" &&
-        newData.county !== "Somerset" &&
-        newData.county !== "Waldo" &&
-        newData.county !== "Washington" &&
-        newData.county !== "York" 
-        
-        
-      ) {
-        errorList.push(`You entered "${newData.county || "no value"}", please enter a valid Maine county. All values are capitalized.`);
-      }
-      if (newData.nameSelf === "") {
-        errorList.push("This field cannot be empty.");
-      }
-      if (newData.dob === "") {
-        errorList.push("This field cannot be empty.");
-      }
-  
-      if (
-        newData.size !== "X-small" &&
-        newData.size !=="Small" &&
-        newData.size !== "Medium" &&
-        newData.size !== "Large" &&
-        newData.size !== "X-large" &&
-        newData.size !== "2X-large" &&
-        newData.size !== "3X-large" &&
-        newData.size !== "4X-large" &&
-        newData.size !== "5X-large"
-      ) {
-        errorList.push(`You entered "${newData.size  || "empty value"}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
-      }
-      if (
-        newData.color !== "Red" && 
-        newData.color !== "Purple" &&
-        newData.color !== "Green" &&
-        newData.color !== "Beige" &&
-        newData.color !== "Tan" &&
-        newData.color !== "Brown" &&
-        newData.color !=="Black" &&
-        newData.color !=="Grey" &&
-        newData.color !=="White" &&
-        newData.color !== "" &&
-        newData.color !== null
-      ) {
-        errorList.push(`You entered "${newData.color  || "an invalid value"}", please enter a valid color. All values are capitalized.`);
-      }
-      if (newData.length !== "Short" && newData.length !== "Long" && newData.length !== "" && newData.length !== null) {
-        errorList.push(`You entered "${newData.length || "an invalid value"}", please enter a valid length. All values are capitalized.`);
-      }
+    //validation
+    let errorList = [];
+    if (
+      newData.county !== "Androscoggin" &&
+      newData.county !== "Aroostook" &&
+      newData.county !== "Cumberland" &&
+      newData.county !== "Franklin" &&
+      newData.county !== "Hancock" &&
+      newData.county !== "Kennebec" &&
+      newData.county !== "Knox" &&
+      newData.county !== "Lincoln" &&
+      newData.county !== "Oxford" &&
+      newData.county !== "Penobscot" &&
+      newData.county !== "Piscataquis" &&
+      newData.county !== "Sagadahoc" &&
+      newData.county !== "Somerset" &&
+      newData.county !== "Waldo" &&
+      newData.county !== "Washington" &&
+      newData.county !== "York"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
+    }
+    if (newData.nameSelf === "") {
+      errorList.push("This field cannot be empty.");
+    }
+    if (newData.dob === "") {
+      errorList.push("This field cannot be empty.");
+    }
+
+    if (
+      newData.size !== "X-small" &&
+      newData.size !== "Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
+    }
+    if (
+      newData.color !== "Red" &&
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
+      newData.color !== "" &&
+      newData.color !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
+    }
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
+    }
     console.log(newData._id);
 
     if (errorList.length < 1) {
@@ -200,17 +219,18 @@ export default function ReadyToShip() {
       newData.county !== "Lincoln" &&
       newData.county !== "Oxford" &&
       newData.county !== "Penobscot" &&
-
       newData.county !== "Piscataquis" &&
       newData.county !== "Sagadahoc" &&
       newData.county !== "Somerset" &&
       newData.county !== "Waldo" &&
       newData.county !== "Washington" &&
-      newData.county !== "York" 
-      
-      
+      newData.county !== "York"
     ) {
-      errorList.push(`You entered "${newData.county || "no value"}", please enter a valid Maine county. All values are capitalized.`);
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
     }
     if (newData.nameSelf === "") {
       errorList.push("This field cannot be empty.");
@@ -221,7 +241,7 @@ export default function ReadyToShip() {
 
     if (
       newData.size !== "X-small" &&
-      newData.size !=="Small" &&
+      newData.size !== "Small" &&
       newData.size !== "Medium" &&
       newData.size !== "Large" &&
       newData.size !== "X-large" &&
@@ -230,25 +250,42 @@ export default function ReadyToShip() {
       newData.size !== "4X-large" &&
       newData.size !== "5X-large"
     ) {
-      errorList.push(`You entered "${newData.size  || "empty value"}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
     }
     if (
-      newData.color !== "Red" && 
+      newData.color !== "Red" &&
       newData.color !== "Purple" &&
       newData.color !== "Green" &&
       newData.color !== "Beige" &&
       newData.color !== "Tan" &&
       newData.color !== "Brown" &&
-      newData.color !=="Black" &&
-      newData.color !=="Grey" &&
-      newData.color !=="White" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
       newData.color !== "" &&
       newData.color !== null
     ) {
-      errorList.push(`You entered "${newData.color  || "an invalid value"}", please enter a valid color. All values are capitalized.`);
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
     }
-    if (newData.length !== "Short" && newData.length !== "Long" && newData.length !== "" && newData.length !== null) {
-      errorList.push(`You entered "${newData.length || "an invalid value"}", please enter a valid length. All values are capitalized.`);
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
     }
 
     if (errorList.length < 1) {
@@ -330,12 +367,14 @@ export default function ReadyToShip() {
         actions={[
           {
             icon: ArrowForwardIcon,
-            tooltip: 'Move to Shipped',
+            tooltip: "Move to Shipped",
             onClick: (event, rowData) => {
-              api.post("/ready/move",{ id: rowData._id })
-              alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")
-            }
-          }
+              api.post("/ready/move", { id: rowData._id });
+              alert(
+                "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
+              );
+            },
+          },
         ]}
         detailPanel={[
           {
