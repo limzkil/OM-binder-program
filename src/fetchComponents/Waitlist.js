@@ -59,7 +59,8 @@ const api = axios.create({
 });
 
 export default function Waitlist() {
-  const style = useStyles();
+
+ const style= useStyles()
 
   var columns = [
     { title: "id", field: "id", hidden: true },

@@ -125,6 +125,7 @@ console.log(newArray)
       .get("/ready")
       .then((res) => {
         setData(res.data);
+        console.log(res.data[0].address);
       })
       .catch((error) => {
         console.log("Error");
