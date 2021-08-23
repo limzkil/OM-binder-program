@@ -884,20 +884,20 @@ export default function ReqForm() {
                   type="submit"
                   value="Submit Form"
                   className={style.submitBtn}
-                   disabled={
+                  disabled={
                     validSize &&
                     validConsent &&
                     validEmail &&
                     validDate &&
                     validRes &&
-                     validNameElse &&
-                     validElseEmail &&
-                     validElsePhone &&
+                    validNameElse &&
+                    validElseEmail &&
+                    validElsePhone &&
                     validName &&
-                     validPhone
-                       ? false
-                       : true
-                }
+                    validPhone
+                      ? false
+                      : true
+                  }
                 >
                   Submit
                 </Button>

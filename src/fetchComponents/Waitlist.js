@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { forwardRef } from 'react';
+import React, { useState, useEffect } from "react";
+import { forwardRef } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -21,6 +21,8 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { Button } from "@material-ui/core";
+import Modal from "@material-ui/core/Modal";
 const useStyles = makeStyles({
   details: {
     fontFamily: "Oswald",
@@ -57,27 +59,65 @@ const api = axios.create({
 });
 
 export default function Waitlist() {
-  const style = useStyles();
 
-  let columns = [
+ const style= useStyles()
+
+  var columns = [
     { title: "id", field: "id", hidden: true },
+    { title: "County", field: "county" },
     { title: "Else Name", field: "nameElse" },
     { title: "Else Email", field: "emailElse" },
-    { title: "Name", field: "nameSelf" },
-    { title: "Email", field: "email" },
-    { title: "Size", field: "size" },
-  ];
-  let detailColumns = [
     { title: "Else Phone", field: "numberElse" },
-    { title: "Phone", field: "phone" },
-    { title: "County", field: "county" },
-    { title: "Address", field: "address.one" },
+    { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob" },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone" },
+    { title: "Street", field: "address.address1" },
+    { title: "Apt/PO Box", field: "address.address2" },
+    { title: "City", field: "address.city" },
+    { title: "State", field: "address.state" },
+    { title: "ZipCode", field: "address.zip" },
+    { title: "Size", field: "size" },
+    { title: "Length", field: "length" },
+    { title: "Color", field: "color" },
+  ];
+  let modalColumns = [
+    { title: "id", field: "id", hidden: true },
+    { title: "County", field: "county" },
+    { title: "Else Name", field: "nameElse" },
+    { title: "Else Email", field: "emailElse" },
+    { title: "Else Phone", field: "numberElse" },
+    { title: "Name", field: "nameSelf" },
+    { title: "DOB", field: "dob" },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone" },
+    { title: "Street", field: "address.address1" },
+    { title: "Apt/PO Box", field: "address.address2" },
+    { title: "City", field: "address.city" },
+    { title: "State", field: "address.state" },
+    { title: "ZipCode", field: "address.zip" },
+    { title: "Size", field: "size" },
     { title: "Length", field: "length" },
     { title: "Color", field: "color" },
   ];
   const [data, setData] = useState([]); //table data
+  //Modal code
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
+  function handleOpen(rowData) {
+    let newArray = [];
+    newArray.push(rowData);
+    console.log(data);
+    console.log(newArray);
+    setModalData(newArray);
+
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -97,21 +137,85 @@ export default function Waitlist() {
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
     let errorList = [];
-    if (newData.size === "") {
-      errorList.push("Please enter a valid size.");
+    if (
+      newData.county !== "Androscoggin" &&
+      newData.county !== "Aroostook" &&
+      newData.county !== "Cumberland" &&
+      newData.county !== "Franklin" &&
+      newData.county !== "Hancock" &&
+      newData.county !== "Kennebec" &&
+      newData.county !== "Knox" &&
+      newData.county !== "Lincoln" &&
+      newData.county !== "Oxford" &&
+      newData.county !== "Penobscot" &&
+      newData.county !== "Piscataquis" &&
+      newData.county !== "Sagadahoc" &&
+      newData.county !== "Somerset" &&
+      newData.county !== "Waldo" &&
+      newData.county !== "Washington" &&
+      newData.county !== "York"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
     }
-    if (newData.color === "") {
-      errorList.push("Please enter a valid color.");
+    if (newData.nameSelf === "") {
+      errorList.push("This field cannot be empty.");
     }
-    if (newData.length === "") {
-      errorList.push("Please enter a valid length.");
+    if (newData.dob === "") {
+      errorList.push("This field cannot be empty.");
     }
 
-    if (newData.quantity === "") {
-      errorList.push("Please enter a valid quantity.");
+    if (
+      newData.size !== "X-small" &&
+      newData.size !== "Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
     }
-
-    console.log(newData._id);
+    if (
+      newData.color !== "Red" &&
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
+      newData.color !== "" &&
+      newData.color !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
+    }
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
+    }
 
     if (errorList.length < 1) {
       api
@@ -139,19 +243,86 @@ export default function Waitlist() {
 
   const handleRowAdd = (newData, resolve) => {
     //validation
+    //validation
     let errorList = [];
-    if (newData.size === "") {
-      errorList.push("Please enter a valid size.");
+    if (
+      newData.county !== "Androscoggin" &&
+      newData.county !== "Aroostook" &&
+      newData.county !== "Cumberland" &&
+      newData.county !== "Franklin" &&
+      newData.county !== "Hancock" &&
+      newData.county !== "Kennebec" &&
+      newData.county !== "Knox" &&
+      newData.county !== "Lincoln" &&
+      newData.county !== "Oxford" &&
+      newData.county !== "Penobscot" &&
+      newData.county !== "Piscataquis" &&
+      newData.county !== "Sagadahoc" &&
+      newData.county !== "Somerset" &&
+      newData.county !== "Waldo" &&
+      newData.county !== "Washington" &&
+      newData.county !== "York"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
     }
-    if (newData.color === "") {
-      errorList.push("Please enter a valid color.");
+    if (newData.nameSelf === "") {
+      errorList.push("This field cannot be empty.");
     }
-    if (newData.length === "") {
-      errorList.push("Please enter a valid length.");
+    if (newData.dob === "") {
+      errorList.push("This field cannot be empty.");
     }
 
-    if (newData.quantity === "") {
-      errorList.push("Please enter a valid quantity.");
+    if (
+      newData.size !== "X-small" &&
+      newData.size !== "Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
+    }
+    if (
+      newData.color !== "Red" &&
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
+      newData.color !== "" &&
+      newData.color !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
+    }
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
     }
 
     if (errorList.length < 1) {
@@ -213,6 +384,7 @@ export default function Waitlist() {
         columns={columns}
         data={data}
         icons={tableIcons}
+        onRowClick={(event, rowData) => handleOpen(rowData)}
         editable={{
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
@@ -230,36 +402,38 @@ export default function Waitlist() {
         options={{
           exportButton: true,
         }}
-        detailPanel={[
-          {
-            tooltip: "Show Comments",
-            render: (data) => {
-              return (
-              
-                <MaterialTable
-                  title="details"
-                  columns={detailColumns}
-                  data={data}
-                  icons={tableIcons}
-                  editable={{
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve) => {
-                        handleRowUpdate(newData, oldData, resolve);
-                      }),
-                    onRowAdd: (newData) =>
-                      new Promise((resolve) => {
-                        handleRowAdd(newData, resolve);
-                      }),
-                    onRowDelete: (oldData) =>
-                      new Promise((resolve) => {
-                        handleRowDelete(oldData, resolve);
-                      }),
-                  }}/> 
-              )
-            },
-          },
-        ]}
       />
+
+      <Modal open={open} onClose={handleClose}>
+        <MaterialTable
+          title="Modal Table"
+          columns={modalColumns}
+          data={modalData}
+          icons={tableIcons}
+          editable={{
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve) => {
+                handleRowUpdate(newData, oldData, resolve);
+              }),
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
+                handleRowAdd(newData, resolve);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
+                handleRowDelete(oldData, resolve);
+              }),
+          }}
+          detailPanel={[
+            {
+              tooltip: "Show Comments",
+              render: (data) => {
+                return <div className={style.details}>{data.moreInfo}</div>;
+              },
+            },
+          ]}
+        />
+      </Modal>
     </>
   );
 }

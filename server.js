@@ -695,10 +695,11 @@ app.post("/send_mail", async (req, res) => {
         html: `<div className="email" style="
         border: 1px solid black;
         padding: 20px;
-        font-family: sans-serif;
+        font-family: oswald;
         line-height: 2;
         font-size: 20px; 
         ">
+        <h1></h1>
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailSelf}</p>
         <p><strong>Phone number:</strong> ${numberSelf}</p>
