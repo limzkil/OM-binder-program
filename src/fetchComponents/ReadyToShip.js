@@ -21,7 +21,7 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import axios from "axios";
-
+import Modal from "@material-ui/core/Modal";
 const useStyles = makeStyles({
   details: {
     fontFamily: "Oswald",
@@ -60,7 +60,26 @@ const api = axios.create({
 export default function ReadyToShip() {
   const style = useStyles();
 
-  var columns = [
+  let columns = [
+    { title: "id", field: "id", hidden: true },
+    { title: "County", field: "county", hidden: true  },
+    { title: "Else Name", field: "nameElse" },
+    { title: "Else Email", field: "emailElse", hidden: true  },
+    { title: "Else Phone", field: "numberElse", hidden: true  },
+    { title: "Name", field: "nameSelf" },
+    { title: "DOB", field: "dob", hidden: true  },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone", hidden: true  },
+    { title: "Street", field: "address.address1", hidden: true  },
+    { title: "Apt/PO Box", field: "address.address2", hidden: true  },
+    { title: "City", field: "address.city", hidden: true  },
+    { title: "State", field: "address.state", hidden: true  },
+    { title: "ZipCode", field: "address.zip", hidden: true  },
+    { title: "Size", field: "size" },
+    { title: "Length", field: "length", hidden: true  },
+    { title: "Color", field: "color", hidden: true  },
+  ];
+  let modalColumns = [
     { title: "id", field: "id", hidden: true },
     { title: "County", field: "county" },
     { title: "Else Name", field: "nameElse" },
@@ -84,7 +103,23 @@ export default function ReadyToShip() {
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
+  //Modal code
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
+  function handleOpen(rowData) {
+    let newArray = [];
+    newArray.push(rowData);
+console.log(data)
+console.log(newArray)
+    setModalData(newArray);
+
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   useEffect(() => {
     api
       .get("/ready")
@@ -347,6 +382,7 @@ export default function ReadyToShip() {
         columns={columns}
         data={data}
         icons={tableIcons}
+        onRowClick={(event, rowData) => handleOpen(rowData)}
         editable={{
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
@@ -385,6 +421,36 @@ export default function ReadyToShip() {
           },
         ]}
       />
+      <Modal open={open} onClose={handleClose}>
+        <MaterialTable
+          title="Modal Table"
+          columns={modalColumns}
+          data={modalData}
+          icons={tableIcons}
+          editable={{
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve) => {
+                handleRowUpdate(newData, oldData, resolve);
+              }),
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
+                handleRowAdd(newData, resolve);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
+                handleRowDelete(oldData, resolve);
+              }),
+          }}
+          detailPanel={[
+            {
+              tooltip: "Show Comments",
+              render: (data) => {
+                return <div className={style.details}>{data.moreInfo}</div>;
+              },
+            },
+          ]}
+        />
+      </Modal>
     </>
   );
 }
