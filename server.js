@@ -11,7 +11,6 @@ const app = express();
 
 const Binder = require("./Binder");
 const Create = require("./Schema");
-const { create } = require("./Schema");
 
 //setting up default port
 const port = process.env.PORT || 5000;
@@ -226,6 +225,7 @@ app.post("/ready/save", async (req, res) => {
     color: req.body.color,
     willWait: req.body.willWait,
     moreInfo: req.body.moreInfo,
+    date: Date.now()
   });
 
   try {
@@ -298,6 +298,7 @@ app.post("/wait/save", async (req, res) => {
     color: req.body.color,
     willWait: req.body.willWait,
     moreInfo: req.body.moreInfo,
+    date: Date.now()
   });
 
   try {
@@ -371,7 +372,8 @@ app.post("/shipped/save", async (req, res) => {
     length: req.body.length,
     color: req.body.color,
     willWait: req.body.willWait,
-    moreInfo: req.body.moreInfo
+    moreInfo: req.body.moreInfo,
+    date: Date.now()
   });
 
   try {
