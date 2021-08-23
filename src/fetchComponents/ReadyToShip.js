@@ -70,7 +70,11 @@ export default function ReadyToShip() {
     { title: "DOB", field: "dob" },
     { title: "Email", field: "email" },
     { title: "Phone", field: "phone" },
-    { title: "Address", field: "address.address1" },
+    { title: "Street", field: "address.address1" },
+    { title: "Apt/PO Box", field: "address.address2" },
+    { title: "City", field: "address.city" },
+    { title: "State", field: "address.state" },
+    { title: "ZipCode", field: "address.zip" },
     { title: "Size", field: "size" },
     { title: "Length", field: "length" },
     { title: "Color", field: "color" },
@@ -329,8 +333,7 @@ export default function ReadyToShip() {
             tooltip: 'Move to Shipped',
             onClick: (event, rowData) => {
               api.post("/ready/move",{ id: rowData._id })
-              setData([])
-              //alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")
+              alert("Move Successful. Please Refresh Your Page to See Your Changes Reflected.")
             }
           }
         ]}
