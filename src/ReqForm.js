@@ -228,8 +228,8 @@ export default function ReqForm() {
         body: JSON.stringify({
           emailSelf: emailSelf,
           emailElse: emailElse,
-          numberSelf: numberSelf,
-          numberElse: numberElse,
+          phoneSelf: numberSelf,
+          phoneElse: numberElse,
           address: {
             address1: address1,
             address2: address2,
@@ -243,8 +243,8 @@ export default function ReqForm() {
           nameSelf: nameSelf,
           nameElse: nameElse,
           dob: birth,
-          bindLength: bindLength === "" ? "No preference" : bindLength,
-          bindColor: bindColor === "" ? "No preference" : bindColor,
+          length: bindLength === "" ? "No preference" : bindLength,
+          color: bindColor === "" ? "No preference" : bindColor,
           willWait: waitLenCol,
           moreInfo: moreInf
          
@@ -890,13 +890,13 @@ export default function ReqForm() {
                     validEmail &&
                     validDate &&
                     validRes &&
-                     validNameElse &&
-                     validElseEmail &&
-                     validElsePhone &&
+                    validNameElse &&
+                    validElseEmail &&
+                    validElsePhone &&
                     validName &&
-                     validPhone
-                       ? false
-                       : true
+                    validPhone
+                      ? false
+                      : true
                 }
                 >
                   Submit

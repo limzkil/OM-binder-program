@@ -3,19 +3,19 @@ const mongoose = require("mongoose");
 const CreateSchema = new mongoose.Schema({
   county: String,
   progSource: String,
-  elseEmail: String,
-  elsePhone: String,
-  nameSelf: String,
+  emailElse: String,
+  phoneElse: String,
   nameElse: String,
+  nameSelf: String,
   dob: String,
-  email: String,
-  phone: String,
+  emailSelf: String,
+  phoneSelf: String,
   address: {
     address1: String,
-  address2: String,
-  city: String,
-  state: String,
-  zip: String
+    address2: String,
+    city: String,
+    state: String,
+    zip: String
 },
   size: String,
   length: String,

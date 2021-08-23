@@ -211,19 +211,21 @@ app.get("/ready", async (req, res) => {
 
 app.post("/ready/save", async (req, res) => {
   const ready = new FormInput({
-    email: req.body.emailSelf,
-    elseEmail: req.body.emailElse,
-    phone: req.body.numberSelf,
-    elsePhone: req.body.numberElse,
-    address: req.body.address,
     county: req.body.county,
     progSource: req.body.progSource,
-    nameSelf: req.body.nameSelf,
+    emailElse: req.body.emailElse,
+    phoneElse: req.body.phoneElse,
     nameElse: req.body.nameElse,
+    nameSelf: req.body.nameSelf,
     dob: req.body.dob,
+    emailSelf: req.body.emailSelf,
+    phoneSelf: req.body.phoneSelf,
+    address: req.body.address,
     size: req.body.size,
     length: req.body.length,
     color: req.body.color,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
   });
 
   try {
@@ -243,19 +245,21 @@ app.patch("/ready/:readyIds", async (req, res) => {
   let update = await FormInput.updateOne(
     { _id: id },
     {
-      dob: req.body.dob,
-      phone: req.body.phone,
-      elsePhone: req.body.elsePhone,
-      address: req.body.address,
-      name: req.body.name,
-      email: req.body.email,
-      elseEmail: req.body.elseEmail,
       county: req.body.county,
       progSource: req.body.progSource,
+      emailElse: req.body.emailElse,
+      phoneElse: req.body.phoneElse,
+      nameElse: req.body.nameElse,
+      nameSelf: req.body.nameSelf,
+      dob: req.body.dob,
+      emailSelf: req.body.emailSelf,
+      phoneSelf: req.body.phoneSelf,
+      address: req.body.address,
       size: req.body.size,
-      color: req.body.color,
       length: req.body.length,
-      quantity: req.body.quantity,
+      color: req.body.color,
+      willWait: req.body.willWait,
+      moreInfo: req.body.moreInfo,
     }
   );
 
@@ -279,19 +283,21 @@ app.get("/wait", async (req, res) => {
 
 app.post("/wait/save", async (req, res) => {
   const ready = new waitListed({
-    dob: req.body.dob,
-    phone: req.body.phone,
-    elsePhone: req.body.elsePhone,
-    address: req.body.address,
-    name: req.body.name,
-    email: req.body.email,
-    elseEmail: req.body.elseEmail,
     county: req.body.county,
     progSource: req.body.progSource,
+    emailElse: req.body.emailElse,
+    phoneElse: req.body.phoneElse,
+    nameElse: req.body.nameElse,
+    nameSelf: req.body.nameSelf,
+    dob: req.body.dob,
+    emailSelf: req.body.emailSelf,
+    phoneSelf: req.body.phoneSelf,
+    address: req.body.address,
     size: req.body.size,
-    color: req.body.color,
     length: req.body.length,
-    quantity: req.body.quantity,
+    color: req.body.color,
+    willWait: req.body.willWait,
+    moreInfo: req.body.moreInfo,
   });
 
   try {
@@ -311,14 +317,16 @@ app.patch("/wait/:waitIds", async (req, res) => {
   const update = await waitListed.updateOne(
     { _id: id },
     {
+      county: req.body.county,
+      progSource: req.body.progSource,
+      emailElse: req.body.emailElse,
+      phoneElse: req.body.phoneElse,
+      nameElse: req.body.nameElse,
+      nameSelf: req.body.nameSelf,
       dob: req.body.dob,
-      phone: req.body.phone,
+      emailSelf: req.body.emailSelf,
+      phoneSelf: req.body.phoneSelf,
       address: req.body.address,
-      name: req.body.name,
-      email: req.body.email,
-      elseEmail: req.body.elseEmail,
-      phone: req.body.phone,
-      elsePhone: req.body.elsePhone,
       size: req.body.size,
       length: req.body.length,
       color: req.body.color,
@@ -351,19 +359,19 @@ app.post("/shipped/save", async (req, res) => {
   const ready = new Shipped({
     county: req.body.county,
     progSource: req.body.progSource,
-    elseEmail: req.body.elseEmail,
-    elsePhone: req.body.elsePhone,
-    nameSelf: req.body.nameSelf,
+    emailElse: req.body.emailElse,
+    phoneElse: req.body.phoneElse,
     nameElse: req.body.nameElse,
+    nameSelf: req.body.nameSelf,
     dob: req.body.dob,
-    email: req.body.emailSelf,
-    phone: req.body.phone,
+    emailSelf: req.body.emailSelf,
+    phoneSelf: req.body.phoneSelf,
     address: req.body.address,
     size: req.body.size,
     length: req.body.length,
     color: req.body.color,
     willWait: req.body.willWait,
-    moreInfo: req.body.moreInfo,
+    moreInfo: req.body.moreInfo
   });
 
   try {
@@ -385,20 +393,19 @@ app.patch("/shipped/:shippedIds", async (req, res) => {
     {
       county: req.body.county,
       progSource: req.body.progSource,
-      elseEmail: req.body.elseEmail,
-      elsePhone: req.body.elsePhone,
-      nameSelf: req.body.nameSelf,
+      emailElse: req.body.emailElse,
+      phoneElse: req.body.phoneElse,
       nameElse: req.body.nameElse,
+      nameSelf: req.body.nameSelf,
       dob: req.body.dob,
-      email: req.body.emailSelf,
-      phone: req.body.phone,
+      emailSelf: req.body.emailSelf,
+      phoneSelf: req.body.phoneSelf,
       address: req.body.address,
       size: req.body.size,
       length: req.body.length,
       color: req.body.color,
       willWait: req.body.willWait,
       moreInfo: req.body.moreInfo,
-
     }
   );
 
@@ -448,13 +455,21 @@ app.post("/ready/move", async (req, res) => {
 
 app.post("/send_mail", async (req, res) => {
   let {
-    emailSelf,
+    county,
+    progSource,
     emailElse,
-    numberSelf,
-    numberElse,
+    phoneElse,
+    nameElse,
+    nameSelf,
+    dob,
+    emailSelf,
+    phoneSelf,
     address,
     size,
-    county,
+    length,
+    color,
+    willWait,
+    moreInfo
   } = req.body;
   const transport = nodemailer.createTransport({
     service: "Gmail",
@@ -467,26 +482,26 @@ app.post("/send_mail", async (req, res) => {
   let binderInventory;
   // check to see if they've marked they are willing to wait AND they've selected both length and color properties
   if (
-    req.body.willWait === true &&
-    req.body.bindColor !== "No preference" &&
-    req.body.bindLength !== "No preference"
+    willWait === true &&
+    color !== "No preference" &&
+    length !== "No preference"
   ) {
     // Look in BinderInventory for a binder with size length and color equivalent to what the user input
     binderInventory = await BinderInventory.findOne({
-      size: { $in: [req.body.size] },
-      length: { $in: [req.body.bindLength] },
-      color: { $in: [req.body.bindColor] },
+      size: { $in: [size] },
+      length: { $in: [length] },
+      color: { $in: [color] },
       quantity: { $gte: 1 },
     });
     // next check if they've marked that they're willing to wait AND they've only got a preference on color
   } else if (
-    req.body.willWait === true &&
-    req.body.bindColor !== "No preference"
+    willWait === true &&
+    color !== "No preference"
   ) {
     // query binder inventory for requested size and color with a quantity greater than 0
     binderInventory = await BinderInventory.find({
-      size: { $in: [req.body.size] },
-      color: { $in: [req.body.bindColor] },
+      size: { $in: [size] },
+      color: { $in: [color] },
       quantity: { $gte: 1 },
       // sort results by quantity field with highest quantity at the top
     }).sort({ quantity: -1 });
@@ -500,13 +515,13 @@ app.post("/send_mail", async (req, res) => {
     }
     // next check that the they've marked they're willing to wait AND they've selected a preference on length
   } else if (
-    req.body.willWait === true &&
-    req.body.bindLength !== "No preference"
+    willWait === true &&
+    length !== "No preference"
   ) {
     // query binder inventory for requested size and length with a quantity greater than 0
     binderInventory = await BinderInventory.find({
-      size: { $in: [req.body.size] },
-      length: { $in: [req.body.bindLength] },
+      size: { $in: [size] },
+      length: { $in: [length] },
       quantity: { $gte: 1 },
       // sort by quantity field with highest being at the top
     }).sort({ quantity: -1 });
@@ -518,10 +533,10 @@ app.post("/send_mail", async (req, res) => {
       binderInventory = binderInventory[0];
     }
     // if they've not selected they want to wait
-  } else if (req.body.willWait === false) {
+  } else if (willWait === false) {
     // if they have no preferences, query inventory just by size
     binderInventory = await BinderInventory.find({
-      size: { $in: [req.body.size] },
+      size: { $in: [size] },
       quantity: { $gte: 1 },
       // sort returned results so highest quantity is first
     }).sort({ quantity: -1 });
@@ -529,12 +544,12 @@ app.post("/send_mail", async (req, res) => {
     binderInventory = binderInventory[0];
   }
   if (binderInventory === null) {
-    if (req.body.emailElse) {
+    if (emailElse) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail({
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
-        to: req.body.emailElse,
+        to: emailElse,
         subject: "test email",
         html: `<div className="email" style="
         border: 1px solid black;
@@ -545,19 +560,19 @@ app.post("/send_mail", async (req, res) => {
         ">
         <p>We apologize for the inconvenience, but your binder is currently not in stock. You have been added to the waitlist.</p>
         <p>Binder Details</p>
-        <p>Size: ${req.body.size}</p>
-        <p>Color: ${req.body.bindColor}</p>
-        <p>Length: ${req.body.bindLength}</p>
+        <p>Size: ${size}</p>
+        <p>Color: ${color}</p>
+        <p>Length: ${length}</p>
         <p>All the best, Shadman</p>
          </div>
     `,
       });
-    } else if (req.body.emailSelf) {
+    } else if (emailSelf) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail({
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
-        to: req.body.emailSelf,
+        to: emailSelf,
         subject: "test email",
         html: `<div className="email" style="
         border: 1px solid black;
@@ -568,9 +583,9 @@ app.post("/send_mail", async (req, res) => {
         ">
         <p>We apologize for the inconvenience, but your binder is currently not in stock. You have been added to the waitlist.</p>
         <p>Binder Details</p>
-        <p>Size: ${req.body.size}</p>
-        <p>Color: ${req.body.bindColor}</p>
-        <p>Length: ${req.body.bindLength}</p>
+        <p>Size: ${size}</p>
+        <p>Color: ${color}</p>
+        <p>Length: ${length}</p>
         <p>All the best, Shadman</p>
          </div>
     `,
@@ -578,32 +593,32 @@ app.post("/send_mail", async (req, res) => {
     }
     // if binder does nto exists in db at all, add to waitlist
     let newEntry = waitListed({
-      county: req.body.county,
-      progSource: req.body.progSource,
-      elseEmail: req.body.emailElse,
-      elsePhone: req.body.numberElse,
-      nameSelf: req.body.nameSelf,
-      nameElse: req.body.nameElse,
-      dob: req.body.dob,
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: req.body.address,
-      size: req.body.size,
-      length: req.body.bindLength,
-      color: req.body.bindColor,
-      willWait: req.body.willWait,
-      moreInfo: req.body.moreInfo,
+      county: county,
+      progSource: progSource,
+      emailElse: emailElse,
+      phoneElse: phoneElse,
+      nameElse: nameElse,
+      nameSelf: nameSelf,
+      dob: dob,
+      emailSelf: emailSelf,
+      phoneSelf: phoneSelf,
+      address: address,
+      size: size,
+      length: length,
+      color: color,
+      willWait: willWait,
+      moreInfo: moreInfo,
       date: Date.now(),
     });
     // Save that entry
     await newEntry.save();
   } else if (binderInventory) {
-    if (req.body.emailElse) {
+    if (emailElse) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail({
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
-        to: req.body.emailElse,
+        to: emailElse,
         subject: "test email",
         html: `<div className="email" style="
         border: 1px solid black;
@@ -614,7 +629,7 @@ app.post("/send_mail", async (req, res) => {
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailElse}</p>
-        <p><strong>Phone number:</strong> ${numberElse}</p>
+        <p><strong>Phone number:</strong> ${phoneElse}</p>
         <p><strong>Address:</strong> ${address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
@@ -624,12 +639,12 @@ app.post("/send_mail", async (req, res) => {
          </div>
     `,
       });
-    } else if (req.body.emailSelf) {
+    } else if (emailSelf) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail({
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
-        to: req.body.emailSelf,
+        to: emailSelf,
         subject: "test email",
         html: `<div className="email" style="
         border: 1px solid black;
@@ -640,7 +655,7 @@ app.post("/send_mail", async (req, res) => {
         ">
         <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
         <p><strong>Email:</strong> ${emailSelf}</p>
-        <p><strong>Phone number:</strong> ${numberSelf}</p>
+        <p><strong>Phone number:</strong> ${phoneSelf}</p>
         <p><strong>Address:</strong> ${address}</p>
         <p>Binder Details</p>
         <p>Size: ${binderInventory.size}</p>
@@ -653,21 +668,21 @@ app.post("/send_mail", async (req, res) => {
       });
     }
     let newEntry = FormInput({
-      county: req.body.county,
-      progSource: req.body.progSource,
-      elseEmail: req.body.emailElse,
-      elsePhone: req.body.numberElse,
-      nameSelf: req.body.nameSelf,
-      nameElse: req.body.nameElse,
-      dob: req.body.dob,
-      email: req.body.emailSelf,
-      phone: req.body.numberSelf,
-      address: req.body.address,
-      size: req.body.size,
-      length: req.body.bindLength,
-      color: req.body.bindColor,
-      willWait: req.body.willWait,
-      moreInfo: req.body.moreInfo,
+      county: county,
+      progSource: progSource,
+      emailElse: emailElse,
+      phoneElse: phoneElse,
+      nameElse: nameElse,
+      nameSelf: nameSelf,
+      dob: dob,
+      emailSelf: emailSelf,
+      phoneSelf: phoneSelf,
+      address: address,
+      size: binderInventory.size,
+      length: binderInventory.length,
+      color: binderInventory.color,
+      willWait: willWait,
+      moreInfo: moreInfo,
       date: Date.now(),
     });
     // Save that entry
@@ -781,12 +796,12 @@ BinderInventory.watch().on("change", async (change) => {
             },
           });
           // If the user enters info in "email"
-          if (changedDocument.email) {
+          if (changedDocument.emailSelf) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: changedDocument.email,
+              to: changedDocument.emailSelf,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;
@@ -796,9 +811,9 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${changedDocument.email}</p>
-              <p><strong>Phone number:</strong> ${changedDocument.phone}</p>
-              <p><strong>Address:</strong> ${changedDocument.address}</p>
+              <p><strong>Email:</strong> ${changedDocument.emailSelf}</p>
+              <p><strong>Phone number:</strong> ${changedDocument.phoneSelf}</p>
+              <p><strong>Address:</strong> ${changedDocument.address.address1}</p>
               <p>Binder Details</p>
               <p>Size: ${changedDocument.size}</p>
               <p>Color: ${changedDocument.color}</p>
@@ -813,7 +828,7 @@ BinderInventory.watch().on("change", async (change) => {
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: changedDocument.elseEmail,
+              to: changedDocument.emailElse,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;
@@ -823,9 +838,9 @@ BinderInventory.watch().on("change", async (change) => {
               font-size: 20px; 
               ">
               <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${changedDocument.elseEmail}</p>
-              <p><strong>Phone number:</strong> ${changedDocument.elsePhone}</p>
-              <p><strong>Address:</strong> ${changedDocument.address}</p>
+              <p><strong>Email:</strong> ${changedDocument.emailElse}</p>
+              <p><strong>Phone number:</strong> ${changedDocument.phoneElse}</p>
+              <p><strong>Address:</strong> ${changedDocument.address.address1}</p>
               <p>Binder Details</p>
               <p>Size: ${changedDocument.size}</p>
               <p>Color: ${changedDocument.color}</p>
@@ -911,13 +926,13 @@ waitListed.watch().on("change", async (change) => {
       });
 
       // If the user enters info in "email"
-      if (changedDocument.email) {
+      if (changedDocument.emailSelf) {
         console.log(" in changeddoc.email")
         // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
         await transport.sendMail({
           from: process.env.GMAIL_USER,
           // Send to the email that user typed in "email" textbox
-          to: changedDocument.email,
+          to: changedDocument.emailSelf,
           subject: "test email",
           html: `<div className="email" style="
           border: 1px solid black;
@@ -927,9 +942,9 @@ waitListed.watch().on("change", async (change) => {
           font-size: 20px; 
           ">
           <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-          <p><strong>Email:</strong> ${changedDocument.email}</p>
-          <p><strong>Phone number:</strong> ${changedDocument.phone}</p>
-          <p><strong>Address:</strong> ${changedDocument.address}</p>
+          <p><strong>Email:</strong> ${changedDocument.emailSelf}</p>
+          <p><strong>Phone number:</strong> ${changedDocument.phoneSelf}</p>
+          <p><strong>Address:</strong> ${changedDocument.address.address1}</p>
           <p>Binder Details</p>
           <p>Size: ${changedDocument.size}</p>
           <p>Color: ${changedDocument.color}</p>
@@ -944,7 +959,7 @@ waitListed.watch().on("change", async (change) => {
         await transport.sendMail({
           from: process.env.GMAIL_USER,
           // Send to the email that user typed in "email" textbox
-          to: changedDocument.elseEmail,
+          to: changedDocument.emailElse,
           subject: "test email",
           html: `<div className="email" style="
           border: 1px solid black;
@@ -954,9 +969,9 @@ waitListed.watch().on("change", async (change) => {
           font-size: 20px; 
           ">
           <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-          <p><strong>Email:</strong> ${changedDocument.elseEmail}</p>
-          <p><strong>Phone number:</strong> ${changedDocument.elsePhone}</p>
-          <p><strong>Address:</strong> ${changedDocument.address}</p>
+          <p><strong>Email:</strong> ${changedDocument.emailElse}</p>
+          <p><strong>Phone number:</strong> ${changedDocument.phoneElse}</p>
+          <p><strong>Address:</strong> ${changedDocument.address.address1}</p>
           <p>Binder Details</p>
           <p>Size: ${changedDocument.size}</p>
           <p>Color: ${changedDocument.color}</p>
