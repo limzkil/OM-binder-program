@@ -57,22 +57,25 @@ const api = axios.create({
 });
 
 export default function Waitlist() {
-  const style = useStyles();
 
-  let columns = [
+ const style= useStyles()
+
+  var columns = [
     { title: "id", field: "id", hidden: true },
+    { title: "County", field: "county" },
     { title: "Else Name", field: "nameElse" },
     { title: "Else Email", field: "emailElse" },
-    { title: "Name", field: "nameSelf" },
-    { title: "Email", field: "email" },
-    { title: "Size", field: "size" },
-  ];
-  let detailColumns = [
     { title: "Else Phone", field: "numberElse" },
-    { title: "Phone", field: "phone" },
-    { title: "County", field: "county" },
-    { title: "Address", field: "address.one" },
+    { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob" },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone" },
+    { title: "Street", field: "address.address1" },
+    { title: "Apt/PO Box", field: "address.address2" },
+    { title: "City", field: "address.city" },
+    { title: "State", field: "address.state" },
+    { title: "ZipCode", field: "address.zip" },
+    { title: "Size", field: "size" },
     { title: "Length", field: "length" },
     { title: "Color", field: "color" },
   ];
@@ -333,7 +336,7 @@ export default function Waitlist() {
               
                 <MaterialTable
                   title="details"
-                  columns={detailColumns}
+                  columns={columns}
                   data={data}
                   icons={tableIcons}
                   editable={{
