@@ -62,22 +62,22 @@ export default function ReadyToShip() {
 
   let columns = [
     { title: "id", field: "id", hidden: true },
-    { title: "County", field: "county", hidden: true  },
-    { title: "Else Name", field: "nameElse" },
-    { title: "Else Email", field: "emailElse", hidden: true  },
-    { title: "Else Phone", field: "numberElse", hidden: true  },
+    { title: "County", field: "county", hidden: true, export: true  },
+    { title: "Else Name", field: "nameElse", export: true },
+    { title: "Else Email", field: "emailElse", hidden: true, export: true  },
+    { title: "Else Phone", field: "numberElse", hidden: true, export: true  },
     { title: "Name", field: "nameSelf" },
-    { title: "DOB", field: "dob", hidden: true  },
+    { title: "DOB", field: "dob", hidden: true, export: true  },
     { title: "Email", field: "email" },
-    { title: "Phone", field: "phone", hidden: true  },
-    { title: "Street", field: "address.address1", hidden: true  },
-    { title: "Apt/PO Box", field: "address.address2", hidden: true  },
-    { title: "City", field: "address.city", hidden: true  },
-    { title: "State", field: "address.state", hidden: true  },
-    { title: "ZipCode", field: "address.zip", hidden: true  },
+    { title: "Phone", field: "phone", hidden: true, export: true  },
+    { title: "Street", field: "address.address1", hidden: true, export: true  },
+    { title: "Apt/PO Box", field: "address.address2", hidden: true, export: true  },
+    { title: "City", field: "address.city", hidden: true, export: true  },
+    { title: "State", field: "address.state", hidden: true, export: true  },
+    { title: "ZipCode", field: "address.zip", hidden: true, export: true  },
     { title: "Size", field: "size" },
-    { title: "Length", field: "length", hidden: true  },
-    { title: "Color", field: "color", hidden: true  },
+    { title: "Length", field: "length", hidden: true, export: true  },
+    { title: "Color", field: "color", hidden: true, export: true  },
   ];
   let modalColumns = [
     { title: "id", field: "id", hidden: true },
@@ -384,14 +384,7 @@ console.log(newArray)
         icons={tableIcons}
         onRowClick={(event, rowData) => handleOpen(rowData)}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              handleRowUpdate(newData, oldData, resolve);
-            }),
-          onRowAdd: (newData) =>
-            new Promise((resolve) => {
-              handleRowAdd(newData, resolve);
-            }),
+        
           onRowDelete: (oldData) =>
             new Promise((resolve) => {
               handleRowDelete(oldData, resolve);
@@ -412,14 +405,7 @@ console.log(newArray)
             },
           },
         ]}
-        detailPanel={[
-          {
-            tooltip: "Show Comments",
-            render: (data) => {
-              return <div className={style.details}>{data.moreInfo}</div>;
-            },
-          },
-        ]}
+       
       />
       <Modal open={open} onClose={handleClose}>
         <MaterialTable

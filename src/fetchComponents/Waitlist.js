@@ -62,25 +62,25 @@ export default function Waitlist() {
 
  const style= useStyles()
 
-  var columns = [
-    { title: "id", field: "id", hidden: true },
-    { title: "County", field: "county" },
-    { title: "Else Name", field: "nameElse" },
-    { title: "Else Email", field: "emailElse" },
-    { title: "Else Phone", field: "numberElse" },
-    { title: "Name", field: "nameSelf" },
-    { title: "DOB", field: "dob" },
-    { title: "Email", field: "email" },
-    { title: "Phone", field: "phone" },
-    { title: "Street", field: "address.address1" },
-    { title: "Apt/PO Box", field: "address.address2" },
-    { title: "City", field: "address.city" },
-    { title: "State", field: "address.state" },
-    { title: "ZipCode", field: "address.zip" },
-    { title: "Size", field: "size" },
-    { title: "Length", field: "length" },
-    { title: "Color", field: "color" },
-  ];
+ let columns = [
+  { title: "id", field: "id", hidden: true },
+  { title: "County", field: "county", hidden: true, export: true  },
+  { title: "Else Name", field: "nameElse", export: true },
+  { title: "Else Email", field: "emailElse", hidden: true, export: true  },
+  { title: "Else Phone", field: "numberElse", hidden: true, export: true  },
+  { title: "Name", field: "nameSelf" },
+  { title: "DOB", field: "dob", hidden: true, export: true  },
+  { title: "Email", field: "email" },
+  { title: "Phone", field: "phone", hidden: true, export: true  },
+  { title: "Street", field: "address.address1", hidden: true, export: true  },
+  { title: "Apt/PO Box", field: "address.address2", hidden: true, export: true  },
+  { title: "City", field: "address.city", hidden: true, export: true  },
+  { title: "State", field: "address.state", hidden: true, export: true  },
+  { title: "ZipCode", field: "address.zip", hidden: true, export: true  },
+  { title: "Size", field: "size" },
+  { title: "Length", field: "length", hidden: true, export: true  },
+  { title: "Color", field: "color", hidden: true, export: true  },
+];
   let modalColumns = [
     { title: "id", field: "id", hidden: true },
     { title: "County", field: "county" },
@@ -386,14 +386,6 @@ export default function Waitlist() {
         icons={tableIcons}
         onRowClick={(event, rowData) => handleOpen(rowData)}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              handleRowUpdate(newData, oldData, resolve);
-            }),
-          onRowAdd: (newData) =>
-            new Promise((resolve) => {
-              handleRowAdd(newData, resolve);
-            }),
           onRowDelete: (oldData) =>
             new Promise((resolve) => {
               handleRowDelete(oldData, resolve);
@@ -406,7 +398,7 @@ export default function Waitlist() {
 
       <Modal open={open} onClose={handleClose}>
         <MaterialTable
-          title="Modal Table"
+          title="Row Edit"
           columns={modalColumns}
           data={modalData}
           icons={tableIcons}
