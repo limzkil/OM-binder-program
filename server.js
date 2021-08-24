@@ -452,12 +452,12 @@ app.post("/ready/move", async (req, res) => {
             },
           });
           // console.log(req.body)
-          if (changedDocument.elseEmail) {
+          if (changedDocument.emailElse) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: changedDocument.elseEmail,
+              to: changedDocument.emailElse,
               subject: "test email",
               html: `<div className="email" style="
                   border: 1px solid black;
@@ -476,12 +476,12 @@ app.post("/ready/move", async (req, res) => {
                    </div>
               `,
             });
-          } else if (changedDocument.email) {
+          } else if (changedDocument.emailSelf) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: changedDocument.email,
+              to: changedDocument.emailSelf,
               subject: "test email",
               html: `<div className="email" style="
                   border: 1px solid black;
@@ -854,7 +854,7 @@ BinderInventory.watch().on("change", async (change) => {
             await transport.sendMail({
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
-              to: doc.elseEmail,
+              to: doc.emailElse,
               subject: "test email",
               html: `<div className="email" style="
               border: 1px solid black;

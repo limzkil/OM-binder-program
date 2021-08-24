@@ -65,11 +65,11 @@ export default function ReadyToShip() {
     { title: "County", field: "county", hidden: true  },
     { title: "Else Name", field: "nameElse" },
     { title: "Else Email", field: "emailElse", hidden: true  },
-    { title: "Else Phone", field: "numberElse", hidden: true  },
+    { title: "Else Phone", field: "phoneElse", hidden: true  },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob", hidden: true  },
-    { title: "Email", field: "email" },
-    { title: "Phone", field: "phone", hidden: true  },
+    { title: "Email", field: "emailSelf" },
+    { title: "Phone", field: "phoneSelf", hidden: true  },
     { title: "Street", field: "address.address1", hidden: true  },
     { title: "Apt/PO Box", field: "address.address2", hidden: true  },
     { title: "City", field: "address.city", hidden: true  },
@@ -84,7 +84,7 @@ export default function ReadyToShip() {
     { title: "County", field: "county" },
     { title: "Else Name", field: "nameElse" },
     { title: "Else Email", field: "emailElse" },
-    { title: "Else Phone", field: "numberElse" },
+    { title: "Else Phone", field: "phoneElse" },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob" },
     { title: "Email", field: "emailSelf" },
@@ -110,8 +110,8 @@ export default function ReadyToShip() {
   function handleOpen(rowData) {
     let newArray = [];
     newArray.push(rowData);
-console.log(data)
-console.log(newArray)
+    console.log(data)
+    console.log(newArray)
     setModalData(newArray);
 
     setOpen(true);

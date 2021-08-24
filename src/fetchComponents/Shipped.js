@@ -64,7 +64,7 @@ export default function Shipped() {
     { title: "County", field: "county" },
     { title: "Else Name", field: "nameElse" },
     { title: "Else Email", field: "emailElse" },
-    { title: "Else Phone", field: "numberElse" },
+    { title: "Else Phone", field: "phoneElse" },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob" },
     { title: "Email", field: "emailSelf" },

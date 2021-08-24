@@ -84,7 +84,7 @@ function App() {
     let errorList = [];
     if (
       newData.size !== "X-small" &&
-      newData.size !=="Small" &&
+      newData.size !== "Small" &&
       newData.size !== "Medium" &&
       newData.size !== "Large" &&
       newData.size !== "X-large" &&
@@ -102,9 +102,9 @@ function App() {
       newData.color !== "Beige" &&
       newData.color !== "Tan" &&
       newData.color !== "Brown" &&
-      newData.color !=="Black" &&
-      newData.color !=="Grey" &&
-      newData.color !=="White"
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White"
     ) {
       errorList.push(`You entered "${newData.color}", please enter a valid color. All values are capitalized.`);
     }
