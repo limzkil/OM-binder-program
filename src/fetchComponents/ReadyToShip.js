@@ -63,9 +63,9 @@ export default function ReadyToShip() {
   let columns = [
     { title: "id", field: "id", hidden: true },
     { title: "County", field: "county", hidden: true, export: true  },
-    { title: "Else Name", field: "nameElse", export: true },
-    { title: "Else Email", field: "emailElse", hidden: true, export: true  },
-    { title: "Else Phone", field: "numberElse", hidden: true, export: true  },
+    { title: "Requestor Name", field: "nameElse", export: true },
+    { title: "Requestor Email", field: "emailElse", hidden: true, export: true  },
+    { title: "Requestor Phone", field: "numberElse", hidden: true, export: true  },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob", hidden: true, export: true  },
     { title: "Email", field: "email" },
@@ -82,9 +82,9 @@ export default function ReadyToShip() {
   let modalColumns = [
     { title: "id", field: "id", hidden: true },
     { title: "County", field: "county" },
-    { title: "Else Name", field: "nameElse" },
-    { title: "Else Email", field: "emailElse" },
-    { title: "Else Phone", field: "phoneElse" },
+    { title: "Requestor Name", field: "nameElse" },
+    { title: "Requestor Email", field: "emailElse" },
+    { title: "Requestor Phone", field: "phoneElse" },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob" },
     { title: "Email", field: "emailSelf" },
@@ -409,7 +409,7 @@ export default function ReadyToShip() {
       />
       <Modal open={open} onClose={handleClose}>
         <MaterialTable
-          title="Modal Table"
+          title="Row Edit"
           columns={modalColumns}
           data={modalData}
           icons={tableIcons}

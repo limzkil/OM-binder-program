@@ -18,7 +18,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Alert from "@material-ui/lab/Alert";
-
+import Modal from "@material-ui/core/Modal";
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -59,12 +59,46 @@ const api = axios.create({
 export default function Shipped() {
   const style = useStyles();
 
-  var columns = [
+  let columns = [
+    { title: "id", field: "id", hidden: true },
+    { title: "County", field: "county", hidden: true, export: true },
+    { title: "Requestor Name", field: "nameElse", export: true },
+    {
+      title: "Requestor Email",
+      field: "emailElse",
+      hidden: true,
+      export: true,
+    },
+    {
+      title: "Requestor Phone",
+      field: "numberElse",
+      hidden: true,
+      export: true,
+    },
+    { title: "Name", field: "nameSelf" },
+    { title: "DOB", field: "dob", hidden: true, export: true },
+    { title: "Email", field: "email" },
+    { title: "Phone", field: "phone", hidden: true, export: true },
+    { title: "Street", field: "address.address1", hidden: true, export: true },
+    {
+      title: "Apt/PO Box",
+      field: "address.address2",
+      hidden: true,
+      export: true,
+    },
+    { title: "City", field: "address.city", hidden: true, export: true },
+    { title: "State", field: "address.state", hidden: true, export: true },
+    { title: "ZipCode", field: "address.zip", hidden: true, export: true },
+    { title: "Size", field: "size" },
+    { title: "Length", field: "length", hidden: true, export: true },
+    { title: "Color", field: "color", hidden: true, export: true },
+  ];
+  let modalColumns = [
     { title: "id", field: "id", hidden: true },
     { title: "County", field: "county" },
-    { title: "Else Name", field: "nameElse" },
-    { title: "Else Email", field: "emailElse" },
-    { title: "Else Phone", field: "phoneElse" },
+    { title: "Requestor Name", field: "nameElse" },
+    { title: "Requestor Email", field: "emailElse" },
+    { title: "Requestor Phone", field: "phoneElse" },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob" },
     { title: "Email", field: "emailSelf" },
@@ -79,7 +113,23 @@ export default function Shipped() {
     { title: "Color", field: "color" },
   ];
   const [data, setData] = useState([]); //table data
+  //Modal code
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
+  function handleOpen(rowData) {
+    let newArray = [];
+    newArray.push(rowData);
+    console.log(data);
+    console.log(newArray);
+    setModalData(newArray);
+
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   //for error handling
   const [iserror, setIserror] = useState(false);
   const [errorMessages, setErrorMessages] = useState([]);
@@ -109,17 +159,16 @@ export default function Shipped() {
       newData.county !== "Lincoln" &&
       newData.county !== "Oxford" &&
       newData.county !== "Penobscot" &&
-
       newData.county !== "Piscataquis" &&
       newData.county !== "Sagadahoc" &&
       newData.county !== "Somerset" &&
       newData.county !== "Waldo" &&
       newData.county !== "Washington" &&
-      newData.county !== "York" 
-      
-      
+      newData.county !== "York"
     ) {
-      errorList.push(`You entered "${newData.county}", please enter a valid Maine county. All values are capitalized.`);
+      errorList.push(
+        `You entered "${newData.county}", please enter a valid Maine county. All values are capitalized.`
+      );
     }
     if (newData.nameSelf === "") {
       errorList.push("This field cannot be empty.");
@@ -130,7 +179,7 @@ export default function Shipped() {
 
     if (
       newData.size !== "X-small" &&
-      newData.size !=="Small" &&
+      newData.size !== "Small" &&
       newData.size !== "Medium" &&
       newData.size !== "Large" &&
       newData.size !== "X-large" &&
@@ -139,27 +188,43 @@ export default function Shipped() {
       newData.size !== "4X-large" &&
       newData.size !== "5X-large"
     ) {
-      errorList.push(`You entered "${newData.size  || "empty value"}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
     }
     if (
-      newData.color !== "Red" && 
+      newData.color !== "Red" &&
       newData.color !== "Purple" &&
       newData.color !== "Green" &&
       newData.color !== "Beige" &&
       newData.color !== "Tan" &&
       newData.color !== "Brown" &&
-      newData.color !=="Black" &&
-      newData.color !=="Grey" &&
-      newData.color !=="White" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
       newData.color !== "" &&
       newData.color !== null
     ) {
-      errorList.push(`You entered "${newData.color  || "an invalid value"}", please enter a valid color. All values are capitalized.`);
+      errorList.push(
+        `You entered "${
+          newData.color || "an invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
     }
-    if (newData.length !== "Short" && newData.length !== "Long" && newData.length !== "" && newData.length !== null) {
-      errorList.push(`You entered "${newData.length || "an invalid value"}", please enter a valid length. All values are capitalized.`);
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "an invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
     }
-
 
     if (errorList.length < 1) {
       api
@@ -186,69 +251,87 @@ export default function Shipped() {
   };
 
   const handleRowAdd = (newData, resolve) => {
-     //validation
-     let errorList = [];
-     if (
-       newData.county !== "Androscoggin" &&
-       newData.county !== "Aroostook" &&
-       newData.county !== "Cumberland" &&
-       newData.county !== "Franklin" &&
-       newData.county !== "Hancock" &&
-       newData.county !== "Kennebec" &&
-       newData.county !== "Knox" &&
-       newData.county !== "Lincoln" &&
-       newData.county !== "Oxford" &&
-       newData.county !== "Penobscot" &&
- 
-       newData.county !== "Piscataquis" &&
-       newData.county !== "Sagadahoc" &&
-       newData.county !== "Somerset" &&
-       newData.county !== "Waldo" &&
-       newData.county !== "Washington" &&
-       newData.county !== "York" 
-       
-       
-     ) {
-       errorList.push(`You entered "${newData.county || "no value"}", please enter a valid Maine county. All values are capitalized.`);
-     }
-     if (newData.nameSelf === "") {
-       errorList.push("This field cannot be empty.");
-     }
-     if (newData.dob === "") {
-       errorList.push("This field cannot be empty.");
-     }
- 
-     if (
-       newData.size !== "X-small" &&
-       newData.size !=="Small" &&
-       newData.size !== "Medium" &&
-       newData.size !== "Large" &&
-       newData.size !== "X-large" &&
-       newData.size !== "2X-large" &&
-       newData.size !== "3X-large" &&
-       newData.size !== "4X-large" &&
-       newData.size !== "5X-large"
-     ) {
-       errorList.push(`You entered "${newData.size  || "empty value"}", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `);
-     }
-     if (
-       newData.color !== "Red" && 
-       newData.color !== "Purple" &&
-       newData.color !== "Green" &&
-       newData.color !== "Beige" &&
-       newData.color !== "Tan" &&
-       newData.color !== "Brown" &&
-       newData.color !=="Black" &&
-       newData.color !=="Grey" &&
-       newData.color !=="White" &&
-       newData.color !== "" &&
-       newData.color !== null
-     ) {
-       errorList.push(`You entered "${newData.color  || "invalid value"}", please enter a valid color. All values are capitalized.`);
-     }
-     if (newData.length !== "Short" && newData.length !== "Long" && newData.length !== "" && newData.length !== null) {
-       errorList.push(`You entered "${newData.length || "invalid value"}", please enter a valid length. All values are capitalized.`);
-     }
+    //validation
+    let errorList = [];
+    if (
+      newData.county !== "Androscoggin" &&
+      newData.county !== "Aroostook" &&
+      newData.county !== "Cumberland" &&
+      newData.county !== "Franklin" &&
+      newData.county !== "Hancock" &&
+      newData.county !== "Kennebec" &&
+      newData.county !== "Knox" &&
+      newData.county !== "Lincoln" &&
+      newData.county !== "Oxford" &&
+      newData.county !== "Penobscot" &&
+      newData.county !== "Piscataquis" &&
+      newData.county !== "Sagadahoc" &&
+      newData.county !== "Somerset" &&
+      newData.county !== "Waldo" &&
+      newData.county !== "Washington" &&
+      newData.county !== "York"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.county || "no value"
+        }", please enter a valid Maine county. All values are capitalized.`
+      );
+    }
+    if (newData.nameSelf === "") {
+      errorList.push("This field cannot be empty.");
+    }
+    if (newData.dob === "") {
+      errorList.push("This field cannot be empty.");
+    }
+
+    if (
+      newData.size !== "X-small" &&
+      newData.size !== "Small" &&
+      newData.size !== "Medium" &&
+      newData.size !== "Large" &&
+      newData.size !== "X-large" &&
+      newData.size !== "2X-large" &&
+      newData.size !== "3X-large" &&
+      newData.size !== "4X-large" &&
+      newData.size !== "5X-large"
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.size || "empty value"
+        }", please enter a valid size. All first letters are capitalized. All X sizes follow this format: "X-large"; not "X-Large". `
+      );
+    }
+    if (
+      newData.color !== "Red" &&
+      newData.color !== "Purple" &&
+      newData.color !== "Green" &&
+      newData.color !== "Beige" &&
+      newData.color !== "Tan" &&
+      newData.color !== "Brown" &&
+      newData.color !== "Black" &&
+      newData.color !== "Grey" &&
+      newData.color !== "White" &&
+      newData.color !== "" &&
+      newData.color !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.color || "invalid value"
+        }", please enter a valid color. All values are capitalized.`
+      );
+    }
+    if (
+      newData.length !== "Short" &&
+      newData.length !== "Long" &&
+      newData.length !== "" &&
+      newData.length !== null
+    ) {
+      errorList.push(
+        `You entered "${
+          newData.length || "invalid value"
+        }", please enter a valid length. All values are capitalized.`
+      );
+    }
 
     if (errorList.length < 1) {
       //no error
@@ -309,15 +392,8 @@ export default function Shipped() {
         columns={columns}
         data={data}
         icons={tableIcons}
+        onRowClick={(event, rowData) => handleOpen(rowData)}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              handleRowUpdate(newData, oldData, resolve);
-            }),
-          onRowAdd: (newData) =>
-            new Promise((resolve) => {
-              handleRowAdd(newData, resolve);
-            }),
           onRowDelete: (oldData) =>
             new Promise((resolve) => {
               handleRowDelete(oldData, resolve);
@@ -326,15 +402,37 @@ export default function Shipped() {
         options={{
           exportButton: true,
         }}
-        detailPanel={[
-          {
-            tooltip: "Show Comments",
-            render: (data) => {
-              return <div className={style.details}>{data.moreInfo}</div>;
-            },
-          },
-        ]}
       />
+      <Modal open={open} onClose={handleClose}>
+        <MaterialTable
+          title="Row Edit"
+          columns={modalColumns}
+          data={modalData}
+          icons={tableIcons}
+          editable={{
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve) => {
+                handleRowUpdate(newData, oldData, resolve);
+              }),
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
+                handleRowAdd(newData, resolve);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
+                handleRowDelete(oldData, resolve);
+              }),
+          }}
+          detailPanel={[
+            {
+              tooltip: "Show Comments",
+              render: (data) => {
+                return <div className={style.details}>{data.moreInfo}</div>;
+              },
+            },
+          ]}
+        />
+      </Modal>
     </>
   );
 }
