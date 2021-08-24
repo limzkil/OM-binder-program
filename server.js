@@ -472,7 +472,7 @@ app.post("/ready/move", async (req, res) => {
                   <p>Size: ${changedDocument.size}</p>
                   <p>Color: ${changedDocument.color}</p>
                   <p>Length: ${changedDocument.length}</p>
-                  <p>All the best, Shadman</p>
+                  <p>All the best, OUT Maine Team</p>
                    </div>
               `,
             });
@@ -497,7 +497,7 @@ app.post("/ready/move", async (req, res) => {
                   <p>Color: ${changedDocument.color}</p>
                   <p>Length: ${changedDocument.length}</p>
             
-                  <p>All the best, OutMaine Team</p>
+                  <p>All the best, OUT Maine Team</p>
                    </div>
               `,
             });
@@ -618,7 +618,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Size: ${size}</p>
         <p>Color: ${color}</p>
         <p>Length: ${length}</p>
-        <p>All the best, Shadman</p>
+        <p>All the best, OUT Maine Team</p>
          </div>
     `,
       });
@@ -641,7 +641,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Size: ${size}</p>
         <p>Color: ${color}</p>
         <p>Length: ${length}</p>
-        <p>All the best, Shadman</p>
+        <p>All the best, OUT Maine Team</p>
          </div>
     `,
       });
@@ -690,7 +690,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Size: ${binderInventory.size}</p>
         <p>Color: ${binderInventory.color}</p>
         <p>Length: ${binderInventory.length}</p>
-        <p>All the best, Shadman</p>
+        <p>All the best, OUT Maine Team</p>
          </div>
     `,
       });
@@ -718,7 +718,7 @@ app.post("/send_mail", async (req, res) => {
         <p>Color: ${binderInventory.color}</p>
         <p>Length: ${binderInventory.length}</p>
 
-        <p>All the best, OutMaine Team</p>
+        <p>All the best, OUT Maine Team</p>
          </div>
     `,
       });
@@ -872,7 +872,7 @@ BinderInventory.watch().on("change", async (change) => {
               <p>Color: ${doc.color}</p>
               <p>Length: ${doc.length}</p>
 
-              <p>All the best, OutMaine Team</p>
+              <p>All the best, OUT Maine Team</p>
               </div>
               `,
             });
@@ -901,7 +901,7 @@ BinderInventory.watch().on("change", async (change) => {
               <p>Color: ${doc.color}</p>
               <p>Length: ${doc.length}</p>
 
-              <p>All the best, OutMaine Team</p>
+              <p>All the best, OUT Maine Team</p>
               </div>
               `,
             });
@@ -999,7 +999,7 @@ waitListed.watch().on("change", async (change) => {
           <p>Color: ${changedDocument.color}</p>
           <p>Length: ${changedDocument.length}</p>
 
-          <p>All the best, OutMaine Team</p>
+          <p>All the best, OUT Maine Team</p>
           </div>
           `,
         });
@@ -1027,7 +1027,7 @@ waitListed.watch().on("change", async (change) => {
           <p>Color: ${changedDocument.color}</p>
           <p>Length: ${changedDocument.length}</p>
 
-          <p>All the best, OutMaine Team</p>
+          <p>All the best, OUT Maine Team</p>
           </div>
           `,
         });
