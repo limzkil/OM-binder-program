@@ -65,7 +65,7 @@ export default function ReadyToShip() {
     { title: "County", field: "county", hidden: true, export: true  },
     { title: "Requestor Name", field: "nameElse", export: true },
     { title: "Requestor Email", field: "emailElse", hidden: true, export: true  },
-    { title: "Requestor Phone", field: "numberElse", hidden: true, export: true  },
+    { title: "Requestor Phone", field: "phoneElse", hidden: true, export: true  },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob", hidden: true, export: true  },
     { title: "Email", field: "emailSelf" },

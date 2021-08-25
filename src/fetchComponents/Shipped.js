@@ -71,7 +71,7 @@ export default function Shipped() {
     },
     {
       title: "Requestor Phone",
-      field: "numberElse",
+      field: "phoneElse",
       hidden: true,
       export: true,
     },
