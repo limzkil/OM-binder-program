@@ -212,6 +212,7 @@ app.post("/ready/save", async (req, res) => {
   const ready = new FormInput({
     county: req.body.county,
     progSource: req.body.progSource,
+    firstBind: req.body.firstBind,
     emailElse: req.body.emailElse,
     phoneElse: req.body.phoneElse,
     nameElse: req.body.nameElse,
@@ -247,6 +248,7 @@ app.patch("/ready/:readyIds", async (req, res) => {
     {
       county: req.body.county,
       progSource: req.body.progSource,
+      firstBind: req.body.firstBind,
       emailElse: req.body.emailElse,
       phoneElse: req.body.phoneElse,
       nameElse: req.body.nameElse,
@@ -285,6 +287,7 @@ app.post("/wait/save", async (req, res) => {
   const ready = new waitListed({
     county: req.body.county,
     progSource: req.body.progSource,
+    firstBind: req.body.firstBind,
     emailElse: req.body.emailElse,
     phoneElse: req.body.phoneElse,
     nameElse: req.body.nameElse,
@@ -320,6 +323,7 @@ app.patch("/wait/:waitIds", async (req, res) => {
     {
       county: req.body.county,
       progSource: req.body.progSource,
+      firstBind: req.body.firstBind,
       emailElse: req.body.emailElse,
       phoneElse: req.body.phoneElse,
       nameElse: req.body.nameElse,
@@ -360,6 +364,7 @@ app.post("/shipped/save", async (req, res) => {
   const ready = new Shipped({
     county: req.body.county,
     progSource: req.body.progSource,
+    firstBind: req.body.firstBind,
     emailElse: req.body.emailElse,
     phoneElse: req.body.phoneElse,
     nameElse: req.body.nameElse,
@@ -395,6 +400,7 @@ app.patch("/shipped/:shippedIds", async (req, res) => {
     {
       county: req.body.county,
       progSource: req.body.progSource,
+      firstBind: req.body.firstBind,
       emailElse: req.body.emailElse,
       phoneElse: req.body.phoneElse,
       nameElse: req.body.nameElse,
@@ -518,6 +524,7 @@ app.post("/send_mail", async (req, res) => {
   let {
     county,
     progSource,
+    firstBind,
     emailElse,
     phoneElse,
     nameElse,
@@ -973,6 +980,7 @@ app.post("/send_mail", async (req, res) => {
     let newEntry = waitListed({
       county: county,
       progSource: progSource,
+      firstBind: firstBind,
       emailElse: emailElse,
       phoneElse: phoneElse,
       nameElse: nameElse,
@@ -1389,6 +1397,7 @@ app.post("/send_mail", async (req, res) => {
     let newEntry = FormInput({
       county: county,
       progSource: progSource,
+      firstBind: firstBind,
       emailElse: emailElse,
       phoneElse: phoneElse,
       nameElse: nameElse,

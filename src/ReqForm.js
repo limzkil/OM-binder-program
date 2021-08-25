@@ -126,7 +126,7 @@ export default function ReqForm() {
   };
   const handleSelfOrElse = (event) => {
     let SoE = event.target.value;
-    console.log(SoE)
+    console.log(SoE);
     setSelfOrElse(SoE);
     if (SoE === "true") {
       setValidElsePhone(false);
@@ -239,6 +239,7 @@ export default function ReqForm() {
           },
           size: bindSize,
           county: resMaine,
+          firstBind: isFirstBind,
           progSource: progSource,
           nameSelf: nameSelf,
           nameElse: nameElse,
@@ -246,9 +247,7 @@ export default function ReqForm() {
           length: bindLength === "" ? "No preference" : bindLength,
           color: bindColor === "" ? "No preference" : bindColor,
           willWait: waitLenCol,
-          moreInfo: moreInf
-         
-
+          moreInfo: moreInf,
         }),
         headers: { "content-type": "application/json" },
         method: "POST",
@@ -621,7 +620,9 @@ export default function ReqForm() {
                     className={style.formItemField}
                     onChange={(e) => setAddressZip(e.target.value)}
                   />
-                  <InputLabel className={style.formItemField}>Please Choose your State</InputLabel>
+                  <InputLabel className={style.formItemField}>
+                    Please Choose your State
+                  </InputLabel>
                   <NativeSelect
                     id="addressState"
                     name="addressState"
@@ -773,7 +774,7 @@ export default function ReqForm() {
                           style={{
                             backgroundColor: "Red",
                             display: "inline-block",
-                            marginLeft: "0"
+                            marginLeft: "0",
                           }}
                         ></Card>
                       </Tooltip>
@@ -906,7 +907,51 @@ export default function ReqForm() {
             </Grid>
           </>
         ) : (
-          <h1>A confirmation email has been sent to the address provided.</h1>
+          <>
+            <h1
+              style={{
+                fontFamily: "Oswald",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <strong>
+                <u>Thank you for Requesting a Binder</u>
+              </strong>
+            </h1>
+            <h3
+              style={{
+                fontFamily: "Oswald",
+                display: "flex",
+                justifyContent: "center",
+                textAlign:"center"
+              }}
+            >
+              <p>
+                We have sent a confirmation email to the address provided.{" "}
+                <br />
+                If you have not received the email within 24 hrs, please contact{" "}
+                <br />
+                <a href="mailto: inga@outmaine.org">inga@outmaine.org</a>.
+              </p>
+            </h3>
+            <br />
+            <p
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <strong>
+                Thank You!
+                <br />
+                Out Maine Team
+                <br />
+                www.outmaine.org
+              </strong>
+            </p>
+          </>
         )}
       </Container>
     </>

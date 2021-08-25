@@ -133,10 +133,10 @@ if(isAuthenticated)
       <Typography variant = "h2" style = {{fontFamily: 'Oswald'}}>Binder Program Management</Typography>
         <Tabs value={tabSelect} onChange={handleTab} TabIndicatorProps={{
            style: { background: "#ffcc33", height: ".5em" }}}>
-          <Tab label={`Inventory(${inventoryData.length})`}   />
+          <Tab label={`Inventory`}   />
           <Tab label={`Wait List (${waitListData.length})`} />
           <Tab label={`Ready to Ship (${readyToShipData.length})`} />
-          <Tab label={`Shipped (${shippedData.length})`} />
+          <Tab label={`Shipped`} />
         </Tabs>
     
       </AppBar>

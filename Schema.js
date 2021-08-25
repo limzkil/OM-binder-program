@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const CreateSchema = new mongoose.Schema({
   county: String,
   progSource: String,
+  firstBind: Boolean,
   emailElse: String,
   phoneElse: String,
   nameElse: String,
