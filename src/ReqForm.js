@@ -644,7 +644,7 @@ export default function ReqForm() {
                     error={addressState.length ? false : isError}
                     onChange={(e) => setAddressState(e.target.value)}
                   >
-                    <option value="">Please Select a State</option>
+                    <option value="">Select a state</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>

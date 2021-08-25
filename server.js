@@ -500,7 +500,7 @@ app.post("/ready/move", async (req, res) => {
                   <p>All the best, OUT Maine Team</p>
                    </div>
               `,
-            });
+            }); // changedDocument
           }
         })
         .catch((error) => {
@@ -605,21 +605,183 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailElse,
-        subject: "test email",
-        html: `<div className="email" style="
-        border: 1px solid black;
-        padding: 20px;
-        font-family: sans-serif;
-        line-height: 2;
-        font-size: 20px; 
-        ">
-        <p>We apologize for the inconvenience, but your binder is currently not in stock. You have been added to the waitlist.</p>
-        <p>Binder Details</p>
-        <p>Size: ${size}</p>
-        <p>Color: ${color}</p>
-        <p>Length: ${length}</p>
-        <p>All the best, OUT Maine Team</p>
-         </div>
+        subject: "We're Sorry!",
+        attachments: [
+          {
+            filename: "Logo.png",
+            path: __dirname + "/src/img/OUTMaine_Logo.png",
+            cid: "logo",
+          },
+        ],
+        html: `<img
+          src="cid:logo"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
+      <h1
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <strong><u>WE KNOW HAVING A BINDER IS IMPORTANT</u></strong>
+      </h1>
+      <h3
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <p>
+          It's important to us that you get the binder you truly want and it looks
+          like we are currently out of stock of the one you'd prefer. HOWEVER..<br />We've
+          placed your information on our WaitList and when we get one back in
+          stock we'll be sure to get it mailed to you as soon as we can. <br />
+          If you'd like to change your request to something we DO have available
+          please email <a href="mailto: inga@outmaine.org">inga@outmaine.org</a>
+          <br />so we can see what other options may be available to ship sooner.
+      Please take a moment to verify that the information below is correct.<br/> If
+      something is incorrect and needs to be changed, please email
+      <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can fix it before we ship the binder.
+        </p>
+      </h3>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Name:</strong> ${nameElse}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Email:</strong> ${emailElse}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Phone number:</strong> ${phoneElse}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+      <strong>Street: </strong>${address.address1}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Apt/PO Box: </strong>${address.address2}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>City: </strong>${address.city}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>State: </strong>${address.state}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Zip: </strong>${address.zip}
+      </p>
+      <br />
+  
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong><u>Binder Details</u></strong>
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Size:</strong> ${size}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Phone number:</strong> ${length}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Address:</strong> ${color}
+      </p>
+      <br />
+  
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Thank You!<br />Out Maine Team</strong>
+      </p>
     `,
       });
     } else if (emailSelf) {
@@ -628,21 +790,182 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailSelf,
-        subject: "test email",
-        html: `<div className="email" style="
-        border: 1px solid black;
-        padding: 20px;
-        font-family: sans-serif;
-        line-height: 2;
-        font-size: 20px; 
-        ">
-        <p>We apologize for the inconvenience, but your binder is currently not in stock. You have been added to the waitlist.</p>
-        <p>Binder Details</p>
-        <p>Size: ${size}</p>
-        <p>Color: ${color}</p>
-        <p>Length: ${length}</p>
-        <p>All the best, OUT Maine Team</p>
-         </div>
+        subject: "We're Sorry!",
+        attachments: [
+          {
+            filename: "Logo.png",
+            path: __dirname + "/src/img/OUTMaine_Logo.png",
+            cid: "logo",
+          },
+        ],
+        html: `<img
+          src="cid:logo"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
+      <h1
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <strong><u>WE KNOW HAVING A BINDER IS IMPORTANT</u></strong>
+      </h1>
+      <h3
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <p>
+          It's important to us that you get the binder you truly want and it looks
+          like we are currently out of stock of the one you'd prefer. HOWEVER..<br />We've
+          placed your information on our WaitList and when we get one back in
+          stock we'll be sure to get it mailed to you as soon as we can. <br />
+          If you'd like to change your request to something we DO have available
+          please email <a href="mailto: inga@outmaine.org">inga@outmaine.org</a>
+          <br />so we can see what other options may be available to ship sooner.
+      Please take a moment to verify that the information below is correct.<br/> If
+      something is incorrect and needs to be changed, please email
+      <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can fix it before we ship the binder.
+        </p>
+      </h3>
+      
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Name:</strong> ${nameSelf}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Email:</strong> ${emailSelf}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Phone number:</strong> ${phoneSelf}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+      <strong>Street: </strong>${address.address1}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Apt/PO Box: </strong>${address.address2}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>City: </strong>${address.city}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>State: </strong>${address.state}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Zip: </strong>${address.zip}
+      </p>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong><u>Binder Details</u></strong>
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Size:</strong> ${size}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Phone number:</strong> ${length}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Address:</strong> ${color}
+      </p>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Thank You!<br />Out Maine Team</strong>
+      </p>
     `,
       });
     }
@@ -674,24 +997,196 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailElse,
-        subject: "test email",
-        html: `<div className="email" style="
-        border: 1px solid black;
-        padding: 20px;
-        font-family: sans-serif;
-        line-height: 2;
-        font-size: 20px; 
-        ">
-        <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${emailElse}</p>
-        <p><strong>Phone number:</strong> ${phoneElse}</p>
-        <p><strong>Address:</strong> ${address.address1}</p>
-        <p>Binder Details</p>
-        <p>Size: ${binderInventory.size}</p>
-        <p>Color: ${binderInventory.color}</p>
-        <p>Length: ${binderInventory.length}</p>
-        <p>All the best, OUT Maine Team</p>
-         </div>
+        subject: "Your Binder Is Ready!",
+        attachments: [
+          {
+            filename: "Logo.png",
+            path: __dirname + "/src/img/OUTMaine_Logo.png",
+            cid: "logo",
+          },
+        ],
+        html: `
+        <img
+          src="cid:logo"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
+      <h1
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <strong><u>Your Binder Is In Stock And Ready To Ship</u></strong>
+      </h1>
+      <h3
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <p>
+          Before we get ready to ship it to you, please take a moment and double
+          check that all of the information below is correct.<br /><strong
+            ><u>If anything is missing or incorrect</u></strong
+          >
+          please email
+          <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can make
+          the necessary corrections before shipping:
+        </p>
+      </h3>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Name:</strong> ${nameElse}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Email:</strong> ${emailElse}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Phone number:</strong> ${phoneElse}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Street: </strong>${address.address1}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Apt/PO Box: </strong>${address.address2}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>City: </strong>${address.city}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>State: </strong>${address.state}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Zip: </strong>${address.zip}
+      </p> 
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong><u>Binder Details</u></strong>
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Size:</strong> ${binderInventory.size}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Length:</strong> ${binderInventory.length}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Color:</strong> ${binderInventory.color}
+      </p>
+      <br />
+  
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 15%;
+        "
+      >
+        Please be on the lookout for a brief survey from OUT Maine regarding our
+        Binder Donation Program.<br />
+        Your voice helps us continue to fund and expand our work and we appreciate
+        your honest feedback.
+      </p>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Thank You!<br />Out Maine Team</strong>
+      </p>
+    
     `,
       });
     } else if (emailSelf) {
@@ -700,26 +1195,194 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailSelf,
-        subject: "test email",
-        html: `<div className="email" style="
-        border: 1px solid black;
-        padding: 20px;
-        font-family: oswald;
-        line-height: 2;
-        font-size: 20px; 
-        ">
-        <h1></h1>
-        <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-        <p><strong>Email:</strong> ${emailSelf}</p>
-        <p><strong>Phone number:</strong> ${phoneSelf}</p>
-        <p><strong>Address:</strong> ${address.address1}</p>
-        <p>Binder Details</p>
-        <p>Size: ${binderInventory.size}</p>
-        <p>Color: ${binderInventory.color}</p>
-        <p>Length: ${binderInventory.length}</p>
-
-        <p>All the best, OUT Maine Team</p>
-         </div>
+        subject: "Your Binder Is Ready!",
+        attachments: [
+          {
+            filename: "Logo.png",
+            path: __dirname + "/src/img/OUTMaine_Logo.png",
+            cid: "logo",
+          },
+        ],
+        html: `
+        <img
+          src="cid:logo"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
+      <h1
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <strong><u>Your Binder Is In Stock And Ready To Ship</u></strong>
+      </h1>
+      <h3
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+        "
+      >
+        <p>
+          Before we get ready to ship it to you, please take a moment and double
+          check that all of the information below is correct.<br /><strong
+            ><u>If anything is missing or incorrect</u></strong
+          >
+          please email
+          <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can make
+          the necessary corrections before shipping:
+        </p>
+      </h3>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Name:</strong> ${nameSelf}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Email:</strong> ${emailSelf}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Phone number:</strong> ${phoneSelf}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Street: </strong>${address.address1}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Apt/PO Box: </strong>${address.address2}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>City: </strong>${address.city}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>State: </strong>${address.state}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Zip: </strong>${address.zip}
+      </p> 
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong><u>Binder Details</u></strong>
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Size:</strong> ${binderInventory.size}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Length:</strong> ${binderInventory.length}
+      </p>
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Color:</strong> ${binderInventory.color}
+      </p>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 15%;
+        "
+      >
+        Please be on the lookout for a brief survey from OUT Maine regarding our
+        Binder Donation Program.<br />
+        Your voice helps us continue to fund and expand our work and we appreciate
+        your honest feedback.
+      </p>
+      <br />
+      <p
+        style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+        "
+      >
+        <strong>Thank You!<br />Out Maine Team</strong>
+      </p>
     `,
       });
     }
@@ -855,28 +1518,194 @@ BinderInventory.watch().on("change", async (change) => {
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
               to: doc.emailElse,
-              subject: "test email",
-              html: `<div className="email" style="
-              border: 1px solid black;
-              padding: 20px;
-              font-family: sans-serif;
-              line-height: 2;
-              font-size: 20px; 
-              ">
-              <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${doc.emailElse}</p>
-              <p><strong>Phone number:</strong> ${doc.phoneElse}</p>
-              <p><strong>Address:</strong> ${doc.address.address1}</p>
-              <p>Binder Details</p>
-              <p>Size: ${doc.size}</p>
-              <p>Color: ${doc.color}</p>
-              <p>Length: ${doc.length}</p>
-
-              <p>All the best, OUT Maine Team</p>
-              </div>
-              `,
+              subject: "Your Binder Is Now In Stock!",
+              attachments: [
+                {
+                  filename: "Logo.png",
+                  path: __dirname + "/src/img/OUTMaine_Logo.png",
+                  cid: "logo",
+                },
+              ],
+              html: `<img
+                src="cid:logo"
+                alt="Logo"
+                width="300"
+                height="200"
+              />
+            <h1
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+              "
+            >
+              <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
+            </h1>
+            <h3
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+              "
+            >
+              <p>
+                Before we get ready to ship it to you, please take a moment and double
+                check that all of the information below is correct.<br /><strong
+                  ><u>If anything is missing or incorrect</u></strong
+                >
+                please email
+                <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can make
+                the necessary corrections before shipping:
+              </p>
+            </h3>
+            <br />
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Name:</strong> ${doc.nameElse}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Email:</strong> ${doc.emailElse}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Phone number:</strong> ${doc.phoneElse}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+            <strong>Street: </strong>${doc.address.address1}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Apt/PO Box: </strong>${doc.address.address2}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>City: </strong>${doc.address.city}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>State: </strong>${doc.address.state}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Zip: </strong>${doc.address.zip}
+            </p> 
+            <br />
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong><u>Binder Details</u></strong>
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Size:</strong> ${doc.size}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Phone number:</strong> ${doc.length}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Address:</strong> ${doc.color}
+            </p>
+            <br />
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 15%;
+              "
+            >
+              Please be on the lookout for a brief survey from OUT Maine regarding our
+              Binder Donation Program.<br />
+              Your voice helps us continue to fund and expand our work and we appreciate
+              your honest feedback.
+            </p>
+            <br />
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Thank You!<br />Out Maine Team</strong>
+            </p>`,
             });
-
             // Code is essentially the same as above except for if the user enters info in "email (else)"". This means the person is ordering a binder for someone else"
           } else {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
@@ -884,25 +1713,195 @@ BinderInventory.watch().on("change", async (change) => {
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
               to: doc.emailSelf,
-              subject: "test email",
-              html: `<div className="email" style="
-              border: 1px solid black;
-              padding: 20px;
-              font-family: sans-serif;
-              line-height: 2;
-              font-size: 20px; 
-              ">
-              <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-              <p><strong>Email:</strong> ${doc.emailSelf}</p>
-              <p><strong>Phone number:</strong> ${doc.phoneSelf}</p>
-              <p><strong>Address:</strong> ${doc.address.address1}</p>
-              <p>Binder Details</p>
-              <p>Size: ${doc.size}</p>
-              <p>Color: ${doc.color}</p>
-              <p>Length: ${doc.length}</p>
-
-              <p>All the best, OUT Maine Team</p>
-              </div>
+              subject: "Your Binder Is Now In Stock!",
+              attachments: [
+                {
+                  filename: "Logo.png",
+                  path: __dirname + "/src/img/OUTMaine_Logo.png",
+                  cid: "logo",
+                },
+              ],
+              html: `<img
+                src="cid:logo"
+                alt="Logo"
+                width="300"
+                height="200"
+              />
+            <h1
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+              "
+            >
+              <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
+            </h1>
+            <h3
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+              "
+            >
+              <p>
+                Before we get ready to ship it to you, please take a moment and double
+                check that all of the information below is correct.<br /><strong
+                  ><u>If anything is missing or incorrect</u></strong
+                >
+                please email
+                <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can make
+                the necessary corrections before shipping:
+              </p>
+            </h3>
+            <br />
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Name:</strong> ${doc.nameSelf}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Email:</strong> ${doc.emailSelf}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Phone number:</strong> ${doc.phoneSelf}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+            <strong>Street: </strong>${doc.address.address1}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Apt/PO Box: </strong>${doc.address.address2}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>City: </strong>${doc.address.city}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>State: </strong>${doc.address.state}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Zip: </strong>${doc.address.zip}
+            </p> 
+            <br />
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong><u>Binder Details</u></strong>
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Size:</strong> ${doc.size}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Phone number:</strong> ${doc.length}
+            </p>
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Address:</strong> ${doc.color}
+            </p>
+            <br />
+        
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 15%;
+              "
+            >
+              Please be on the lookout for a brief survey from OUT Maine regarding our
+              Binder Donation Program.<br />
+              Your voice helps us continue to fund and expand our work and we appreciate
+              your honest feedback.
+            </p>
+            <br />
+        
+            <p
+              style="
+                font-family: 'Oswald', sans-serif;
+                display: flex;
+                justify-content: center;
+                padding-right: 40%;
+              "
+            >
+              <strong>Thank You!<br />Out Maine Team</strong>
+            </p>
               `,
             });
           }
@@ -982,26 +1981,195 @@ waitListed.watch().on("change", async (change) => {
           from: process.env.GMAIL_USER,
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailElse,
-          subject: "test email",
-          html: `<div className="email" style="
-          border: 1px solid black;
-          padding: 20px;
-          font-family: sans-serif;
-          line-height: 2;
-          font-size: 20px; 
-          ">
-          <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-          <p><strong>Email:</strong> ${changedDocument.emailElse}</p>
-          <p><strong>Phone number:</strong> ${changedDocument.phoneElse}</p>
-          <p><strong>Address:</strong> ${changedDocument.address.address1}</p>
-          <p>Binder Details</p>
-          <p>Size: ${changedDocument.size}</p>
-          <p>Color: ${changedDocument.color}</p>
-          <p>Length: ${changedDocument.length}</p>
-
-          <p>All the best, OUT Maine Team</p>
-          </div>
-          `,
+          subject: "Your Binder Is Now In Stock!",
+          attachments: [
+            {
+              filename: "Logo.png",
+              path: __dirname + "/src/img/OUTMaine_Logo.png",
+              cid: "logo"
+            },
+          ],
+          html: `<img
+            src="cid:logo"
+            alt="Logo"
+            width="300"
+            height="200"
+          />
+        <h1
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+          "
+        >
+          <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
+        </h1>
+        <h3
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+          "
+        >
+          <p>
+            Before we get ready to ship it to you, please take a moment and double
+            check that all of the information below is correct.<br /><strong
+              ><u>If anything is missing or incorrect</u></strong
+            >
+            please email
+            <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can make
+            the necessary corrections before shipping:
+          </p>
+        </h3>
+        <br />
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Name:</strong> ${changedDocument.nameElse}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Email:</strong> ${changedDocument.emailElse}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Phone number:</strong> ${changedDocument.phoneElse}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+        <strong>Street: </strong>${changedDocument.address.address1}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Apt/PO Box: </strong>${changedDocument.address.address2}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>City: </strong>${changedDocument.address.city}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>State: </strong>${changedDocument.address.state}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Zip: </strong>${changedDocument.address.zip}
+        </p> 
+        <br />
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong><u>Binder Details</u></strong>
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Size:</strong> ${changedDocument.size}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Phone number:</strong> ${changedDocument.length}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Address:</strong> ${changedDocument.color}
+        </p>
+        <br />
+    
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 15%;
+          "
+        >
+          Please be on the lookout for a brief survey from OUT Maine regarding our
+          Binder Donation Program.<br />
+          Your voice helps us continue to fund and expand our work and we appreciate
+          your honest feedback.
+        </p>
+        <br />
+    
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Thank You!<br />Out Maine Team</strong>
+        </p>`,
         });
         // Code is essentially the same as above except for if the user enters info in "email (else)"". This means the person is ordering a binder for someone else"
       } else {
@@ -1010,26 +2178,195 @@ waitListed.watch().on("change", async (change) => {
           from: process.env.GMAIL_USER,
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailSelf,
-          subject: "test email",
-          html: `<div className="email" style="
-          border: 1px solid black;
-          padding: 20px;
-          font-family: sans-serif;
-          line-height: 2;
-          font-size: 20px; 
-          ">
-          <p>Your requested binder is ready to ship! But before we do so, please verify that the information below is correct! If any of the information is incorrect or missing, please email example@outmaine.com.</p>
-          <p><strong>Email:</strong> ${changedDocument.emailSelf}</p>
-          <p><strong>Phone number:</strong> ${changedDocument.phoneSelf}</p>
-          <p><strong>Address:</strong> ${changedDocument.address}</p>
-          <p>Binder Details</p>
-          <p>Size: ${changedDocument.size}</p>
-          <p>Color: ${changedDocument.color}</p>
-          <p>Length: ${changedDocument.length}</p>
-
-          <p>All the best, OUT Maine Team</p>
-          </div>
-          `,
+          subject: "Your Binder Is Now In Stock!",
+          attachments: [
+            {
+              filename: "Logo.png",
+              path: __dirname + "/src/img/OUTMaine_Logo.png",
+              cid: "logo"
+            },
+          ],
+          html: `<img
+            src="cid:logo"
+            alt="Logo"
+            width="300"
+            height="200"
+          />
+        <h1
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+          "
+        >
+          <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
+        </h1>
+        <h3
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+          "
+        >
+          <p>
+            Before we get ready to ship it to you, please take a moment and double
+            check that all of the information below is correct.<br /><strong
+              ><u>If anything is missing or incorrect</u></strong
+            >
+            please email
+            <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can make
+            the necessary corrections before shipping:
+          </p>
+        </h3>
+        <br />
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Name:</strong> ${changedDocument.nameSelf}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Email:</strong> ${changedDocument.emailSelf}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Phone number:</strong> ${changedDocument.phoneSelf}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+        <strong>Street: </strong>${changedDocument.address.address1}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Apt/PO Box: </strong>${changedDocument.address.address2}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>City: </strong>${changedDocument.address.city}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>State: </strong>${changedDocument.address.state}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Zip: </strong>${changedDocument.address.zip}
+        </p> 
+        <br />
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong><u>Binder Details</u></strong>
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Size:</strong> ${changedDocument.size}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Phone number:</strong> ${changedDocument.length}
+        </p>
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Address:</strong> ${changedDocument.color}
+        </p>
+        <br />
+    
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 15%;
+          "
+        >
+          Please be on the lookout for a brief survey from OUT Maine regarding our
+          Binder Donation Program.<br />
+          Your voice helps us continue to fund and expand our work and we appreciate
+          your honest feedback.
+        </p>
+        <br />
+    
+        <p
+          style="
+            font-family: 'Oswald', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-right: 40%;
+          "
+        >
+          <strong>Thank You!<br />Out Maine Team</strong>
+        </p>`,
         });
       }
     }
