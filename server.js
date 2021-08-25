@@ -1200,6 +1200,7 @@ app.post("/send_mail", async (req, res) => {
           {
             filename: "Logo.png",
             path: __dirname + "/src/img/OUTMaine_Logo.png",
+            cid: "logo",
           },
         ],
         html: `
@@ -1522,6 +1523,7 @@ BinderInventory.watch().on("change", async (change) => {
                 {
                   filename: "Logo.png",
                   path: __dirname + "/src/img/OUTMaine_Logo.png",
+                  cid: "logo",
                 },
               ],
               html: `<img
@@ -1716,6 +1718,7 @@ BinderInventory.watch().on("change", async (change) => {
                 {
                   filename: "Logo.png",
                   path: __dirname + "/src/img/OUTMaine_Logo.png",
+                  cid: "logo",
                 },
               ],
               html: `<img
@@ -1983,6 +1986,7 @@ waitListed.watch().on("change", async (change) => {
             {
               filename: "Logo.png",
               path: __dirname + "/src/img/OUTMaine_Logo.png",
+              cid: "logo"
             },
           ],
           html: `<img
@@ -2179,6 +2183,7 @@ waitListed.watch().on("change", async (change) => {
             {
               filename: "Logo.png",
               path: __dirname + "/src/img/OUTMaine_Logo.png",
+              cid: "logo"
             },
           ],
           html: `<img

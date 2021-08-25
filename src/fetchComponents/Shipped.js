@@ -77,8 +77,8 @@ export default function Shipped() {
     },
     { title: "Name", field: "nameSelf" },
     { title: "DOB", field: "dob", hidden: true, export: true },
-    { title: "Email", field: "email" },
-    { title: "Phone", field: "phone", hidden: true, export: true },
+    { title: "Email", field: "emailSelf" },
+    { title: "Phone", field: "phoneSelf", hidden: true, export: true },
     { title: "Street", field: "address.address1", hidden: true, export: true },
     {
       title: "Apt/PO Box",
