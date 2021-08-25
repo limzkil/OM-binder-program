@@ -14,6 +14,7 @@ import Card from "@material-ui/core/Card";
 import Tooltip from "@material-ui/core/Tooltip";
 import validator from "validator";
 import React, { useState, useEffect } from "react";
+import { Error } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   formContain: {
@@ -593,6 +594,10 @@ export default function ReqForm() {
                     name="address1"
                     placeholder="Enter your address 1(requestee)"
                     value={address1}
+                    helperText={
+                      !address1.length ? "Please Enter a Address" : null
+                    }
+                    error={address1.length ? false : isError}
                     className={style.formItemField}
                     onChange={(e) => setAddress1(e.target.value)}
                   />
@@ -609,6 +614,10 @@ export default function ReqForm() {
                     name="addressCity"
                     placeholder="Enter your City (requestee)"
                     value={addressCity}
+                    helperText={
+                      !addressCity.length ? "Please Enter a City" : null
+                    }
+                    error={addressCity.length ? false : isError}
                     className={style.formItemField}
                     onChange={(e) => setAddressCity(e.target.value)}
                   />
@@ -617,6 +626,10 @@ export default function ReqForm() {
                     name="addressZip"
                     placeholder="Enter your Zip code (requestee)"
                     value={addressZip}
+                    helperText={
+                      !addressZip.length ? "Please Enter a Zipcode" : null
+                    }
+                    error={addressZip.length ? false : isError}
                     className={style.formItemField}
                     onChange={(e) => setAddressZip(e.target.value)}
                   />
@@ -629,6 +642,7 @@ export default function ReqForm() {
                     placeholder="Please Choose your state (requestee)"
                     className={style.formItemField}
                     value={addressState}
+                    error={addressState.length ? false : isError}
                     onChange={(e) => setAddressState(e.target.value)}
                   >
                     <option value="">Select a state</option>
@@ -691,6 +705,10 @@ export default function ReqForm() {
                     control={
                       <Checkbox
                         checked={yesMeasure}
+                        helperText={
+                          !yesMeasure ? "Please Confirm your Measurements" : null
+                        }
+                        error={yesMeasure ? false : isError}
                         onChange={(e) => setYesMeasure(e.target.checked)}
                       />
                     }
@@ -887,6 +905,12 @@ export default function ReqForm() {
                   value="Submit Form"
                   className={style.submitBtn}
                   disabled={
+                    address1.length &&
+                    addressZip.length &&
+                    addressState.length &&
+                    addressCity.length &&
+                    yesMeasure &&
+                    yesConfirm &&
                     validSize &&
                     validConsent &&
                     validEmail &&
