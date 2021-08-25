@@ -464,22 +464,51 @@ app.post("/ready/move", async (req, res) => {
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
               to: changedDocument.emailElse,
-              subject: "test email",
-              html: `<div className="email" style="
-                  border: 1px solid black;
-                  padding: 20px;
-                  font-family: sans-serif;
-                  line-height: 2;
-                  font-size: 20px; 
-                  ">
-                  <p>Your requested binder has shipped!</p>
-                  
-                  <p>Binder Details</p>
-                  <p>Size: ${changedDocument.size}</p>
-                  <p>Color: ${changedDocument.color}</p>
-                  <p>Length: ${changedDocument.length}</p>
-                  <p>All the best, OUT Maine Team</p>
-                   </div>
+              subject: "WE ARE SHIPPING YOUR BINDER",
+              attachments: [
+                {
+                  filename: "Logo.png",
+                  path: __dirname + "/src/img/OUTMaine_Logo.png",
+                  cid: "logo",
+                },
+              ],
+              html: `<img
+              src="cid:logo"
+              alt="Logo"
+              width="300"
+              height="200"
+            />
+          <h1
+            style="
+              font-family: 'Oswald', sans-serif;
+            "
+          >
+            <strong><u>WE ARE SHIPPING YOUR BINDER!</u></strong>
+          </h1>
+          <h3
+            style="
+              font-family: 'Oswald', sans-serif;
+            "
+          >
+            <p>
+              Notifications will arrive from USPS.com regarding tracking and delivery to the email address provided.
+              <br />
+              If you have any questions, please email <a href="mailto: inga@outmaine.org">inga@outmaine.org</a>.
+              <br />
+              <br />
+              Please be on the lookout for a brief survey from OUT Maine regarding our Binder Donation Program.
+              <br/> 
+              Your voice helps us continue to fund and expand our work and we appreciate your honest feedback!
+            </p>
+            </h3>
+              <p
+              style="
+              font-family: 'Oswald', sans-serif;
+              padding-right: 40%;
+              "
+              >
+                <strong>Thank You!<br />Out Maine Team<br />www.outmaine.org</strong>
+              </p>
               `,
             });
           } else if (changedDocument.emailSelf) {
@@ -488,23 +517,57 @@ app.post("/ready/move", async (req, res) => {
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
               to: changedDocument.emailSelf,
-              subject: "test email",
-              html: `<div className="email" style="
-                  border: 1px solid black;
-                  padding: 20px;
-                  font-family: sans-serif;
-                  line-height: 2;
-                  font-size: 20px; 
-                  ">
-                  <p>Your requested binder has shipped!</p>
-                  
-                  <p>Binder Details</p>
-                  <p>Size: ${changedDocument.size}</p>
-                  <p>Color: ${changedDocument.color}</p>
-                  <p>Length: ${changedDocument.length}</p>
-            
-                  <p>All the best, OUT Maine Team</p>
-                   </div>
+              subject: "WE ARE SHIPPING YOUR BINDER",
+              attachments: [
+                {
+                  filename: "Logo.png",
+                  path: __dirname + "/src/img/OUTMaine_Logo.png",
+                  cid: "logo",
+                },
+              ],
+              html: `<img
+              src="cid:logo"
+              alt="Logo"
+              width="300"
+              height="200"
+            />
+          <h1
+            style="
+              font-family: 'Oswald', sans-serif;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <strong><u>WE ARE SHIPPING YOUR BINDER!</u></strong>
+          </h1>
+          <h3
+            style="
+              font-family: 'Oswald', sans-serif;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <p>
+              Notifications will arrive from USPS.com regarding tracking and delivery to the email address provided.
+              <br />
+              If you have any questions, please email <a href="mailto: inga@outmaine.org">inga@outmaine.org</a>.
+              <br />
+              <br />
+              Please be on the lookout for a brief survey from OUT Maine regarding our Binder Donation Program.
+              <br/> 
+              Your voice helps us continue to fund and expand our work and we appreciate your honest feedback!
+              </p>
+          </h3>
+          <p
+          style="
+          font-family: 'Oswald', sans-serif;
+          display: flex;
+          justify-content: center;
+          padding-right: 40%;
+          "
+          >
+            <strong>Thank You!<br />Out Maine Team<br />www.outmaine.org</strong>
+          </p>
               `,
             }); // changedDocument
           }
@@ -612,7 +675,7 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailElse,
-        subject: "We're Sorry!",
+        subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
         attachments: [
           {
             filename: "Logo.png",
@@ -629,8 +692,6 @@ app.post("/send_mail", async (req, res) => {
       <h1
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <strong><u>WE KNOW HAVING A BINDER IS IMPORTANT</u></strong>
@@ -638,8 +699,6 @@ app.post("/send_mail", async (req, res) => {
       <h3
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <p>
@@ -658,9 +717,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Name:</strong> ${nameElse}
@@ -668,9 +724,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Email:</strong> ${emailElse}
@@ -678,9 +731,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Phone number:</strong> ${phoneElse}
@@ -688,9 +738,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
       <strong>Street: </strong>${address.address1}
@@ -698,9 +745,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Apt/PO Box: </strong>${address.address2}
@@ -708,19 +752,12 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
-        "
       >
         <strong>City: </strong>${address.city}
       </p>
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>State: </strong>${address.state}
@@ -728,9 +765,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Zip: </strong>${address.zip}
@@ -740,9 +774,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong><u>Binder Details</u></strong>
@@ -750,9 +781,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Size:</strong> ${size}
@@ -760,31 +788,22 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
-        <strong>Phone number:</strong> ${length}
+        <strong>Length:</strong> ${length}
       </p>
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
-        <strong>Address:</strong> ${color}
+        <strong>Color:</strong> ${color}
       </p>
       <br />
   
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Thank You!<br />Out Maine Team</strong>
@@ -797,7 +816,7 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailSelf,
-        subject: "We're Sorry!",
+        subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
         attachments: [
           {
             filename: "Logo.png",
@@ -814,8 +833,6 @@ app.post("/send_mail", async (req, res) => {
       <h1
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <strong><u>WE KNOW HAVING A BINDER IS IMPORTANT</u></strong>
@@ -823,8 +840,6 @@ app.post("/send_mail", async (req, res) => {
       <h3
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <p>
@@ -844,9 +859,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Name:</strong> ${nameSelf}
@@ -854,9 +866,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Email:</strong> ${emailSelf}
@@ -864,9 +873,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Phone number:</strong> ${phoneSelf}
@@ -874,9 +880,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
       <strong>Street: </strong>${address.address1}
@@ -884,9 +887,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Apt/PO Box: </strong>${address.address2}
@@ -894,9 +894,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>City: </strong>${address.city}
@@ -904,9 +901,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>State: </strong>${address.state}
@@ -914,9 +908,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Zip: </strong>${address.zip}
@@ -925,9 +916,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong><u>Binder Details</u></strong>
@@ -935,9 +923,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Size:</strong> ${size}
@@ -945,30 +930,21 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
-        <strong>Phone number:</strong> ${length}
+        <strong>Length:</strong> ${length}
       </p>
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
-        <strong>Address:</strong> ${color}
+        <strong>Color:</strong> ${color}
       </p>
       <br />
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Thank You!<br />Out Maine Team</strong>
@@ -1005,7 +981,7 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailElse,
-        subject: "Your Binder Is Ready!",
+        subject: "Your Binder Is In Stock And Ready To Ship",
         attachments: [
           {
             filename: "Logo.png",
@@ -1023,8 +999,6 @@ app.post("/send_mail", async (req, res) => {
       <h1
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <strong><u>Your Binder Is In Stock And Ready To Ship</u></strong>
@@ -1032,8 +1006,6 @@ app.post("/send_mail", async (req, res) => {
       <h3
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <p>
@@ -1050,9 +1022,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Name:</strong> ${nameElse}
@@ -1060,9 +1029,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Email:</strong> ${emailElse}
@@ -1070,9 +1036,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Phone number:</strong> ${phoneElse}
@@ -1080,9 +1043,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Street: </strong>${address.address1}
@@ -1090,9 +1050,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Apt/PO Box: </strong>${address.address2}
@@ -1100,9 +1057,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>City: </strong>${address.city}
@@ -1110,9 +1064,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>State: </strong>${address.state}
@@ -1120,9 +1071,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Zip: </strong>${address.zip}
@@ -1131,9 +1079,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong><u>Binder Details</u></strong>
@@ -1141,9 +1086,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Size:</strong> ${binderInventory.size}
@@ -1151,9 +1093,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Length:</strong> ${binderInventory.length}
@@ -1161,9 +1100,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Color:</strong> ${binderInventory.color}
@@ -1173,9 +1109,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 15%;
         "
       >
         Please be on the lookout for a brief survey from OUT Maine regarding our
@@ -1187,9 +1120,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Thank You!<br />Out Maine Team</strong>
@@ -1203,7 +1133,7 @@ app.post("/send_mail", async (req, res) => {
         from: process.env.GMAIL_USER,
         // Send to the email that user typed in "email" textbox
         to: emailSelf,
-        subject: "Your Binder Is Ready!",
+        subject: "Your Binder Is In Stock And Ready To Ship",
         attachments: [
           {
             filename: "Logo.png",
@@ -1221,8 +1151,6 @@ app.post("/send_mail", async (req, res) => {
       <h1
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <strong><u>Your Binder Is In Stock And Ready To Ship</u></strong>
@@ -1230,8 +1158,6 @@ app.post("/send_mail", async (req, res) => {
       <h3
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
         "
       >
         <p>
@@ -1248,9 +1174,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Name:</strong> ${nameSelf}
@@ -1258,9 +1181,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Email:</strong> ${emailSelf}
@@ -1268,9 +1188,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Phone number:</strong> ${phoneSelf}
@@ -1278,9 +1195,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Street: </strong>${address.address1}
@@ -1288,9 +1202,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Apt/PO Box: </strong>${address.address2}
@@ -1298,9 +1209,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>City: </strong>${address.city}
@@ -1308,9 +1216,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>State: </strong>${address.state}
@@ -1318,9 +1223,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Zip: </strong>${address.zip}
@@ -1329,9 +1231,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong><u>Binder Details</u></strong>
@@ -1339,9 +1238,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Size:</strong> ${binderInventory.size}
@@ -1349,9 +1245,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Length:</strong> ${binderInventory.length}
@@ -1359,9 +1252,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Color:</strong> ${binderInventory.color}
@@ -1370,9 +1260,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 15%;
         "
       >
         Please be on the lookout for a brief survey from OUT Maine regarding our
@@ -1384,9 +1271,6 @@ app.post("/send_mail", async (req, res) => {
       <p
         style="
           font-family: 'Oswald', sans-serif;
-          display: flex;
-          justify-content: center;
-          padding-right: 40%;
         "
       >
         <strong>Thank You!<br />Out Maine Team</strong>
@@ -1527,7 +1411,7 @@ BinderInventory.watch().on("change", async (change) => {
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
               to: doc.emailElse,
-              subject: "Your Binder Is Now In Stock!",
+              subject: "Your Binder Is In Stock And Ready To Ship",
               attachments: [
                 {
                   filename: "Logo.png",
@@ -1544,8 +1428,6 @@ BinderInventory.watch().on("change", async (change) => {
             <h1
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
               "
             >
               <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
@@ -1553,8 +1435,6 @@ BinderInventory.watch().on("change", async (change) => {
             <h3
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
               "
             >
               <p>
@@ -1571,9 +1451,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Name:</strong> ${doc.nameElse}
@@ -1581,9 +1458,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Email:</strong> ${doc.emailElse}
@@ -1591,9 +1465,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Phone number:</strong> ${doc.phoneElse}
@@ -1601,9 +1472,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
             <strong>Street: </strong>${doc.address.address1}
@@ -1611,9 +1479,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Apt/PO Box: </strong>${doc.address.address2}
@@ -1621,9 +1486,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>City: </strong>${doc.address.city}
@@ -1631,9 +1493,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>State: </strong>${doc.address.state}
@@ -1641,9 +1500,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Zip: </strong>${doc.address.zip}
@@ -1652,9 +1508,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong><u>Binder Details</u></strong>
@@ -1662,9 +1515,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Size:</strong> ${doc.size}
@@ -1672,30 +1522,21 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
-              <strong>Phone number:</strong> ${doc.length}
+              <strong>Length:</strong> ${doc.length}
             </p>
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
-              <strong>Address:</strong> ${doc.color}
+              <strong>Color:</strong> ${doc.color}
             </p>
             <br />
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 15%;
               "
             >
               Please be on the lookout for a brief survey from OUT Maine regarding our
@@ -1707,9 +1548,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Thank You!<br />Out Maine Team</strong>
@@ -1722,7 +1560,7 @@ BinderInventory.watch().on("change", async (change) => {
               from: process.env.GMAIL_USER,
               // Send to the email that user typed in "email" textbox
               to: doc.emailSelf,
-              subject: "Your Binder Is Now In Stock!",
+              subject: "Your Binder Is In Stock And Ready To Ship",
               attachments: [
                 {
                   filename: "Logo.png",
@@ -1739,8 +1577,6 @@ BinderInventory.watch().on("change", async (change) => {
             <h1
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
               "
             >
               <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
@@ -1748,8 +1584,6 @@ BinderInventory.watch().on("change", async (change) => {
             <h3
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
               "
             >
               <p>
@@ -1766,9 +1600,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Name:</strong> ${doc.nameSelf}
@@ -1776,9 +1607,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Email:</strong> ${doc.emailSelf}
@@ -1786,9 +1614,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Phone number:</strong> ${doc.phoneSelf}
@@ -1796,9 +1621,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
             <strong>Street: </strong>${doc.address.address1}
@@ -1806,9 +1628,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Apt/PO Box: </strong>${doc.address.address2}
@@ -1816,9 +1635,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>City: </strong>${doc.address.city}
@@ -1826,9 +1642,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>State: </strong>${doc.address.state}
@@ -1836,9 +1649,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Zip: </strong>${doc.address.zip}
@@ -1847,9 +1657,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong><u>Binder Details</u></strong>
@@ -1857,9 +1664,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Size:</strong> ${doc.size}
@@ -1867,31 +1671,22 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
-              <strong>Phone number:</strong> ${doc.length}
+              <strong>Length:</strong> ${doc.length}
             </p>
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
-              <strong>Address:</strong> ${doc.color}
+              <strong>Color:</strong> ${doc.color}
             </p>
             <br />
         
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 15%;
               "
             >
               Please be on the lookout for a brief survey from OUT Maine regarding our
@@ -1904,9 +1699,6 @@ BinderInventory.watch().on("change", async (change) => {
             <p
               style="
                 font-family: 'Oswald', sans-serif;
-                display: flex;
-                justify-content: center;
-                padding-right: 40%;
               "
             >
               <strong>Thank You!<br />Out Maine Team</strong>
@@ -1990,12 +1782,12 @@ waitListed.watch().on("change", async (change) => {
           from: process.env.GMAIL_USER,
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailElse,
-          subject: "Your Binder Is Now In Stock!",
+          subject: "YOUR BINDER IS BACK IN STOCK AND READY TO SHIP",
           attachments: [
             {
               filename: "Logo.png",
               path: __dirname + "/src/img/OUTMaine_Logo.png",
-              cid: "logo"
+              cid: "logo",
             },
           ],
           html: `<img
@@ -2007,8 +1799,6 @@ waitListed.watch().on("change", async (change) => {
         <h1
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
           "
         >
           <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
@@ -2016,8 +1806,6 @@ waitListed.watch().on("change", async (change) => {
         <h3
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
           "
         >
           <p>
@@ -2034,9 +1822,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Name:</strong> ${changedDocument.nameElse}
@@ -2044,9 +1829,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Email:</strong> ${changedDocument.emailElse}
@@ -2054,9 +1836,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Phone number:</strong> ${changedDocument.phoneElse}
@@ -2064,9 +1843,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
         <strong>Street: </strong>${changedDocument.address.address1}
@@ -2074,9 +1850,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Apt/PO Box: </strong>${changedDocument.address.address2}
@@ -2084,9 +1857,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>City: </strong>${changedDocument.address.city}
@@ -2094,9 +1864,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>State: </strong>${changedDocument.address.state}
@@ -2104,9 +1871,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Zip: </strong>${changedDocument.address.zip}
@@ -2115,9 +1879,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong><u>Binder Details</u></strong>
@@ -2125,9 +1886,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Size:</strong> ${changedDocument.size}
@@ -2135,31 +1893,22 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
-          <strong>Phone number:</strong> ${changedDocument.length}
+          <strong>Length:</strong> ${changedDocument.length}
         </p>
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
-          <strong>Address:</strong> ${changedDocument.color}
+          <strong>Color:</strong> ${changedDocument.color}
         </p>
         <br />
     
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 15%;
           "
         >
           Please be on the lookout for a brief survey from OUT Maine regarding our
@@ -2172,9 +1921,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Thank You!<br />Out Maine Team</strong>
@@ -2187,12 +1933,12 @@ waitListed.watch().on("change", async (change) => {
           from: process.env.GMAIL_USER,
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailSelf,
-          subject: "Your Binder Is Now In Stock!",
+          subject: "YOUR BINDER IS BACK IN STOCK AND READY TO SHIP",
           attachments: [
             {
               filename: "Logo.png",
               path: __dirname + "/src/img/OUTMaine_Logo.png",
-              cid: "logo"
+              cid: "logo",
             },
           ],
           html: `<img
@@ -2204,8 +1950,6 @@ waitListed.watch().on("change", async (change) => {
         <h1
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
           "
         >
           <strong><u>YOUR BINDER IS BACK IN STOCK AND READY TO SHIP!</u></strong>
@@ -2213,8 +1957,6 @@ waitListed.watch().on("change", async (change) => {
         <h3
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
           "
         >
           <p>
@@ -2231,9 +1973,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Name:</strong> ${changedDocument.nameSelf}
@@ -2241,9 +1980,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Email:</strong> ${changedDocument.emailSelf}
@@ -2251,9 +1987,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Phone number:</strong> ${changedDocument.phoneSelf}
@@ -2261,9 +1994,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
         <strong>Street: </strong>${changedDocument.address.address1}
@@ -2271,9 +2001,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Apt/PO Box: </strong>${changedDocument.address.address2}
@@ -2281,9 +2008,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>City: </strong>${changedDocument.address.city}
@@ -2291,9 +2015,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>State: </strong>${changedDocument.address.state}
@@ -2301,9 +2022,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Zip: </strong>${changedDocument.address.zip}
@@ -2312,9 +2030,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong><u>Binder Details</u></strong>
@@ -2322,9 +2037,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Size:</strong> ${changedDocument.size}
@@ -2332,31 +2044,22 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
-          <strong>Phone number:</strong> ${changedDocument.length}
+          <strong>Length:</strong> ${changedDocument.length}
         </p>
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
-          <strong>Address:</strong> ${changedDocument.color}
+          <strong>Color:</strong> ${changedDocument.color}
         </p>
         <br />
     
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 15%;
           "
         >
           Please be on the lookout for a brief survey from OUT Maine regarding our
@@ -2369,9 +2072,6 @@ waitListed.watch().on("change", async (change) => {
         <p
           style="
             font-family: 'Oswald', sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-right: 40%;
           "
         >
           <strong>Thank You!<br />Out Maine Team</strong>
