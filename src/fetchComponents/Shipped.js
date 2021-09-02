@@ -32,7 +32,7 @@ const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  
   DetailPanel: forwardRef((props, ref) => (
     <ChevronRight {...props} ref={ref} />
   )),
@@ -357,24 +357,7 @@ export default function Shipped() {
     }
   };
 
-  const handleRowDelete = (oldData, resolve) => {
-    console.log(oldData);
-
-    api
-      .delete("/shipped/" + oldData._id)
-      .then((res) => {
-        const dataDelete = [...data];
-        const index = oldData.tableData.id;
-        dataDelete.splice(index, 1);
-        setData([...dataDelete]);
-        resolve();
-      })
-      .catch((error) => {
-        setErrorMessages(["Delete failed! Server error"]);
-        setIserror(true);
-        resolve();
-      });
-  };
+  
 
   return (
     <>
@@ -393,12 +376,7 @@ export default function Shipped() {
         data={data}
         icons={tableIcons}
         onRowClick={(event, rowData) => handleOpen(rowData)}
-        editable={{
-          onRowDelete: (oldData) =>
-            new Promise((resolve) => {
-              handleRowDelete(oldData, resolve);
-            }),
-        }}
+        
         options={{
           exportButton: true,
         }}
@@ -417,10 +395,6 @@ export default function Shipped() {
             onRowAdd: (newData) =>
               new Promise((resolve) => {
                 handleRowAdd(newData, resolve);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                handleRowDelete(oldData, resolve);
               }),
           }}
           detailPanel={[

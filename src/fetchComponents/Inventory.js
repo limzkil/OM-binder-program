@@ -55,8 +55,8 @@ function App() {
   var columns = [
     { title: "id", field: "id", hidden: true },
     { title: "Size", field: "size" },
-    { title: "Color", field: "color" },
     { title: "Length", field: "length" },
+    { title: "Color", field: "color" },
     { title: "Quantity", field: "quantity" },
     { title: "Date added", field: "dateSaved", editable: "never" },
   ];
