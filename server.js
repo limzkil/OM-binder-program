@@ -19,7 +19,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static("./public"));
+app.use(express.static("./build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -2085,6 +2085,10 @@ waitListed.watch().on("change", async (change) => {
     }
   }
 });
+
+app.get("*", (req, res) => {
+  res.sendFile(__dirname + "/build/index.html")
+})
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
