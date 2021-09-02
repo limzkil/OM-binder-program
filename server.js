@@ -659,6 +659,7 @@ app.post("/send_mail", async (req, res) => {
     }
     // if they've not selected they want to wait
   } else if (willWait === false) {
+    console.log("no pref")
     // if they have no preferences, query inventory just by size
     binderInventory = await BinderInventory.find({
       size: { $in: [size] },
@@ -667,6 +668,9 @@ app.post("/send_mail", async (req, res) => {
     }).sort({ quantity: -1 });
     // grab binder at index 0 for highest quantity
     binderInventory = binderInventory[0];
+    if(binderInventory === undefined){
+      binderInventory = null;
+    }
   }
   if (binderInventory === null) {
     if (emailElse) {
