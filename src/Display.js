@@ -144,7 +144,7 @@ if(isAuthenticated)
       </Grid>
       </Grid>
 
-      {tabSelect === 0 && <Inventory />}
+      {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
       {tabSelect === 1 && <Waitlist />}
       {tabSelect === 2 && <ReadyToShip />}
       {tabSelect === 3 && <Shipped />}

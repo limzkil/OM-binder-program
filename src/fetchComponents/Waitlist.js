@@ -55,7 +55,7 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `http://localhost:5000`,
 });
 
 export default function Waitlist() {
@@ -123,7 +123,6 @@ export default function Waitlist() {
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
-    console.log("hehe");
     api
       .get("/wait")
       .then((res) => {

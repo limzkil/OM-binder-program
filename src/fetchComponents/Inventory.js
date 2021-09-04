@@ -48,10 +48,10 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `http://localhost:5000`,
 });
 
-function App() {
+function App( { inventoryData }) {
   var columns = [
     { title: "id", field: "id", hidden: true },
     { title: "Size", field: "size" },
@@ -77,7 +77,7 @@ function App() {
       });
   }, []);
   
- 
+ // FETCHES ON COMPONENTS NOT SHOWING DATA
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
