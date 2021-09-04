@@ -48,10 +48,10 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `https://tranquil-tundra-17787.herokuapp.com/`,
 });
 
-function App( { inventoryData }) {
+function App() {
   var columns = [
     { title: "id", field: "id", hidden: true },
     { title: "Size", field: "size" },

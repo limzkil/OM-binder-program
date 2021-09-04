@@ -145,9 +145,9 @@ if(isAuthenticated)
       </Grid>
 
       {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
-      {tabSelect === 1 && <Waitlist />}
-      {tabSelect === 2 && <ReadyToShip />}
-      {tabSelect === 3 && <Shipped />}
+      {tabSelect === 1 && <Waitlist waitListData={waitListData}/>}
+      {tabSelect === 2 && <ReadyToShip readyToShipData={readyToShipData} />}
+      {tabSelect === 3 && <Shipped shippedData={shippedData} />}
 
       <Grid item xs = {12} >
       
