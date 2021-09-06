@@ -53,7 +53,7 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `https://tranquil-tundra-17787.herokuapp.com/`,
+  baseURL: `https://binder-program.herokuapp.com/`,
 });
 
 export default function Shipped() {

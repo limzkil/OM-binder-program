@@ -225,7 +225,7 @@ export default function ReqForm() {
     setSent(true);
     try {
       console.log(bindColor + " " + bindLength);
-      await fetch("https://tranquil-tundra-17787.herokuapp.com/send_mail", {
+      await fetch("https://binder-program.herokuapp.com/send_mail", {
         body: JSON.stringify({
           emailSelf: emailSelf,
           emailElse: emailElse,
