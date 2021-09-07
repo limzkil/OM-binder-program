@@ -659,7 +659,7 @@ app.post("/send_mail", async (req, res) => {
     }
     // if they've not selected they want to wait
   } else if (willWait === false) {
-    console.log("no pref")
+    console.log("no pref");
     // if they have no preferences, query inventory just by size
     binderInventory = await BinderInventory.find({
       size: { $in: [size] },
@@ -668,7 +668,7 @@ app.post("/send_mail", async (req, res) => {
     }).sort({ quantity: -1 });
     // grab binder at index 0 for highest quantity
     binderInventory = binderInventory[0];
-    if(binderInventory === undefined){
+    if (binderInventory === undefined) {
       binderInventory = null;
     }
   }
@@ -1306,8 +1306,8 @@ app.post("/send_mail", async (req, res) => {
     // Look in ProcessedInventory for a binder with size length and color equivalent to what the user input
     let processedBind = await ProcessedInventory.findOne({
       size: { $in: [binderInventory.size] },
-      length: { $in: [binderInventory.bindLength] },
-      color: { $in: [binderInventory.bindColor] },
+      length: { $in: [binderInventory.length] },
+      color: { $in: [binderInventory.color] },
     });
     if (processedBind === null) {
       let newEntry = ProcessedInventory({
@@ -1356,8 +1356,36 @@ BinderInventory.watch().on("change", async (change) => {
         color: { $in: [changedDocument.color] },
       })
       .then(async function (doc) {
-        // If there is no waitListed entry matching the newly added binder, just return
+        console.log("before first doc = null")
+        console.log(doc)
+        // If there is no waitListed entry matching the newly added binder
         if (doc === null) {
+          console.log("before just size/length")
+          console.log(doc)
+          // check wait list for no pref options on color/length by excluding one or the other, or both
+         doc = await waitListed.findOne({
+            size: { $in: [changedDocument.size] },
+            length: { $in: [changedDocument.length] },
+          });
+          console.log("before size/color")
+          console.log(doc)
+          if (doc === null) {
+          doc =  await waitListed.findOne({
+              size: { $in: [changedDocument.size] },
+              color: { $in: [changedDocument.color] },
+            });
+          }
+          console.log("before just size")
+          console.log(doc)
+          if(doc === null) {
+          doc =  await waitListed.findOne({
+              size: { $in: [changedDocument.size] },
+            });
+          }
+          
+        } 
+        // after trying to find by just size and doc is still null then return
+        if(doc === null){
           return;
           // Otherwise, add the waitlisted entry into readytoship
         } else {
@@ -2087,8 +2115,8 @@ waitListed.watch().on("change", async (change) => {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/build/index.html")
-})
+  res.sendFile(__dirname + "/build/index.html");
+});
 
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
