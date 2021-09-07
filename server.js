@@ -1381,8 +1381,7 @@ BinderInventory.watch().on("change", async (change) => {
           doc =  await waitListed.findOne({
               size: { $in: [changedDocument.size] },
             });
-          }
-          
+          } 
         } 
         // after trying to find by just size and doc is still null then return
         if(doc === null){
