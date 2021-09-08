@@ -439,7 +439,7 @@ export default function ReadyToShip() {
               icon: ArrowForwardIcon,
               tooltip: "Move to Shipped",
               onClick: (event, oldData) => {
-                api.post("/ready/move", { id: oldData._id });
+                api.post("/ready/move/" + oldData._id );
                 alert(
                   "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
                 );
