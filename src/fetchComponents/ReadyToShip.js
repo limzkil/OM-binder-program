@@ -396,7 +396,7 @@ export default function ReadyToShip() {
        
       />
       <Modal open={open} onClose={handleClose}>
-        <MaterialTable
+        <MaterialTable  
           title="Row Edit"
           columns={modalColumns}
           data={modalData}
