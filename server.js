@@ -431,8 +431,9 @@ app.delete("/wait/:waitIds", async (req, res) => {
 });
 
 //API Route for button to move ReadytoShip items to Shipped
-app.post("/ready/move", async (req, res) => {
-  FormInput.findById({ id: req.params._id })
+app.post("/ready/move/:moveId", async (req, res) => {
+
+  FormInput.findOne({ id: req.params.moveId })
     .then((changedDocument) => {
       // console.log(changedDocument);
 
