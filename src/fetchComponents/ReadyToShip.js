@@ -392,18 +392,7 @@ export default function ReadyToShip() {
         options={{
           exportButton: true,
         }}
-        actions={[
-          {
-            icon: ArrowForwardIcon,
-            tooltip: "Move to Shipped",
-            onClick: (event, rowData) => {
-              api.post("/ready/move/" + rowData._id );
-              alert(
-                "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
-              );
-            },
-          },
-        ]}
+        
        
       />
       <Modal open={open} onClose={handleClose}>
@@ -412,6 +401,18 @@ export default function ReadyToShip() {
           columns={modalColumns}
           data={modalData}
           icons={tableIcons}
+          actions={[
+            {
+              icon: ArrowForwardIcon,
+              tooltip: "Move to Shipped",
+              onClick: (event, rowData) => {
+                api.post("/ready/move/" + rowData._id );
+                alert(
+                  "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
+                );
+              },
+            },
+          ]}
           editable={{
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve) => {
