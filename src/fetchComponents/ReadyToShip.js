@@ -392,18 +392,18 @@ export default function ReadyToShip() {
         options={{
           exportButton: true,
         }}
-        actions={[
-          {
-            icon: ArrowForwardIcon,
-            tooltip: "Move to Shipped",
-            onClick: (event, rowData) => {
-              api.post("/ready/move/:moveId", { id: rowData._id });
-              alert(
-                "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
-              );
-            },
-          },
-        ]}
+        // actions={[
+        //   {
+        //     icon: ArrowForwardIcon,
+        //     tooltip: "Move to Shipped",
+        //     onClick: (event, rowData) => {
+        //       api.post("/ready/move", { id: rowData._id });
+        //       alert(
+        //         "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
+        //       );
+        //     },
+        //   },
+        // ]}
        
       />
       <Modal open={open} onClose={handleClose}>
@@ -431,6 +431,18 @@ export default function ReadyToShip() {
               tooltip: "Show Comments",
               render: (data) => {
                 return <div className={style.details}>{data.moreInfo}</div>;
+              },
+            },
+          ]}
+          actions={[
+            {
+              icon: ArrowForwardIcon,
+              tooltip: "Move to Shipped",
+              onClick: (event, rowData) => {
+                api.post("/ready/move", { id: rowData._id });
+                alert(
+                  "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
+                );
               },
             },
           ]}

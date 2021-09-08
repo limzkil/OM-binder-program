@@ -431,10 +431,8 @@ app.delete("/wait/:waitIds", async (req, res) => {
 });
 
 //API Route for button to move ReadytoShip items to Shipped
-app.post("/ready/move/:moveId", async (req, res) => {
-
-
-  FormInput.findOne({ id: req.params.moveId})
+app.post("/ready/move", async (req, res) => {
+  FormInput.findOne({ id: req.params._id })
     .then((changedDocument) => {
       // console.log(changedDocument);
 
@@ -447,10 +445,8 @@ app.post("/ready/move/:moveId", async (req, res) => {
           console.log(error);
         });
 
-      console.log(req.params.moveId)
-
       // Removing changedDocument from the first collection
-      FormInput.deleteOne({ id: req.params.moveId })
+      FormInput.deleteOne({ id: req.params._id })
         .then(async (d) => {
           console.log("Removed Old Entry");
           const transport = nodemailer.createTransport({
