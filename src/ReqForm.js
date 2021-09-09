@@ -225,7 +225,7 @@ export default function ReqForm() {
     setSent(true);
     try {
       console.log(bindColor + " " + bindLength);
-      await fetch("https://binder-program.herokuapp.com/send_mail", {
+      await fetch("http://localhost:3000/send_mail", {
         body: JSON.stringify({
           emailSelf: emailSelf,
           emailElse: emailElse,
