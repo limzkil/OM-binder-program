@@ -392,16 +392,7 @@ export default function ReadyToShip() {
         options={{
           exportButton: true,
         }}
-        
-       
-      />
-      <Modal open={open} onClose={handleClose}>
-        <MaterialTable
-          title="Row Edit"
-          columns={modalColumns}
-          data={modalData}
-          icons={tableIcons}
-          actions={[
+        actions={[
           {
             icon: ArrowForwardIcon,
             tooltip: "Move to Shipped",
@@ -413,6 +404,14 @@ export default function ReadyToShip() {
             },
           },
         ]}
+       
+      />
+      <Modal open={open} onClose={handleClose}>
+        <MaterialTable
+          title="Row Edit"
+          columns={modalColumns}
+          data={modalData}
+          icons={tableIcons}
           editable={{
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve) => {
