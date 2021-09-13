@@ -432,11 +432,8 @@ app.delete("/wait/:waitIds", async (req, res) => {
 
 //API Route for button to move ReadytoShip items to Shipped
 app.post("/ready/move/:moveId", async (req, res) => {
-
-  FormInput.findOne({ id: req.params.moveId })
+  FormInput.findOne({ _id: req.params.moveId })
     .then((changedDocument) => {
-      // console.log(changedDocument);
-
       // Inserting the changedDocument in the destination collection
       Shipped.insertMany([changedDocument])
         .then((d) => {
@@ -447,7 +444,7 @@ app.post("/ready/move/:moveId", async (req, res) => {
         });
 
       // Removing changedDocument from the first collection
-      FormInput.deleteOne({ id: req.params._id })
+      FormInput.deleteOne(changedDocument)
         .then(async (d) => {
           console.log("Removed Old Entry");
           const transport = nodemailer.createTransport({
@@ -1357,35 +1354,35 @@ BinderInventory.watch().on("change", async (change) => {
         color: { $in: [changedDocument.color] },
       })
       .then(async function (doc) {
-        console.log("before first doc = null")
-        console.log(doc)
+        console.log("before first doc = null");
+        console.log(doc);
         // If there is no waitListed entry matching the newly added binder
         if (doc === null) {
-          console.log("before just size/length")
-          console.log(doc)
+          console.log("before just size/length");
+          console.log(doc);
           // check wait list for no pref options on color/length by excluding one or the other, or both
-         doc = await waitListed.findOne({
+          doc = await waitListed.findOne({
             size: { $in: [changedDocument.size] },
             length: { $in: [changedDocument.length] },
           });
-          console.log("before size/color")
-          console.log(doc)
+          console.log("before size/color");
+          console.log(doc);
           if (doc === null) {
-          doc =  await waitListed.findOne({
+            doc = await waitListed.findOne({
               size: { $in: [changedDocument.size] },
               color: { $in: [changedDocument.color] },
             });
           }
-          console.log("before just size")
-          console.log(doc)
-          if(doc === null) {
-          doc =  await waitListed.findOne({
+          console.log("before just size");
+          console.log(doc);
+          if (doc === null) {
+            doc = await waitListed.findOne({
               size: { $in: [changedDocument.size] },
             });
-          } 
-        } 
+          }
+        }
         // after trying to find by just size and doc is still null then return
-        if(doc === null){
+        if (doc === null) {
           return;
           // Otherwise, add the waitlisted entry into readytoship
         } else {

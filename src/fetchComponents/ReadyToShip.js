@@ -365,6 +365,7 @@ export default function ReadyToShip() {
       });
   };
 
+
   return (
     <>
       <div>
@@ -397,10 +398,10 @@ export default function ReadyToShip() {
             icon: ArrowForwardIcon,
             tooltip: "Move to Shipped",
             onClick: (event, rowData) => {
-              api.post("/ready/move/" + rowData._id );
-              alert(
-                "Move Successful. Please Refresh Your Page to See Your Changes Reflected."
-              );
+              console.log(rowData._id)
+              api.post("/ready/move/" + rowData._id);
+              window.location.reload()
+            
             },
           },
         ]}
