@@ -435,6 +435,16 @@ export default function ReadyToShip() {
               },
             },
           ]}
+          actions={[
+            {
+              icon: ArrowForwardIcon,
+              tooltip: "Move to Shipped",
+              onClick: (event, oldData) => {
+                api.post("/ready/move/" + oldData._id );
+                window.location.reload()
+              },
+            },
+          ]}
         />
       </Modal>
     </>
