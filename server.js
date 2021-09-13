@@ -1340,7 +1340,6 @@ BinderInventory.watch().on("change", async (change) => {
     let changedDocument = await BinderInventory.findOne({
       _id: { $in: [change.documentKey._id] },
     });
-    console.log(changedDocument);
     //If the quantity of the binder is 0, return so that we no longer look for that specified binder.
     if (changedDocument.quantity === 0) {
       return;
@@ -1354,30 +1353,26 @@ BinderInventory.watch().on("change", async (change) => {
         color: { $in: [changedDocument.color] },
       })
       .then(async function (doc) {
-        console.log("before first doc = null");
-        console.log(doc);
         // If there is no waitListed entry matching the newly added binder
         if (doc === null) {
-          console.log("before just size/length");
-          console.log(doc);
           // check wait list for no pref options on color/length by excluding one or the other, or both
           doc = await waitListed.findOne({
             size: { $in: [changedDocument.size] },
             length: { $in: [changedDocument.length] },
+            color: { $in: "No Preference" }
           });
-          console.log("before size/color");
-          console.log(doc);
           if (doc === null) {
             doc = await waitListed.findOne({
               size: { $in: [changedDocument.size] },
               color: { $in: [changedDocument.color] },
+              length: { $in: "No Preference" }
             });
           }
-          console.log("before just size");
-          console.log(doc);
           if (doc === null) {
             doc = await waitListed.findOne({
               size: { $in: [changedDocument.size] },
+              color: { $in: "No Preference" },
+              length: { $in: "No Preference" }
             });
           }
         }
