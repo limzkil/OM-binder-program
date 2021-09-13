@@ -31,10 +31,8 @@ import Banner from './displayComponents/Banner'
 //Main Display component used to sort through and render data from different fetch components 
 const Display = (props) => {
   //useState variables used to house fetched data and make changes to it.
-  const [inventoryData, setInventoryData] = useState([]);
   const [readyToShipData, setReadyToShipData] = useState([]);
   const [waitListData, setWaitListData] = useState([]);
-  const [shippedData, setShippedData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
 
   const { match, history } = props;
@@ -77,15 +75,7 @@ const Display = (props) => {
 
   //if no information exists within state variables, attempts to fetch information from appropriate API route, 
   //converts the information to json format and assigns the resulting value to the initial state variable
-    if (inventoryData.length === 0 && fetchedData === false) {
-      setFetchedData(true)
-      fetch("/binders")
-        .then((response) => response.json())
-
-        .then((result) => {
-          setInventoryData(result);
-        });
-    }
+    
 
     if (readyToShipData.length === 0 && fetchedData === false) {
       setFetchedData(true)
@@ -95,22 +85,12 @@ const Display = (props) => {
           setReadyToShipData(result);
         });
     }
-
     if(waitListData.length === 0 && fetchedData === false){
       setFetchedData(true)
       fetch("/wait")
       .then((response) => response.json())
       .then((result) => {
         setWaitListData(result);
-      });
-    }
-
-    if(shippedData.length === 0 && fetchedData === false){
-      setFetchedData(true)
-      fetch("/shipped")
-      .then((response) => response.json())
-      .then((result) => {
-        setShippedData(result);
       });
     }
   });
@@ -144,10 +124,10 @@ if(isAuthenticated)
       </Grid>
       </Grid>
 
-      {tabSelect === 0 && <Inventory inventoryData={inventoryData} />}
-      {tabSelect === 1 && <Waitlist waitListData={waitListData}/>}
-      {tabSelect === 2 && <ReadyToShip readyToShipData={readyToShipData} />}
-      {tabSelect === 3 && <Shipped shippedData={shippedData} />}
+      {tabSelect === 0 && <Inventory />}
+      {tabSelect === 1 && <Waitlist />}
+      {tabSelect === 2 && <ReadyToShip />}
+      {tabSelect === 3 && <Shipped />}
 
       <Grid item xs = {12} >
       
