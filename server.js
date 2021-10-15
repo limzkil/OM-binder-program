@@ -1,8 +1,11 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
+const fsPromises = require("fs").promises;
 const mongoose = require("mongoose");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
+const mg = require("nodemailer-mailgun-transport");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
@@ -14,6 +17,23 @@ const Create = require("./Schema");
 
 //setting up default port
 const port = process.env.PORT || 5000;
+// creating auth var for mailgun
+const auth = {
+  auth: {
+    api_key: `${process.env.MAILGUN_API}`,
+    domain: `${process.env.MAILGUN_USER}`,
+  },
+};
+// file path for email attachments
+const filepath = path.resolve(__dirname, "./src/img/OUTMaine_Logo.png");
+// resolving file path to actual file data to attach to email
+let file;
+fsPromises.readFile(filepath).then((data) => {
+  file = {
+    filename: "Logo.png",
+    data,
+  };
+});
 // MIDDLEWARE
 //Binding our server to a static directory
 
@@ -87,7 +107,7 @@ passport.use(
   })
 );
 
-// function to create a jwt give na user object
+// function to create a jwt give a user object
 function issueJwt(user) {
   let newToken = {
     // storing identifier in jwt using user id
@@ -436,46 +456,24 @@ app.post("/ready/move/:moveId", async (req, res) => {
     .then((changedDocument) => {
       // Inserting the changedDocument in the destination collection
       Shipped.insertMany([changedDocument])
-        .then((d) => {
-          console.log("New Entry Saved");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      // Removing changedDocument from the first collection
-      FormInput.deleteOne(changedDocument)
         .then(async (d) => {
-          console.log("Removed Old Entry");
-          const transport = nodemailer.createTransport({
-            // Sending from Gmail. User and pass are the variables in the .env
-            service: "Gmail",
-            auth: {
-              user: process.env.GMAIL_USER,
-              pass: process.env.GMAIL_PASS,
-            },
-          });
+          console.log("New Entry Saved");
+          const transport = nodemailer.createTransport(mg(auth));
           // console.log(req.body)
           if (changedDocument.emailElse) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
-              from: process.env.GMAIL_USER,
+              from: "OUT Maine <auto@sample.outmaine.com>",
               // Send to the email that user typed in "email" textbox
               to: changedDocument.emailElse,
               subject: "WE ARE SHIPPING YOUR BINDER",
-              attachments: [
-                {
-                  filename: "Logo.png",
-                  path: __dirname + "/src/img/OUTMaine_Logo.png",
-                  cid: "logo",
-                },
-              ],
+              inline: file,
               html: `<img
-              src="cid:logo"
-              alt="Logo"
-              width="300"
-              height="200"
-            />
+          src="cid:Logo.png"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
           <h1
             style="
               font-family: 'Oswald', sans-serif;
@@ -512,23 +510,17 @@ app.post("/ready/move/:moveId", async (req, res) => {
           } else if (changedDocument.emailSelf) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
-              from: process.env.GMAIL_USER,
+              from: "OUT Maine <auto@sample.outmaine.com>",
               // Send to the email that user typed in "email" textbox
               to: changedDocument.emailSelf,
               subject: "WE ARE SHIPPING YOUR BINDER",
-              attachments: [
-                {
-                  filename: "Logo.png",
-                  path: __dirname + "/src/img/OUTMaine_Logo.png",
-                  cid: "logo",
-                },
-              ],
+              inline: file,
               html: `<img
-              src="cid:logo"
+              src="cid:Logo.png"
               alt="Logo"
               width="300"
               height="200"
-            />
+              />
           <h1
             style="
               font-family: 'Oswald', sans-serif;
@@ -573,6 +565,15 @@ app.post("/ready/move/:moveId", async (req, res) => {
         .catch((error) => {
           console.log(error);
         });
+
+      // Removing changedDocument from the first collection
+      FormInput.deleteOne(changedDocument)
+        .then(async (d) => {
+          console.log("Removed Old Entry");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     })
     .catch((error) => {
       console.log(error);
@@ -600,13 +601,7 @@ app.post("/send_mail", async (req, res) => {
     willWait,
     moreInfo,
   } = req.body;
-  const transport = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
-    },
-  });
+  const transport = nodemailer.createTransport(mg(auth));
   // initialize variable for storing the returned values of collection queries
   let binderInventory;
   // check to see if they've marked they are willing to wait AND they've selected both length and color properties
@@ -673,20 +668,15 @@ app.post("/send_mail", async (req, res) => {
   if (binderInventory === null) {
     if (emailElse) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
-      await transport.sendMail({
-        from: process.env.GMAIL_USER,
-        // Send to the email that user typed in "email" textbox
-        to: emailElse,
-        subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
-        attachments: [
-          {
-            filename: "Logo.png",
-            path: __dirname + "/src/img/OUTMaine_Logo.png",
-            cid: "logo",
-          },
-        ],
-        html: `<img
-          src="cid:logo"
+      await transport.sendMail(
+        {
+          from: "OUT Maine <auto@sample.outmaine.com>",
+          // Send to the email that user typed in "email" textbox
+          to: emailElse,
+          subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
+          inline: file,
+          html: `<img
+          src="cid:Logo.png"
           alt="Logo"
           width="300"
           height="200"
@@ -811,23 +801,26 @@ app.post("/send_mail", async (req, res) => {
         <strong>Thank You!<br />Out Maine Team</strong>
       </p>
     `,
-      });
+        },
+        (err, info) => {
+          if (err) {
+            console.log(`Error: ${err}`);
+          } else {
+            console.log(`Response: ${info}`);
+          }
+        }
+      );
     } else if (emailSelf) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
-      await transport.sendMail({
-        from: process.env.GMAIL_USER,
-        // Send to the email that user typed in "email" textbox
-        to: emailSelf,
-        subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
-        attachments: [
-          {
-            filename: "Logo.png",
-            path: __dirname + "/src/img/OUTMaine_Logo.png",
-            cid: "logo",
-          },
-        ],
-        html: `<img
-          src="cid:logo"
+      await transport.sendMail(
+        {
+          from: "OUT Maine <auto@sample.outmaine.com>",
+          // Send to the email that user typed in "email" textbox
+          to: emailSelf,
+          subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
+          inline: file,
+          html: `<img
+          src="cid:Logo.png"
           alt="Logo"
           width="300"
           height="200"
@@ -852,9 +845,9 @@ app.post("/send_mail", async (req, res) => {
           If you'd like to change your request to something we DO have available
           please email <a href="mailto: inga@outmaine.org">inga@outmaine.org</a>
           <br />so we can see what other options may be available to ship sooner.
-      Please take a moment to verify that the information below is correct.<br/> If
-      something is incorrect and needs to be changed, please email
-      <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can fix it before we ship the binder.
+          Please take a moment to verify that the information below is correct.<br/> If
+          something is incorrect and needs to be changed, please email
+          <a href="mailto: inga@outmaine.org">inga@outmaine.org</a> so we can fix it before we ship the binder.
         </p>
       </h3>
       
@@ -952,7 +945,15 @@ app.post("/send_mail", async (req, res) => {
         <strong>Thank You!<br />Out Maine Team</strong>
       </p>
     `,
-      });
+        },
+        (err, info) => {
+          if (err) {
+            console.log(`Error: ${err}`);
+          } else {
+            console.log(`Response: ${info}`);
+          }
+        }
+      );
     }
     // if binder does nto exists in db at all, add to waitlist
     let newEntry = waitListed({
@@ -979,21 +980,15 @@ app.post("/send_mail", async (req, res) => {
   } else if (binderInventory) {
     if (emailElse) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
-      await transport.sendMail({
-        from: process.env.GMAIL_USER,
-        // Send to the email that user typed in "email" textbox
-        to: emailElse,
-        subject: "Your Binder Is In Stock And Ready To Ship",
-        attachments: [
-          {
-            filename: "Logo.png",
-            path: __dirname + "/src/img/OUTMaine_Logo.png",
-            cid: "logo",
-          },
-        ],
-        html: `
-        <img
-          src="cid:logo"
+      await transport.sendMail(
+        {
+          from: "OUT Maine <auto@sample.outmaine.com>",
+          // Send to the email that user typed in "email" textbox
+          to: emailElse,
+          subject: "Your Binder Is In Stock And Ready To Ship",
+          inline: file,
+          html: `<img
+          src="cid:Logo.png"
           alt="Logo"
           width="300"
           height="200"
@@ -1128,24 +1123,26 @@ app.post("/send_mail", async (req, res) => {
       </p>
     
     `,
-      });
+        },
+        (err, info) => {
+          if (err) {
+            console.log(`Error: ${err}`);
+          } else {
+            console.log(`Response: ${info}`);
+          }
+        }
+      );
     } else if (emailSelf) {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
-      await transport.sendMail({
-        from: process.env.GMAIL_USER,
-        // Send to the email that user typed in "email" textbox
-        to: emailSelf,
-        subject: "Your Binder Is In Stock And Ready To Ship",
-        attachments: [
-          {
-            filename: "Logo.png",
-            path: __dirname + "/src/img/OUTMaine_Logo.png",
-            cid: "logo",
-          },
-        ],
-        html: `
-        <img
-          src="cid:logo"
+      await transport.sendMail(
+        {
+          from: "OUT Maine <auto@sample.outmaine.com>",
+          // Send to the email that user typed in "email" textbox
+          to: emailSelf,
+          subject: "Your Binder Is In Stock And Ready To Ship",
+          inline: file,
+          html: `<img
+          src="cid:Logo.png"
           alt="Logo"
           width="300"
           height="200"
@@ -1278,7 +1275,15 @@ app.post("/send_mail", async (req, res) => {
         <strong>Thank You!<br />Out Maine Team</strong>
       </p>
     `,
-      });
+        },
+        (err, info) => {
+          if (err) {
+            console.log(`Error: ${err}`);
+          } else {
+            console.log(`Response: ${info}`);
+          }
+        }
+      );
     }
     let newEntry = FormInput({
       county: county,
@@ -1426,33 +1431,20 @@ BinderInventory.watch().on("change", async (change) => {
             { $set: { quantity: changedDocument.quantity - 1 } }
           );
           // Create a transport variable using nodemailer
-          const transport = nodemailer.createTransport({
-            // Sending from Gmail. User and pass are the variables in the .env
-            service: "Gmail",
-            auth: {
-              user: process.env.GMAIL_USER,
-              pass: process.env.GMAIL_PASS,
-            },
-          });
+          const transport = nodemailer.createTransport(mg(auth));
           // If the user enters info in "email"
           if (doc.emailElse) {
             await transport.sendMail({
-              from: process.env.GMAIL_USER,
+              from: "OUT Maine <auto@sample.outmaine.com>",
               // Send to the email that user typed in "email" textbox
               to: doc.emailElse,
               subject: "Your Binder Is In Stock And Ready To Ship",
-              attachments: [
-                {
-                  filename: "Logo.png",
-                  path: __dirname + "/src/img/OUTMaine_Logo.png",
-                  cid: "logo",
-                },
-              ],
+              inline: file,
               html: `<img
-                src="cid:logo"
-                alt="Logo"
-                width="300"
-                height="200"
+              src="cid:Logo.png"
+              alt="Logo"
+              width="300"
+              height="200"
               />
             <h1
               style="
@@ -1586,23 +1578,17 @@ BinderInventory.watch().on("change", async (change) => {
           } else {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
-              from: process.env.GMAIL_USER,
+              from: "OUT Maine <auto@sample.outmaine.com>",
               // Send to the email that user typed in "email" textbox
               to: doc.emailSelf,
               subject: "Your Binder Is In Stock And Ready To Ship",
-              attachments: [
-                {
-                  filename: "Logo.png",
-                  path: __dirname + "/src/img/OUTMaine_Logo.png",
-                  cid: "logo",
-                },
-              ],
+              inline: file,
               html: `<img
-                src="cid:logo"
-                alt="Logo"
-                width="300"
-                height="200"
-              />
+          src="cid:Logo.png"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
             <h1
               style="
                 font-family: 'Oswald', sans-serif;
@@ -1796,35 +1782,22 @@ waitListed.watch().on("change", async (change) => {
       );
 
       // Create a transport variable using nodemailer
-      const transport = nodemailer.createTransport({
-        // Sending from Gmail. User and pass are the variables in the .env
-        service: "Gmail",
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_PASS,
-        },
-      });
+      const transport = nodemailer.createTransport(mg(auth));
 
       // If the user enters info in "email"
       if (changedDocument.emailElse) {
         await transport.sendMail({
-          from: process.env.GMAIL_USER,
+          from: "OUT Maine <auto@sample.outmaine.com>",
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailElse,
           subject: "YOUR BINDER IS BACK IN STOCK AND READY TO SHIP",
-          attachments: [
-            {
-              filename: "Logo.png",
-              path: __dirname + "/src/img/OUTMaine_Logo.png",
-              cid: "logo",
-            },
-          ],
+          inline: file,
           html: `<img
-            src="cid:logo"
-            alt="Logo"
-            width="300"
-            height="200"
-          />
+          src="cid:Logo.png"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
         <h1
           style="
             font-family: 'Oswald', sans-serif;
@@ -1959,23 +1932,17 @@ waitListed.watch().on("change", async (change) => {
       } else {
         // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
         await transport.sendMail({
-          from: process.env.GMAIL_USER,
+          from: "OUT Maine <auto@sample.outmaine.com>",
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailSelf,
           subject: "YOUR BINDER IS BACK IN STOCK AND READY TO SHIP",
-          attachments: [
-            {
-              filename: "Logo.png",
-              path: __dirname + "/src/img/OUTMaine_Logo.png",
-              cid: "logo",
-            },
-          ],
+          inline: file,
           html: `<img
-            src="cid:logo"
-            alt="Logo"
-            width="300"
-            height="200"
-          />
+          src="cid:Logo.png"
+          alt="Logo"
+          width="300"
+          height="200"
+        />
         <h1
           style="
             font-family: 'Oswald', sans-serif;
