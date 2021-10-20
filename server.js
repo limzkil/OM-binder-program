@@ -463,7 +463,7 @@ app.post("/ready/move/:moveId", async (req, res) => {
           if (changedDocument.emailElse) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
-              from: "OUT Maine <auto@sample.outmaine.com>",
+              from: "OUT Maine <noreply@mail.outmaine.org>",
               // Send to the email that user typed in "email" textbox
               to: changedDocument.emailElse,
               subject: "WE ARE SHIPPING YOUR BINDER",
@@ -510,7 +510,7 @@ app.post("/ready/move/:moveId", async (req, res) => {
           } else if (changedDocument.emailSelf) {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
-              from: "OUT Maine <auto@sample.outmaine.com>",
+              from: "OUT Maine <noreply@mail.outmaine.org>",
               // Send to the email that user typed in "email" textbox
               to: changedDocument.emailSelf,
               subject: "WE ARE SHIPPING YOUR BINDER",
@@ -670,7 +670,7 @@ app.post("/send_mail", async (req, res) => {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail(
         {
-          from: "OUT Maine <auto@sample.outmaine.com>",
+          from: "OUT Maine <noreply@mail.outmaine.org>",
           // Send to the email that user typed in "email" textbox
           to: emailElse,
           subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
@@ -814,7 +814,7 @@ app.post("/send_mail", async (req, res) => {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail(
         {
-          from: "OUT Maine <auto@sample.outmaine.com>",
+          from: "OUT Maine <noreply@mail.outmaine.org>",
           // Send to the email that user typed in "email" textbox
           to: emailSelf,
           subject: "WE KNOW HAVING A BINDER IS IMPORTANT",
@@ -982,7 +982,7 @@ app.post("/send_mail", async (req, res) => {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail(
         {
-          from: "OUT Maine <auto@sample.outmaine.com>",
+          from: "OUT Maine <noreply@mail.outmaine.org>",
           // Send to the email that user typed in "email" textbox
           to: emailElse,
           subject: "Your Binder Is In Stock And Ready To Ship",
@@ -1136,7 +1136,7 @@ app.post("/send_mail", async (req, res) => {
       // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
       await transport.sendMail(
         {
-          from: "OUT Maine <auto@sample.outmaine.com>",
+          from: "OUT Maine <noreply@mail.outmaine.org>",
           // Send to the email that user typed in "email" textbox
           to: emailSelf,
           subject: "Your Binder Is In Stock And Ready To Ship",
@@ -1435,7 +1435,7 @@ BinderInventory.watch().on("change", async (change) => {
           // If the user enters info in "email"
           if (doc.emailElse) {
             await transport.sendMail({
-              from: "OUT Maine <auto@sample.outmaine.com>",
+              from: "OUT Maine <noreply@mail.outmaine.org>",
               // Send to the email that user typed in "email" textbox
               to: doc.emailElse,
               subject: "Your Binder Is In Stock And Ready To Ship",
@@ -1578,7 +1578,7 @@ BinderInventory.watch().on("change", async (change) => {
           } else {
             // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
             await transport.sendMail({
-              from: "OUT Maine <auto@sample.outmaine.com>",
+              from: "OUT Maine <noreply@mail.outmaine.org>",
               // Send to the email that user typed in "email" textbox
               to: doc.emailSelf,
               subject: "Your Binder Is In Stock And Ready To Ship",
@@ -1787,7 +1787,7 @@ waitListed.watch().on("change", async (change) => {
       // If the user enters info in "email"
       if (changedDocument.emailElse) {
         await transport.sendMail({
-          from: "OUT Maine <auto@sample.outmaine.com>",
+          from: "OUT Maine <noreply@mail.outmaine.org>",
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailElse,
           subject: "YOUR BINDER IS BACK IN STOCK AND READY TO SHIP",
@@ -1932,7 +1932,7 @@ waitListed.watch().on("change", async (change) => {
       } else {
         // Send email stating the binder in specified size in not in stock and the user has been added to waitlist.
         await transport.sendMail({
-          from: "OUT Maine <auto@sample.outmaine.com>",
+          from: "OUT Maine <noreply@mail.outmaine.org>",
           // Send to the email that user typed in "email" textbox
           to: changedDocument.emailSelf,
           subject: "YOUR BINDER IS BACK IN STOCK AND READY TO SHIP",
