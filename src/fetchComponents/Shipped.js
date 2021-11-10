@@ -79,7 +79,7 @@ export default function Shipped() {
     { title: "DOB", field: "dob", hidden: true, export: true },
     { title: "Email", field: "emailSelf" },
     { title: "Phone", field: "phoneSelf", hidden: true, export: true },
-    { title: "Street", field: "address.address1", hidden: true, export: true },
+    { title: "Street", field: "address.address1",export: true },
     {
       title: "Apt/PO Box",
       field: "address.address2",
@@ -90,8 +90,8 @@ export default function Shipped() {
     { title: "State", field: "address.state", hidden: true, export: true },
     { title: "ZipCode", field: "address.zip", hidden: true, export: true },
     { title: "Size", field: "size" },
-    { title: "Length", field: "length", hidden: true, export: true },
-    { title: "Color", field: "color", hidden: true, export: true },
+    { title: "Length", field: "length", export: true },
+    { title: "Color", field: "color", export: true },
   ];
   let modalColumns = [
     { title: "id", field: "id", hidden: true },

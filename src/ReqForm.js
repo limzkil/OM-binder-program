@@ -410,12 +410,12 @@ export default function ReqForm() {
                       <TextField
                         type="text"
                         name="elseName"
-                        placeholder="Enter your name (requester)"
+                        placeholder="Enter your first and last name (requester)"
                         value={nameElse}
                         className={style.formItemField}
                         error={validNameElse ? false : isError}
                         helperText={
-                          !validNameElse ? "Please Enter Your Name" : null
+                          !validNameElse ? "Please Enter Your First And Last Name" : null
                         }
                         onChange={handleNameElse}
                       />
@@ -530,11 +530,11 @@ export default function ReqForm() {
                   <TextField
                     type="text"
                     name="name"
-                    placeholder="Enter your name (requestee)"
+                    placeholder="Enter your first and last name (requestee)"
                     className={style.formItemField}
                     value={nameSelf}
                     error={validName ? false : isError}
-                    helperText={!validName ? "Please Enter Your Name" : null}
+                    helperText={!validName ? "Please Enter Your First And Last Name" : null}
                     onChange={handleName}
                   />
                 </Grid>
