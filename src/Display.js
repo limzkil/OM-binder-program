@@ -35,10 +35,15 @@ const Display = (props) => {
   const [waitListData, setWaitListData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
 
+  //match object contains information about how a <Route path> matched the URL which it receives as props from App.js
+  //history object represents the history stack of the browser
   const { match, history } = props;
+  //params key/value pairs parsed from the URL corresponding to the dynamic segments of the path
   const { params } = match;
+  //page is used to grab the current page out of the params and match it to its index value
   const { page } = params;
 
+  //look up tables for connecting the tab names to a 0-index
   const tabNameToIndex = {
     0: "inventory",
     1: "waitlist",
@@ -53,9 +58,13 @@ const Display = (props) => {
     shipped: 3
   };
 
+  //state variables
+  
   const [tabSelect, setTabSelect] = useState(indexToTabName[page]);
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
+  // handleTab pushes the value of the indexed tabNameToIndex array into the URL so it indicates the currently selected tab
+  //and changes the tabSelect state to reflect the currently reflected tab
   const handleTab = (e, newValue) => {
     history.push(`/display/${tabNameToIndex[newValue]}`);
     setTabSelect(newValue);
@@ -111,8 +120,11 @@ if(isAuthenticated)
       <Grid item xs = {12}>
       <AppBar position="static" style = {{backgroundColor: "#339999"}}>
       <Typography variant = "h2" style = {{fontFamily: 'Oswald'}}>Binder Program Management</Typography>
+      {/* Tabs value holds the currently selected tab; tabs are 0-indexed */}
+      {/* TabIndicatorProps controls the styling on the underline of currently selected tabs */}
         <Tabs value={tabSelect} onChange={handleTab} TabIndicatorProps={{
            style: { background: "#ffcc33", height: ".5em" }}}>
+             {/* Tab label represents the title of each tab; the length of the data is to indicate how many entries are in each component. */}
           <Tab label={`Inventory`}   />
           <Tab label={`Wait List (${waitListData.length})`} />
           <Tab label={`Ready to Ship (${readyToShipData.length})`} />
@@ -123,7 +135,7 @@ if(isAuthenticated)
       
       </Grid>
       </Grid>
-
+          {/* Tabs are 0-indexed, so as the user clicks each tab, these tabSelects pair the index with the component that needs to be displayed */}
       {tabSelect === 0 && <Inventory />}
       {tabSelect === 1 && <Waitlist />}
       {tabSelect === 2 && <ReadyToShip />}

@@ -78,8 +78,8 @@ export default function Waitlist() {
   { title: "State", field: "address.state", hidden: true, export: true  },
   { title: "ZipCode", field: "address.zip", hidden: true, export: true  },
   { title: "Size", field: "size" },
-  { title: "Length", field: "length", hidden: true, export: true  },
-  { title: "Color", field: "color", hidden: true, export: true  },
+  { title: "Length", field: "length", export: true  },
+  { title: "Color", field: "color", export: true  },
 ];
   let modalColumns = [
     { title: "id", field: "id", hidden: true },
