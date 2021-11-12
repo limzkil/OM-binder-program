@@ -1,72 +1,43 @@
-# OUT Maine Binder Program App 
+# OUT Maine Binder Program Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Scripts
 
-Refer to available scripts for proxying the client to the server.
+Run `npm start` and `node server.js` in two seperate terminals in top level of repository for working locally within the `working-localhost` branch.
 
-## Available Scripts
+## Purpose
 
-In the project directory, you can run:
+Green-field software application created to automate and streamline the process of chest
+binder distribution after LGBTQ non-profit experienced significant increase in requests. Limited development time.
 
-### `npm start`
+### Technologies Utilized
 
-Runs the client side react app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### Database
+* MongoDB - Granular control and information handled fits document form.
+* Mongoose - Collection validation and schema constraint.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### Server
+* NodeJS - Asynchronous handling of connection requests, access to package manager.
+* Express - Reduces server development time via reducing LOC written.
+* Axios - Reduces LOC written while improving functionality of XML/HTTP requests.
 
-### `npm run server`
+#### Security
+* Passport - Authentication strategy utilizing JSON web tokens.
+* JWT - JSON web token to hold valid user information; stored in a cookie.
+* JS Cookie - Front-end cookie access.
+* Cookie-Parser - Serverside cookie access.
 
-Runs the express server. \
-Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+#### Email Service
+* Nodemailer/Mailgun-Transport - NodeJS module to handle email transactions; additional module for utilizing Mailgun.
 
-### `npm run build`
+#### Front-End
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* React - Ideal for rapid development; flexible and low barrier to utilization.
+* React-Router - Allows for single page site that dynamically renders components dependant on URL route.
+* Material-UI - Ideal for rapid development of complex, beautiful interfaces. 
+* Material-UI-Image; Material-Table - Additional libraries written in same style language.
+*Validator - Library specific to reducing LOC written for user input validation.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
+documentation authored by limzkil/Julie Assur
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---    
