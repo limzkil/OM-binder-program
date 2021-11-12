@@ -35,7 +35,7 @@ binder distribution after LGBTQ non-profit experienced significant increase in r
 * React-Router - Allows for single page site that dynamically renders components dependant on URL route.
 * Material-UI - Ideal for rapid development of complex, beautiful interfaces. 
 * Material-UI-Image; Material-Table - Additional libraries written in same style language.
-*Validator - Library specific to reducing LOC written for user input validation.
+* Validator - Library specific to reducing LOC written for user input validation.
 
 ---
 documentation authored by limzkil/Julie Assur
