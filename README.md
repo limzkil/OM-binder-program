@@ -2,7 +2,7 @@
 
 ## Scripts
 
-Run `npm start` and `node server.js` in two seperate terminals in top level of repository for working locally within the `working-localhost` branch.
+Run `npm start` and `node server.js` in two seperate terminals in top level of repository for working locally within the `working-localhost` branch. `Main` houses Heroku production build.
 
 ## Purpose
 
